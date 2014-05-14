@@ -1,0 +1,33 @@
+{
+  "name": "monitode",
+  "version": "0.0.1",
+  "description": "resource monitor for nodejs",
+  "main": "index.js",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/hex7c0/monitode.git"
+  },
+  "bugs": {
+    "url": "https://github.com/hex7c0/monitode/issues"
+  },
+  "author": {
+    "name": "hex7c0",
+   "email": "0x7c0@teboss.tk",
+    "url": "http://hex7c0.tk/"
+  },
+  "dependencies": {
+      "express": ">=4.0.0"
+  },
+  "engines": {
+    "node": ">=0.8.0"
+  },
+  "keywords": [
+    "resource",
+    "monitor",
+    "average",
+    "load",
+    "cpus"
+  ],
+  "license": "GPLv3",
+  "homepage": "https://github.com/hex7c0/monitode"
+}
