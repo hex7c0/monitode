@@ -26,7 +26,7 @@ try {
 }
 
 // express settings
-process.env.NODE_ENV = 'production'
+process.env.NODE_ENV = 'production';
 app.enable('case sensitive routing');
 app.enable('strict routing');
 app.disable('x-powered-by');
@@ -34,16 +34,24 @@ app.disable('x-powered-by');
 app.get('/', function(req, res) {
     res.sendfile('./console/index.html');
 });
+/**
+ * @todo disable for production
+ */
+var EX = require('express');
+app.use(EX.static('console/'));
 
 app.post('/sta/', function(req, res) {
     var start = process.hrtime();
 
     var statics = {
-        hostname : OS.hostname(),
-        platform : OS.platform(),
-        arch : OS.arch(),
-        type : OS.type(),
-        release : OS.release(),
+        date : Date.now(),
+        os : {
+            hostname : OS.hostname(),
+            platform : OS.platform(),
+            arch : OS.arch(),
+            type : OS.type(),
+            release : OS.release(),
+        },
         version : {
             node : process.version,
             module : process.versions,
@@ -62,33 +70,30 @@ app.post('/sta/', function(req, res) {
 
 app.post('/dyn/', function(req, res) {
     var start = process.hrtime();
-
     var load = OS.loadavg();
-    var cpu = {
-        one : load[0],
-        five : load[1],
-        fifteen : load[2],
-        cpus : OS.cpus(),
-    };
-
     var free = OS.freemem();
     var v8 = process.memoryUsage();
-    var mem = {
-        total : OS.totalmem(),
-        used : OS.totalmem() - free,
-        free : free,
-        v8 : {
-            rss : v8.rss,
-            total : v8.heapTotal,
-            used : v8.heapUsed,
-            free : v8.heapTotal - v8.heapUsed,
-        }
-    };
 
     var dynamics = {
+        date : Date.now(),
         uptime : OS.uptime(),
-        cpu : cpu,
-        mem : mem,
+        cpu : {
+            one : load[0],
+            five : load[1],
+            fifteen : load[2],
+            cpus : OS.cpus(),
+        },
+        mem : {
+            total : OS.totalmem(),
+            used : OS.totalmem() - free,
+            free : free,
+            v8 : {
+                rss : v8.rss,
+                total : v8.heapTotal,
+                used : v8.heapUsed,
+                free : v8.heapTotal - v8.heapUsed,
+            },
+        },
     };
 
     var diff = process.hrtime(start);
