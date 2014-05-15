@@ -10,6 +10,7 @@
         <script src="javascripts/analytics.js" type="text/javascript" async></script>
         <link href="stylesheets/console.css" rel="stylesheet" >
     </head>
+
     <body ng-app="monitode">
         <h1>Nodejs control room</h1>
         <h4>this is a testing page, displaying random values</h4>
@@ -18,11 +19,15 @@
         <div id="memory_pie" class="sub"></div>
         <div id="extra_data" class="sub">
             <div ng-controller="static">
-                <label>Frequency <span style="font-size:10px;">(second)</span></label>
-                <input ng-model="clock" type="number" min="0" max="3600">
-                <button ng-click="data.refresh('dynamic', $event)">Force dynamic refresh</button>
-                <button ng-click="data.refresh('static', $event)">Force static refresh</button>
+                <button ng-click="data.refresh('stop', $event)">Stop refresh</button>
+                <button ng-click="data.refresh('dynamic', $event)">Dynamic refresh</button>
+                <button ng-click="data.refresh('static', $event)">Static refresh</button>
                 <ul>
+                    <li>
+                        <label>Frequency</label>
+                        <input ng-model="clock" type="number" min="0" max="3600">
+                        <label>seconds</label>
+                    </li>
                     <li ng-repeat="element in dynamics">
                         <span>{{element.title}}:</span> {{element.info}}
                     </li>
@@ -43,4 +48,5 @@
         <script src="https://raw.githubusercontent.com/hex7c0/monitode/master/public/console.js" type="text/javascript"></script>
         <script src="javascripts/scale.fix.js" type="text/javascript"></script>
     </body>
+
 </html>

@@ -35,12 +35,15 @@ function dyna($http, $scope, $timeout) {
                     [ 'free', testing - (testing / 4) ] ],
         });
         // info
-        $scope.dynamics = [ {
+        [ {
+            title : 'Ajax lag',
+            info : (Date.now() - data.date) + ' milliseconds',
+        }, {
             title : 'System lag',
-            info : Math.random() + ' nanoseconds,'
+            info : Math.random() + ' nanoseconds',
         }, {
             title : 'System uptime',
-            info : 0 + ' minute',
+            info : 0 + ' minutes',
         }, ];
         dyna($http, $scope, $timeout)
 
@@ -57,13 +60,13 @@ function stat($http, $scope) {
 
     // info
     $scope.statics = [ {
+        title : 'CPU architecture',
+        info : 'testing page'
+    }, {
         title : 'OS hostname',
         info : 'testing page'
     }, {
         title : 'OS platform',
-        info : 'testing page'
-    }, {
-        title : 'CPU architecture',
         info : 'testing page'
     }, {
         title : 'OS type',
