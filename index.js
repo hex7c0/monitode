@@ -4,7 +4,7 @@
  * 
  * @package monitode
  * @subpackage index
- * @version 1.0.0
+ * @version 1.0.1
  * @author hex7c0 <0x7c0@teboss.tk>
  * @license GPLv3
  * @overview main module
