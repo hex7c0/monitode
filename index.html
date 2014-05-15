@@ -1,0 +1,87 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <title>Monitode by hex7c0</title>
+
+    <link rel="stylesheet" href="stylesheets/styles.css">
+    <link rel="stylesheet" href="stylesheets/pygment_trac.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+  </head>
+  <body>
+    <div class="wrapper">
+      <header>
+        <h1>Monitode</h1>
+        <p>resource monitor for nodejs</p>
+
+        <p class="view"><a href="https://github.com/hex7c0/monitode">View the Project on GitHub <small>hex7c0/monitode</small></a></p>
+
+
+        <ul>
+          <li><a href="https://github.com/hex7c0/monitode/zipball/master">Download <strong>ZIP File</strong></a></li>
+          <li><a href="https://github.com/hex7c0/monitode/tarball/master">Download <strong>TAR Ball</strong></a></li>
+          <li><a href="https://github.com/hex7c0/monitode">View On <strong>GitHub</strong></a></li>
+        </ul>
+      </header>
+      <section>
+        <h1>
+<a name="monitode--" class="anchor" href="#monitode--"><span class="octicon octicon-link"></span></a>monitode <a href="https://travis-ci.org/hex7c0/monitode"><img src="https://travis-ci.org/hex7c0/monitode.svg?branch=master" alt="Build Status"></a> <a href="http://badge.fury.io/js/monitode"><img src="https://badge.fury.io/js/monitode.svg" alt="NPM version"></a>
+</h1>
+
+<p>resource monitor for <a href="http://nodejs.org">nodejs</a> using a web console based with <a href="http://expressjs.com/">expressjs</a></p>
+
+<h2>
+<a name="api" class="anchor" href="#api"><span class="octicon octicon-link"></span></a>API</h2>
+
+<p>inside expressjs project</p>
+
+<div class="highlight highlight-js"><pre><span class="kd">var</span> <span class="nx">app</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'express'</span><span class="p">)();</span>
+<span class="kd">var</span> <span class="nx">monitode</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'monitode'</span><span class="p">);</span>
+
+<span class="nx">app</span><span class="p">.</span><span class="nx">use</span><span class="p">(</span><span class="nx">monitode</span><span class="p">({</span><span class="nx">password</span><span class="o">:</span><span class="s1">'psw'</span><span class="p">}));</span>
+</pre></div>
+
+<p>inside nodejs project</p>
+
+<div class="highlight highlight-js"><pre><span class="kd">var</span> <span class="nx">monitode</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'monitode'</span><span class="p">);</span>
+
+<span class="nx">monitode</span><span class="p">({</span><span class="nx">password</span><span class="o">:</span><span class="s1">'psw'</span><span class="p">});</span>
+</pre></div>
+
+<h3>
+<a name="monitodeoptions" class="anchor" href="#monitodeoptions"><span class="octicon octicon-link"></span></a>monitode(options)</h3>
+
+<h4>
+<a name="options" class="anchor" href="#options"><span class="octicon octicon-link"></span></a>Options</h4>
+
+<ul>
+<li>
+<code>port</code> - Port for accept connection <em>(default 30000)</em>
+</li>
+<li>
+<code>password</code> - Password for authentication <em>(default 'admin', 'password')</em>
+</li>
+</ul><h4>
+<a name="examples" class="anchor" href="#examples"><span class="octicon octicon-link"></span></a>Examples</h4>
+
+<p>Take a look at my <a href="https://github.com/hex7c0/monitode/tree/master/examples">examples</a></p>
+
+<h2>
+<a name="license" class="anchor" href="#license"><span class="octicon octicon-link"></span></a>License</h2>
+
+<p>Copyright (c) 2014 hex7c0
+Licensed under the GPLv3 license.</p>
+      </section>
+      <footer>
+        <p>This project is maintained by <a href="https://github.com/hex7c0">hex7c0</a></p>
+        <p><small>Hosted on GitHub Pages &mdash; Theme by <a href="https://github.com/orderedlist">orderedlist</a></small></p>
+      </footer>
+    </div>
+    <script src="javascripts/scale.fix.js"></script>
+    
+  </body>
+</html>
