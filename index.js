@@ -4,7 +4,7 @@
  * 
  * @package monitode
  * @subpackage index
- * @version 1.0.2
+ * @version 1.0.3
  * @author hex7c0 <0x7c0@teboss.tk>
  * @license GPLv3
  * @overview main module
@@ -21,6 +21,7 @@ try {
     // personal
     var EXPRESS = require('express');
     // load
+    process.env.NODE_ENV = 'production';
     var app = EXPRESS();
 } catch (MODULE_NOT_FOUND) {
     console.log(MODULE_NOT_FOUND);
@@ -28,7 +29,6 @@ try {
 }
 
 // express settings
-process.env.NODE_ENV = 'production';
 app.enable('case sensitive routing');
 app.enable('strict routing');
 app.disable('x-powered-by');
@@ -145,3 +145,7 @@ app.post('/dyn/', function(req, res) {
  * exports function
  */
 exports = module.exports = monitor;
+if (!module.parent) {
+    // if standalone
+    monitor();
+}

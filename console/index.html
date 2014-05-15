@@ -18,11 +18,15 @@
         <div id="memory_pie" class="sub"></div>
         <div id="extra_data" class="sub">
             <div ng-controller="static">
-                <label>Frequency <span style="font-size:10px;">(second)</span></label>
-                <input ng-model="clock" type="number" min="0" max="3600">
-                <button ng-click="data.refresh('dynamic', $event)">Force dynamic refresh</button>
-                <button ng-click="data.refresh('static', $event)">Force static refresh</button>
+                <button ng-click="data.refresh('stop', $event)">Stop refresh</button>
+                <button ng-click="data.refresh('dynamic', $event)">Dynamic refresh</button>
+                <button ng-click="data.refresh('static', $event)">Static refresh</button>
                 <ul>
+                    <li>
+                        <label>Frequency</label>
+                        <input ng-model="clock" type="number" min="0" max="3600">
+                        <label>seconds</label>
+                    </li>
                     <li ng-repeat="element in dynamics">
                         <span>{{element.title}}:</span> {{element.info}}
                     </li>

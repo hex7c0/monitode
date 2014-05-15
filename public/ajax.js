@@ -18,13 +18,13 @@ function dyna($http, $scope, $timeout) {
                     store.five.push(data.cpu.five);
                     store.fifteen.push(data.cpu.fifteen);
                     // mem
-                    store.total.push(data.mem.total);
-                    store.used.push(data.mem.used);
-                    store.free.push(data.mem.free);
-                    store.v8rss.push(data.mem.v8.rss);
-                    store.v8total.push(data.mem.v8.total);
-                    store.v8used.push(data.mem.v8.used);
-                    store.v8free.push(data.mem.v8.free);
+                    store.total.push(data.mem.total / 1024);
+                    store.used.push(data.mem.used / 1024);
+                    store.free.push(data.mem.free / 1024);
+                    store.v8rss.push(data.mem.v8.rss / 1024);
+                    store.v8total.push(data.mem.v8.total / 1024);
+                    store.v8used.push(data.mem.v8.used / 1024);
+                    store.v8free.push(data.mem.v8.free / 1024);
                     // chart
                     avg.load({
                         columns : [ store.x, store.one, store.five,
@@ -40,11 +40,14 @@ function dyna($http, $scope, $timeout) {
                     });
                     // info
                     $scope.dynamics = [ {
+                        title : 'Ajax lag',
+                        info : (Date.now() - data.date) + ' milliseconds',
+                    }, {
                         title : 'System lag',
-                        info : data.ns + ' nanoseconds,'
+                        info : data.ns + ' nanoseconds',
                     }, {
                         title : 'System uptime',
-                        info : Math.floor(data.uptime / 60) + ' minute',
+                        info : Math.floor(data.uptime / 60) + ' minutes',
                     }, ];
                     dyna($http, $scope, $timeout)
                 }).error(function(data, status, headers, config) {
@@ -67,14 +70,14 @@ function stat($http, $scope) {
     }).success(function(data, status, headers, config) {
         // info
         $scope.statics = [ {
+            title : 'CPU architecture',
+            info : data.os.arch
+        }, {
             title : 'OS hostname',
             info : data.os.hostname
         }, {
             title : 'OS platform',
             info : data.os.platform
-        }, {
-            title : 'CPU architecture',
-            info : data.os.arch
         }, {
             title : 'OS type',
             info : data.os.type

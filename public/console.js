@@ -57,6 +57,7 @@ function load() {
                 label : 'time',
                 localtime : false,
                 tick : {
+                    count : 5,
                     format : '%d %H:%M:%S',
                 },
             },
@@ -102,11 +103,12 @@ function load() {
                 label : 'time',
                 localtime : false,
                 tick : {
+                    count : 5,
                     format : '%d %H:%M:%S',
                 },
             },
             y : {
-                label : 'bytes',
+                label : 'kilobytes',
             }
         },
     });
@@ -144,6 +146,8 @@ app.controller('static', function($scope, $http, $timeout) {
             dyna($http, $scope, $timeout);
         } else if (item == 'static') {
             stat($http, $scope);
+        } else if (item == 'stop') {
+            $timeout.cancel(promise);
         }
     };
 });
