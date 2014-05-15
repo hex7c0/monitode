@@ -75,12 +75,6 @@ function stat($http, $scope) {
         title : 'OS release',
         info : 'testing page'
     }, {
-        title : 'Node version',
-        info : 'testing page'
-    }, {
-        title : 'Module versions',
-        info : 'testing page'
-    }, {
         title : 'Process gid',
         info : 'testing page'
     }, {
@@ -88,6 +82,12 @@ function stat($http, $scope) {
         info : 'testing page'
     }, {
         title : 'Process pid',
+        info : 'testing page'
+    }, {
+        title : 'Node version',
+        info : 'testing page'
+    }, {
+        title : 'Module versions',
         info : 'testing page'
     }, ];
     return;
