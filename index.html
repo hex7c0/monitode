@@ -8,17 +8,16 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
     <script src="https://raw.githubusercontent.com/mbostock/d3/master/d3.min.js"></script>
     <script src="https://raw.githubusercontent.com/masayuki0812/c3/master/c3.min.js"></script>
-    <script src="javascripts/console.js"></script>
     <link rel="stylesheet" href="stylesheets/console.css">
   </head>
-    <body ng-app="monitode" onload="load();">
+    <body ng-app="monitode">
         <h1>Nodejs control room</h1>
         <h4>this is a testing page, displaying random values</h4>
         <div id="average"></div>
         <div id="memory_lin"></div>
         <div id="memory_pie" class="sub"></div>
         <div id="extra_data" class="sub">
-            <div ng-controller=static>
+            <div ng-controller="static">
                 <label>Frequency</label>
                 <input ng-model="clock" type="number" min="0" max="10000">
                 <button ng-click="data.refresh('dynamic', $event)">Force dynamic refresh</button>
@@ -41,6 +40,7 @@
                 <p><small>Hosted on GitHub Pages</small></p>
             </div>
         </footer>
+        <script src="javascripts/console.js"></script>
         <script src="javascripts/scale.fix.js"></script>
     </body>
 </html>

@@ -129,6 +129,7 @@ function load() {
             height : 250,
         },
     });
+    return;
 }
 function dyna($http, $scope, $timeout) {
     /**
@@ -219,6 +220,7 @@ function stat($http, $scope) {
     return;
 }
 // init
+load();
 app.controller('static', function($scope, $http, $timeout) {
     $scope.data = {};
     $scope.clock = 1;
