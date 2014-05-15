@@ -32,6 +32,7 @@ process.env.NODE_ENV = 'production';
 app.enable('case sensitive routing');
 app.enable('strict routing');
 app.disable('x-powered-by');
+app.use(EXPRESS.static(__dirname + '/public/'));
 var auth = require('basic-auth');
 var password = null;
 
@@ -68,7 +69,6 @@ function monitor(options) {
 };
 
 // routing
-app.use(EXPRESS.static(__dirname + 'public/'));
 app.get('/', function(req, res) {
     var user = auth(req);
 
