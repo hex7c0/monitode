@@ -4,7 +4,7 @@
  * 
  * @package monitode
  * @subpackage index
- * @version 1.0.1
+ * @version 1.0.2
  * @author hex7c0 <0x7c0@teboss.tk>
  * @license GPLv3
  * @overview main module
@@ -19,7 +19,9 @@ try {
     // global
     var OS = require('os');
     // personal
-    var app = require('express')();
+    var EXPRESS = require('express');
+    // load
+    var app = EXPRESS();
 } catch (MODULE_NOT_FOUND) {
     console.log(MODULE_NOT_FOUND);
     process.exit(1);
@@ -52,7 +54,7 @@ function monitor(options) {
 
     return function logging(req, res, next) {
         /**
-         * logging all routing
+         * future implementation
          * 
          * @param object req: request
          * @param object res: response
@@ -66,6 +68,7 @@ function monitor(options) {
 };
 
 // routing
+app.use(EXPRESS.static(__dirname + 'public/'));
 app.get('/', function(req, res) {
     var user = auth(req);
 
