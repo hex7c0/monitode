@@ -85,12 +85,6 @@ function stat($http, $scope) {
             title : 'OS release',
             info : data.os.release
         }, {
-            title : 'Node version',
-            info : data.version.node
-        }, {
-            title : 'Module versions',
-            info : data.version.module
-        }, {
             title : 'Process gid',
             info : data.process.gid
         }, {
@@ -99,6 +93,12 @@ function stat($http, $scope) {
         }, {
             title : 'Process pid',
             info : data.process.pid
+        }, {
+            title : 'Node version',
+            info : data.version.node
+        }, {
+            title : 'Module versions',
+            info : data.version.module
         }, ];
     }).error(function(data, status, headers, config) {
         alert('server donesn\'t respond');
