@@ -37,7 +37,7 @@ function dyna($http, $scope, $timeout) {
         // info
         [ {
             title : 'Ajax lag',
-            info : (Date.now() - data.date) + ' milliseconds',
+            info : 0 + ' milliseconds',
         }, {
             title : 'System lag',
             info : Math.random() + ' nanoseconds',
