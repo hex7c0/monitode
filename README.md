@@ -5,15 +5,28 @@ resource monitor for [nodejs](http://nodejs.org) using a web console based with 
 
 ## API
 
+inside expressjs project
 ```js
+var app = require('express')();
+var monitode = require('monitode');
 
+app.use(monitode({password:'psw'}));
+```
+
+inside nodejs project
+```js
+var monitode = require('monitode');
+
+monitode({password:'psw'});
 ```
 
 ### monitode(options)
 
 #### Options
 
-  - `port` - 
+  - `port` - Port for accept connection _(default 30000)_
+  - `password` - Password for authentication _(default 'admin', 'password')_
+
 
 #### Examples
 
