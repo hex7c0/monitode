@@ -30,16 +30,54 @@ process.env.NODE_ENV = 'production';
 app.enable('case sensitive routing');
 app.enable('strict routing');
 app.disable('x-powered-by');
+var auth = require('basic-auth');
+var password = null;
 
+// init
+function monitor(options) {
+    /**
+     * setting options
+     * 
+     * @param integer port: port for monitor
+     * @param string password: password for access
+     * @return function
+     */
+
+    var options = options || {};
+    var port = options.port || 30000;
+    password = options.password || 'password';
+
+    app.listen(port);
+    console.log('starting monitor on port ' + port);
+
+    return function logging(req, res, next) {
+        /**
+         * logging all routing
+         * 
+         * @param object req: request
+         * @param object res: response
+         * @param object next: continue routes
+         * @return function
+         */
+
+        return next();
+    }
+
+};
+
+// routing
 app.get('/', function(req, res) {
-    res.sendfile('./console/index.html');
-});
-/**
- * @todo disable for production
- */
-var EX = require('express');
-app.use(EX.static('console/'));
+    var user = auth(req);
 
+    if (user === undefined || user['name'] !== 'admin'
+            || user['pass'] !== password) {
+        res.statusCode = 401;
+        res.setHeader('WWW-Authenticate', 'Basic realm="Monitode"');
+        res.end('Unauthorized');
+    } else {
+        res.sendfile(__dirname + '/console/index.html');
+    }
+});
 app.post('/sta/', function(req, res) {
     var start = process.hrtime();
 
@@ -67,7 +105,6 @@ app.post('/sta/', function(req, res) {
     statics.ns = diff[0] * 1e9 + diff[1];
     res.json(statics);
 });
-
 app.post('/dyn/', function(req, res) {
     var start = process.hrtime();
     var load = OS.loadavg();
@@ -101,23 +138,8 @@ app.post('/dyn/', function(req, res) {
     res.json(dynamics);
 });
 
-app.listen(30000);
-console.log('starting server on port 30000');
-
-function monitor(req, res, next) {
-    /**
-     * ?
-     * 
-     * @param object req: request
-     * @param object res: response
-     * @param object next: continue routes
-     */
-
-    // end
-    next();
-};
-
 /**
  * exports function
  */
 exports = module.exports = monitor;
+monitor()

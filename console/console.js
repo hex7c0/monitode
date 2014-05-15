@@ -223,9 +223,10 @@ function stat($http, $scope) {
 // init
 app.controller('static', function($scope, $http, $timeout) {
     $scope.data = {};
-    $scope.clock = clock;
-    dyna($http, $scope, $timeout);
+    $scope.clock = 1;
     stat($http, $scope);
+    dyna($http, $scope, $timeout);
+    $scope.clock = clock;
     // click
     $scope.data.refresh = function(item, event) {
         if (item == 'dynamic') {
