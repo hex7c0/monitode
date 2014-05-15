@@ -5,6 +5,6 @@ a:hover {text-decoration: underline;}
 h1{text-transform:capitalize;text-align:center;}
 .sub{margin:20px 0;float:left;position:relative;width:49%;overflow:auto;}
 .c3{margin:20px 0;}
-#memory_pie{height:200px;}
+#memory_pie{height:300px;}
 #extra_data{}
 #extra_data ul{padding:0;list-style:none;}

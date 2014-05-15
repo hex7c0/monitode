@@ -122,7 +122,7 @@ function load() {
             },
         },
         size : {
-            height : 200,
+            height : 250,
         },
     });
 }
