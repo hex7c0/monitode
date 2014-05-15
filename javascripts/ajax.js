@@ -35,7 +35,7 @@ function dyna($http, $scope, $timeout) {
                     [ 'free', testing - (testing / 4) ] ],
         });
         // info
-        [ {
+        $scope.dynamics = [ {
             title : 'Ajax lag',
             info : 0 + ' milliseconds',
         }, {
