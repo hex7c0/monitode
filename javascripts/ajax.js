@@ -1,9 +1,10 @@
+var promise = null;
 function dyna($http, $scope, $timeout) {
     /**
      * ajax post 'dynamic'
      */
 
-    $timeout.clear();
+    $timeout.cancel(promise);
 
     function loop() {
 
@@ -45,7 +46,7 @@ function dyna($http, $scope, $timeout) {
 
     }
     if ($scope.clock > 0) {
-        $timeout(loop, $scope.clock * 1000);
+        promise = $timeout(loop, $scope.clock * 1000);
     }
     return;
 }
