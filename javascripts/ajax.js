@@ -3,6 +3,8 @@ function dyna($http, $scope, $timeout) {
      * ajax post 'dynamic'
      */
 
+    $timeout.clear();
+
     function loop() {
 
         // avg

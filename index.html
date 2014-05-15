@@ -3,12 +3,12 @@
   <head>
     <meta charset="utf-8">
     <title>Monitode</title>
-    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.15/angular.min.js" type="text/javascript"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js" type="text/javascript"></script>
-    <script src="https://raw.githubusercontent.com/mbostock/d3/master/d3.min.js" type="text/javascript"></script>
-    <script src="https://raw.githubusercontent.com/masayuki0812/c3/master/c3.min.js" type="text/javascript"></script>
-    <script src="javascripts/ajax.js" type="text/javascript"></script>
-        <script src="javascripts/analytics.js" type="text/javascript" async></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.15/angular.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+    <script src="https://raw.githubusercontent.com/mbostock/d3/master/d3.min.js"></script>
+    <script src="https://raw.githubusercontent.com/masayuki0812/c3/master/c3.min.js" ></script>
+    <script src="javascripts/ajax.js" ></script>
+    <script src="javascripts/analytics.js"  async></script>
     <link href="stylesheets/console.css" rel="stylesheet" >
   </head>
     <body ng-app="monitode">
@@ -19,7 +19,7 @@
         <div id="memory_pie" class="sub"></div>
         <div id="extra_data" class="sub">
             <div ng-controller="static">
-                <label>Frequency <span>(second)</span></label>
+                <label>Frequency <span style="font-size:10px;">(second)</span></label>
                 <input ng-model="clock" type="number" min="0" max="3600">
                 <button ng-click="data.refresh('dynamic', $event)">Force dynamic refresh</button>
                 <button ng-click="data.refresh('static', $event)">Force static refresh</button>
@@ -41,7 +41,7 @@
                 <p><small>Hosted on GitHub Pages</small></p>
             </div>
         </footer>
-        <script src="https://raw.githubusercontent.com/hex7c0/monitode/master/console/ajax.js" type="text/javascript"></script>
+        <script src="https://raw.githubusercontent.com/hex7c0/monitode/master/console/console.js" type="text/javascript"></script>
         <script src="javascripts/scale.fix.js" type="text/javascript"></script>
     </body>
 </html>
