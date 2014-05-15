@@ -4,7 +4,7 @@
  * 
  * @package monitode
  * @subpackage index
- * @version 0.0.1
+ * @version 1.0.0
  * @author hex7c0 <0x7c0@teboss.tk>
  * @license GPLv3
  * @overview main module
@@ -142,4 +142,3 @@ app.post('/dyn/', function(req, res) {
  * exports function
  */
 exports = module.exports = monitor;
-monitor()

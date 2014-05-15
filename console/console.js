@@ -20,6 +20,10 @@ var store = {
 };
 // functions
 function load() {
+    /**
+     * onload function
+     */
+
     avg = c3.generate({
         bindto : '#average',
         data : {
@@ -127,6 +131,9 @@ function load() {
     });
 }
 function dyna($http, $scope, $timeout) {
+    /**
+     * ajax post 'dynamic'
+     */
 
     function loop() {
         $http({
@@ -166,7 +173,7 @@ function dyna($http, $scope, $timeout) {
                         info : data.ns + ' nanoseconds,'
                     }, {
                         title : 'System uptime',
-                        info : (data.uptime / 60) + ' minute',
+                        info : Math.floor(data.uptime / 60) + ' minute',
                     }, ];
                     dyna($http, $scope, $timeout)
                 }).error(function(data, status, headers, config) {
@@ -179,6 +186,10 @@ function dyna($http, $scope, $timeout) {
     return;
 }
 function stat($http, $scope) {
+    /**
+     * ajax post 'static'
+     */
+
     $http({
         method : 'POST',
         url : '/sta/'
