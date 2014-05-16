@@ -15,7 +15,7 @@
 // import
 try {
     var app = require('express')();
-    var monitor = require('../index.js');
+    var monitor = require('../index.js'); // use 'monitode' instead
 } catch (MODULE_NOT_FOUND) {
     console.log(MODULE_NOT_FOUND);
     process.exit(1);

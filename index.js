@@ -41,17 +41,19 @@ function monitor(options) {
     /**
      * setting options
      * 
-     * @param integer port: port for monitor
-     * @param string password: password for access
+     * @param object options: various options. check README.md
      * @return function
      */
 
     var options = options || {};
-    var port = options.port || 30000;
+    options.port = parseInt(options.port) || 30000;
+    options.output = Boolean(options.output);
     password = options.password || 'password';
 
-    app.listen(port);
-    console.log('starting monitor on port ' + port);
+    app.listen(options.port);
+    if (options.output) {
+        console.log('starting monitor on port ' + port);
+    }
 
     return function logging(req, res, next) {
         /**
