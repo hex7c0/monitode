@@ -2,11 +2,19 @@ var promise = null;
 function dyna($http, $scope, $timeout) {
     /**
      * ajax post 'dynamic'
+     * 
+     * @return void;
      */
 
     $timeout.cancel(promise);
 
     function loop() {
+        /**
+         * ajax POST loop
+         * 
+         * @return void;
+         */
+
         $http({
             method : 'POST',
             url : '/dyn/'
@@ -47,13 +55,20 @@ function dyna($http, $scope, $timeout) {
                         info : data.ns + ' nanoseconds',
                     }, {
                         title : 'System uptime',
-                        info : Math.floor(data.uptime / 60) + ' minutes',
+                        info : Math.floor(data.uptimeS / 60) + ' minutes',
+                    }, {
+                        title : 'System uptime Node',
+                        info : Math.floor(data.uptimeN / 60) + ' minutes',
                     }, ];
-                    dyna($http, $scope, $timeout)
+                    return dyna($http, $scope, $timeout);
+
                 }).error(function(data, status, headers, config) {
             alert('server donesn\'t respond');
+            return;
         });
+
     }
+
     if ($scope.clock > 0) {
         promise = $timeout(loop, $scope.clock * 1000);
     }
@@ -62,6 +77,8 @@ function dyna($http, $scope, $timeout) {
 function stat($http, $scope) {
     /**
      * ajax post 'static'
+     * 
+     * @return void;
      */
 
     $http({
@@ -93,15 +110,55 @@ function stat($http, $scope) {
         }, {
             title : 'Process pid',
             info : data.process.pid
-        }, {
-            title : 'Node version',
-            info : data.version.node
-        }, {
-            title : 'Module versions',
-            info : data.version.module
         }, ];
+        // 0 environment
+        var temp = {
+            title : 'Process env',
+        };
+        var temps = [];
+        for ( var property in data.process.env) {
+            temps.push({
+                title : property,
+                info : data.process.env[property],
+            })
+        }
+        temp['child'] = temps;
+        $scope.statics.push(temp)
+        // 1 interfaces
+        var temp = {
+            title : 'Network interfaces',
+        };
+        var temps = [];
+        for ( var property in data.network) {
+            for ( var inside in data.network[property]) {
+                var obj = data.network[property][inside]
+                if (!obj.internal) { // skip loopback
+                    temps.push({
+                        title : property + ' (' + obj.family + ')',
+                        info : obj.address,
+                    })
+                }
+            }
+        }
+        temp['child'] = temps;
+        $scope.statics.push(temp)
+        // 2 version
+        var temp = {
+            title : 'Node version',
+        };
+        var temps = [];
+        for ( var property in data.version) {
+            temps.push({
+                title : property,
+                info : data.version[property],
+            })
+        }
+        temp['child'] = temps;
+        $scope.statics.push(temp)
+
     }).error(function(data, status, headers, config) {
         alert('server donesn\'t respond');
     });
+
     return;
 }

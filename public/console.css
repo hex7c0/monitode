@@ -7,6 +7,8 @@ a:hover {text-decoration: underline;}
 h1{text-transform:capitalize;text-align:center;}
 .sub{margin:20px 0;float:left;position:relative;width:49%;overflow-x:auto;}
 .c3{margin:20px 0;}
+.bold{font-weight:bold;}
+.italic{font-style:italic;}
 #memory_pie{height:400px !important;overflow-y:hidden;}
 #extra_data{}
-#extra_data ul{padding:0;list-style:none;}
+#extra_data > div > ul{padding:0;list-style:none;}

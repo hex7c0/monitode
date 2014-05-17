@@ -95,15 +95,14 @@ app.post('/sta/', function(req, res) {
             type : OS.type(),
             release : OS.release(),
         },
-        version : {
-            node : process.version,
-            module : process.versions,
-        },
+        version : process.versions,
         process : {
             gid : process.getgid(),
             uid : process.getuid(),
             pid : process.pid,
+            env : process.env,
         },
+        network : OS.networkInterfaces(),
     };
 
     var diff = process.hrtime(start);
@@ -118,7 +117,8 @@ app.post('/dyn/', function(req, res) {
 
     var dynamics = {
         date : Date.now(),
-        uptime : OS.uptime(),
+        uptimeS : OS.uptime(),
+        uptimeN : process.uptime(),
         cpu : {
             one : load[0],
             five : load[1],

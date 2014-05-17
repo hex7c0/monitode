@@ -23,15 +23,20 @@
                 <button ng-click="data.refresh('csv', $event)">Build CSV</button>
                 <ul>
                     <li>
-                        <label>Frequency</label>
+                        <label class="bold">Frequency</label>
                         <input ng-model="clock" type="number" min="0" max="3600">
                         <label>seconds</label>
                     </li>
                     <li ng-repeat="element in dynamics">
-                        <span>{{element.title}}:</span> {{element.info}}
+                        <span class="bold">{{element.title}}:</span> {{element.info}}
                     </li>
                     <li ng-repeat="element in statics">
-                        <span>{{element.title}}:</span> {{element.info}}
+                        <span class="bold">{{element.title}}:</span> {{element.info}}
+                        <ul ng-show="element.child && element.child.length">
+                            <li ng-repeat="child in element.child">
+                                <span class="bold italic">{{child.title}}:</span> {{child.info}}
+                            </li>
+                        </ul>
                     </li>
                 </ul>
             </div>
