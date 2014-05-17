@@ -134,20 +134,35 @@ function load() {
 }
 // init
 load();
-app.controller('static', function($scope, $http, $timeout) {
-    $scope.data = {};
-    $scope.clock = 1;
-    stat($http, $scope);
-    dyna($http, $scope, $timeout);
-    $scope.clock = 2;
-    // click
-    $scope.data.refresh = function(item, event) {
-        if (item == 'dynamic') {
-            dyna($http, $scope, $timeout);
-        } else if (item == 'static') {
-            stat($http, $scope);
-        } else if (item == 'stop') {
-            $timeout.cancel(promise);
-        }
-    };
-});
+app
+        .controller(
+                'static',
+                function($scope, $http, $timeout) {
+                    $scope.data = {};
+                    $scope.clock = 1;
+                    stat($http, $scope);
+                    dyna($http, $scope, $timeout);
+                    $scope.clock = 2;
+                    // click
+                    $scope.data.refresh = function(item, event) {
+                        if (item == 'dynamic') {
+                            dyna($http, $scope, $timeout);
+                        } else if (item == 'static') {
+                            stat($http, $scope);
+                        } else if (item == 'stop') {
+                            $timeout.cancel(promise);
+                        } else if (item == 'csv') {
+                            var name = new Date().getDay() + '_monitode.csv';
+                            var content = ('data:text/csv;charset=utf-8,date,average 1 min,average 5 min,average 15 min,memory used,memory free\n');
+                            for (var i = 1; i < store.x.length; i++) {
+                                content += store.x[i] + ',' + store.one[i]
+                                        + ',' + store.five[i] + ','
+                                        + store.fifteen[i] + ','
+                                        + store.used[i] + ',' + store.free[i]
+                                        + '\n';
+                            }
+                            window.open(encodeURI(content));
+                        }
+
+                    };
+                });

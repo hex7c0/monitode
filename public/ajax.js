@@ -13,7 +13,7 @@ function dyna($http, $scope, $timeout) {
         }).success(
                 function(data, status, headers, config) {
                     // avg
-                    store.x.push(new Date(data.date).toUTCString());
+                    store.x.push(new Date(data.date));
                     store.one.push(data.cpu.one);
                     store.five.push(data.cpu.five);
                     store.fifteen.push(data.cpu.fifteen);
