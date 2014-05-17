@@ -36,14 +36,48 @@ function dyna($http, $scope, $timeout) {
         });
         // cpu
         if (cpus.length == 0) {
-            $scope.cpus = cpus = 4;
+            $scope.cpus = cpus = [ {
+                times : {
+                    user : Math.random(),
+                    nice : 0,
+                    sys : Math.random(),
+                    idle : Math.random(),
+                    irq : 0
+                }
+            }, {
+
+                times : {
+                    user : Math.random(),
+                    nice : 0,
+                    sys : Math.random(),
+                    idle : Math.random(),
+                    irq : 0
+                }
+            }, {
+
+                times : {
+                    user : Math.random(),
+                    nice : 0,
+                    sys : Math.random(),
+                    idle : Math.random(),
+                    irq : 0
+                }
+            }, {
+                times : {
+                    user : Math.random(),
+                    nice : 0,
+                    sys : Math.random(),
+                    idle : Math.random(),
+                    irq : 0
+                }
+            } ];
             proc($scope.cpus);
         } else {
-            for (var i = 0; i < 4; i++) {
+            for (var i = 0; i < cpus.length; i++) {
                 cpus[i].load({
                     columns : [ [ 'user', Math.random() ], [ 'nice', 0 ],
-                            [ 'sys', Math.random() ], [ 'idle', 0 ],
-                            [ 'irq', 0 ] ],
+                            [ 'sys', Math.random() ],
+                            [ 'idle', Math.random() ], [ 'irq', 0 ] ],
                 });
             }
         }
@@ -57,13 +91,17 @@ function dyna($http, $scope, $timeout) {
         }, {
             title : 'System uptime',
             info : 0 + ' minutes',
+        }, {
+            title : 'System uptime Node',
+            info : 0 + ' minutes',
         }, ];
-        dyna($http, $scope, $timeout)
-
+        return dyna($http, $scope, $timeout)
     }
+
     if ($scope.clock > 0) {
         promise = $timeout(loop, $scope.clock * 1000);
     } else if ($scope.clock == 0) {
+        $scope.clock = 2;
         loop();
     }
     return;
@@ -99,10 +137,13 @@ function stat($http, $scope) {
         title : 'Process pid',
         info : 'testing page'
     }, {
-        title : 'Node version',
+        title : 'Process env',
         info : 'testing page'
     }, {
-        title : 'Module versions',
+        title : 'Network interfaces',
+        info : 'testing page'
+    }, {
+        title : 'Node versions',
         info : 'testing page'
     }, ];
     return;
