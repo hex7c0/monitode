@@ -3,6 +3,7 @@
 var avg = null;
 var meml = null;
 var memp = null;
+var cpus = [];
 var app = angular.module('monitode', []);
 var store = {
     x : [ 'x' ],
@@ -21,6 +22,8 @@ var store = {
 function load() {
     /**
      * onload function
+     * 
+     * @return void
      */
 
     avg = c3.generate({
@@ -130,16 +133,56 @@ function load() {
             height : 250,
         },
     });
+
+    return;
+}
+function proc(cpu) {
+    /**
+     * chart init for cpus
+     * 
+     * @return void
+     */
+
+    var buff = cpu
+    for (var i = 0; i < buff.length; i++) {
+        cpus[i] = c3.generate({
+            bindto : '#cpu_' + i,
+            data : {
+                type : 'donut',
+                columns : [ [ 'user', buff[i].times.user ],
+                        [ 'nice', buff[i].times.nice ],
+                        [ 'sys', buff[i].times.sys ],
+                        [ 'idle', buff[i].times.idel ],
+                        [ 'irq', buff[i].times.irq ] ],
+            },
+            donut : {
+                title : 'CPU ' + (i + 1),
+            },
+            legend : {
+                show : false
+            },
+            size : {
+                height : 280,
+                width : 280,
+            },
+            padding : {
+                top : 0,
+                right : 0,
+                bottom : 0,
+                left : 0,
+            },
+        });
+    }
     return;
 }
 // init
 load();
 app
         .controller(
-                'static',
+                'main',
                 function($scope, $http, $timeout) {
                     $scope.data = {};
-                    $scope.clock = 0.001;
+                    $scope.clock = 0;
                     dyna($http, $scope, $timeout);
                     stat($http, $scope);
                     $scope.clock = 2;
