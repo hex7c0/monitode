@@ -1,3 +1,11 @@
+1.0.5 / 2014-05-17
+==================
+
+  * network interface
+  * node env
+  * node versions
+  * cpu info
+
 1.0.4 / 2014-05-16
 ==================
 

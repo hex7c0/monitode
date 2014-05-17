@@ -1,4 +1,8 @@
 "use strict";
+/*
+ * monitode 1.0.5 (c) 2014 hex7c0, https://hex7c0.github.io/monitode/
+ * License: GPLv3
+ */
 // variables
 var avg = null;
 var meml = null;
