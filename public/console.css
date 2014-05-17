@@ -5,13 +5,15 @@ text{font-family:monospace;}
 a{color: #107aff;text-decoration: none;}
 a:hover {text-decoration: underline;}
 h1{text-transform:capitalize;text-align:center;}
-.sub{margin:20px 0;float:left;position:relative;width:49%;}
-.c3{margin:20px 0;}
-.bold{font-weight:bold;}
-.italic{font-style:italic;}
+footer{text-align:center;}
+h4{text-align:center;font-style:italic;}
 #cpus{clear:both;}
 #cpus > ul{padding:0;margin:0 -20px;list-style:none;width:100%;}
 #cpus > ul > li{float:left;display:inline-block;margin:0;padding:0;width:25%;text-align:center;}
 #memory_pie{height:400px !important;overflow-y:hidden;}
 #extra_data{}
 #extra_data > div > ul{padding:0;list-style:none;}
+.sub{margin:20px 0;float:left;position:relative;width:49%;}
+.c3{margin:20px 0;}
+.bold{font-weight:bold;}
+.italic{font-style:italic;}

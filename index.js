@@ -52,7 +52,7 @@ function monitor(options) {
 
     app.listen(options.port);
     if (options.output) {
-        console.log('starting monitor on port ' + port);
+        console.log('starting monitor on port ' + options.port);
     }
 
     return function logging(req, res, next) {
@@ -149,5 +149,7 @@ app.post('/dyn/', function(req, res) {
 exports = module.exports = monitor;
 if (!module.parent) {
     // if standalone
-    monitor();
+    monitor({
+        output : true,
+    });
 }

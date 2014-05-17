@@ -1,7 +1,7 @@
 "use strict";
 /*
- * monitode 1.0.5 (c) 2014 hex7c0, https://hex7c0.github.io/monitode/
- * License: GPLv3
+ * monitode 1.0.5 (c) 2014 hex7c0, https://hex7c0.github.io/monitode/ License:
+ * GPLv3
  */
 // variables
 var avg = null;
@@ -156,8 +156,14 @@ function proc(cpu) {
                 columns : [ [ 'user', buff[i].times.user ],
                         [ 'nice', buff[i].times.nice ],
                         [ 'sys', buff[i].times.sys ],
-                        [ 'idle', buff[i].times.idel ],
+                        [ 'idle', buff[i].times.idle ],
                         [ 'irq', buff[i].times.irq ] ],
+                colors : {
+                    user : '#107aff',
+                    idle : '#00a855',
+                    sys : '#ff9900',
+                },
+
             },
             donut : {
                 title : 'CPU ' + (i + 1),
@@ -189,7 +195,6 @@ app
                     $scope.clock = 0;
                     dyna($http, $scope, $timeout);
                     stat($http, $scope);
-                    $scope.clock = 2;
                     // click
                     $scope.data.refresh = function(item, event) {
                         if (item == 'dynamic') {

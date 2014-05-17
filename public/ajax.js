@@ -68,7 +68,7 @@ function dyna($http, $scope, $timeout) {
                                                                 data.cpu.cpus[i].times.sys ],
                                                         [
                                                                 'idle',
-                                                                data.cpu.cpus[i].times.idel ],
+                                                                data.cpu.cpus[i].times.idle ],
                                                         [
                                                                 'irq',
                                                                 data.cpu.cpus[i].times.irq ] ],
@@ -108,6 +108,7 @@ function dyna($http, $scope, $timeout) {
     if ($scope.clock > 0) {
         promise = $timeout(loop, $scope.clock * 1000);
     } else if ($scope.clock == 0) {
+        $scope.clock = 2;
         loop();
     }
     return;
