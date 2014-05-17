@@ -1,4 +1,5 @@
-monitode [![Build Status](https://travis-ci.org/hex7c0/monitode.svg?branch=master)](https://travis-ci.org/hex7c0/monitode) [![NPM version](https://badge.fury.io/js/monitode.svg)](http://badge.fury.io/js/monitode)
+![alt tag](https://raw.githubusercontent.com/hex7c0/monitode/master/public/monitode.png) monitode
+[![Build Status](https://travis-ci.org/hex7c0/monitode.svg?branch=master)](https://travis-ci.org/hex7c0/monitode) [![NPM version](https://badge.fury.io/js/monitode.svg)](http://badge.fury.io/js/monitode)
 ==============
 
 resource monitor for [nodejs](http://nodejs.org) using a web console based with [expressjs](http://expressjs.com/)
@@ -10,14 +11,18 @@ inside expressjs project
 var app = require('express')();
 var monitode = require('monitode');
 
-app.use(monitode({password:'psw'}));
+app.use(monitode({
+    password : 'psw'
+}));
 ```
 
 inside nodejs project
 ```js
 var monitode = require('monitode');
 
-monitode({password:'psw'});
+monitode({
+    password : 'psw'
+});
 ```
 
 ### monitode(options)
