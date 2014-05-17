@@ -9,7 +9,7 @@ function dyna($http, $scope, $timeout) {
     function loop() {
 
         // avg
-        store.x.push(new Date().toUTCString());
+        store.x.push(new Date());
         store.one.push(Math.random());
         store.five.push(Math.random());
         store.fifteen.push(Math.random());
@@ -34,6 +34,19 @@ function dyna($http, $scope, $timeout) {
             columns : [ [ 'used', testing / 4 ],
                     [ 'free', testing - (testing / 4) ] ],
         });
+        // cpu
+        if (cpus.length == 0) {
+            $scope.cpus = cpus = 4;
+            proc($scope.cpus);
+        } else {
+            for (var i = 0; i < 4; i++) {
+                cpus[i].load({
+                    columns : [ [ 'user', Math.random() ], [ 'nice', 0 ],
+                            [ 'sys', Math.random() ], [ 'idle', 0 ],
+                            [ 'irq', 0 ] ],
+                });
+            }
+        }
         // info
         $scope.dynamics = [ {
             title : 'Ajax lag',
@@ -50,6 +63,8 @@ function dyna($http, $scope, $timeout) {
     }
     if ($scope.clock > 0) {
         promise = $timeout(loop, $scope.clock * 1000);
+    } else if ($scope.clock == 0) {
+        loop();
     }
     return;
 }
