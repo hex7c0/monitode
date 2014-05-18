@@ -1,10 +1,16 @@
+1.0.6 / 2014-05-18
+==================
+
+  * Loop fix
+  * Angular 1.3.b9
+  
 1.0.5 / 2014-05-17
 ==================
 
-  * network interface
-  * node env
-  * node versions
-  * cpu info
+  * Network interface
+  * Node env
+  * Node versions
+  * Cpu info
 
 1.0.4 / 2014-05-16
 ==================

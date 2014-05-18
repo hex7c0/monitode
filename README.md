@@ -21,7 +21,7 @@ inside nodejs project
 var monitode = require('monitode');
 
 monitode({
-    password : 'psw'
+    password : 'psw',
 });
 ```
 
@@ -31,6 +31,7 @@ monitode({
 
   - `port` - Port for accept connection _(default 30000)_
   - `password` - Password for authentication _(default 'admin', 'password')_
+  - `output` - Show log to console
 
 
 #### Examples
