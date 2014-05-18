@@ -33,11 +33,13 @@ app.enable('case sensitive routing');
 app.enable('strict routing');
 app.disable('x-powered-by');
 app.use(EXPRESS.static(__dirname + '/public/'));
-var auth = require('basic-auth');
+var AUTH = require('basic-auth');
 var password = null;
+var user = null;
+var start = 0;
 
 // init
-function monitor(options) {
+function monitode(options) {
     /**
      * setting options
      * 
@@ -55,7 +57,7 @@ function monitor(options) {
         console.log('starting monitor on port ' + options.port);
     }
 
-    return function logging(req, res, next) {
+    return function monitor(req, res, next) {
         /**
          * future implementation
          * 
@@ -72,7 +74,7 @@ function monitor(options) {
 
 // routing
 app.get('/', function(req, res) {
-    var user = auth(req);
+    user = AUTH(req);
 
     if (user === undefined || user['name'] !== 'admin'
             || user['pass'] !== password) {
@@ -84,69 +86,83 @@ app.get('/', function(req, res) {
     }
 });
 app.post('/sta/', function(req, res) {
-    var start = process.hrtime();
+    start = process.hrtime();
+    user = AUTH(req);
 
-    var statics = {
-        date : Date.now(),
-        os : {
-            hostname : OS.hostname(),
-            platform : OS.platform(),
-            arch : OS.arch(),
-            type : OS.type(),
-            release : OS.release(),
-        },
-        version : process.versions,
-        process : {
-            gid : process.getgid(),
-            uid : process.getuid(),
-            pid : process.pid,
-            env : process.env,
-        },
-        network : OS.networkInterfaces(),
-    };
+    if (user === undefined || user['name'] !== 'admin'
+            || user['pass'] !== password) {
+        res.statusCode = 401;
+        res.end('Unauthorized');
+    } else {
+        var statics = {
+            date : Date.now(),
+            os : {
+                hostname : OS.hostname(),
+                platform : OS.platform(),
+                arch : OS.arch(),
+                type : OS.type(),
+                release : OS.release(),
+            },
+            version : process.versions,
+            process : {
+                gid : process.getgid(),
+                uid : process.getuid(),
+                pid : process.pid,
+                env : process.env,
+            },
+            network : OS.networkInterfaces(),
+        };
 
-    var diff = process.hrtime(start);
-    statics.ns = diff[0] * 1e9 + diff[1];
-    res.json(statics);
+        var diff = process.hrtime(start);
+        statics.ns = diff[0] * 1e9 + diff[1];
+        res.json(statics);
+    }
 });
 app.post('/dyn/', function(req, res) {
-    var start = process.hrtime();
+    start = process.hrtime();
+    user = AUTH(req);
     var load = OS.loadavg();
     var free = OS.freemem();
     var v8 = process.memoryUsage();
 
-    var dynamics = {
-        date : Date.now(),
-        uptimeS : OS.uptime(),
-        uptimeN : process.uptime(),
-        cpu : {
-            one : load[0],
-            five : load[1],
-            fifteen : load[2],
-            cpus : OS.cpus(),
-        },
-        mem : {
-            total : OS.totalmem(),
-            used : OS.totalmem() - free,
-            free : free,
-            v8 : {
-                rss : v8.rss,
-                total : v8.heapTotal,
-                used : v8.heapUsed,
-                free : v8.heapTotal - v8.heapUsed,
+    if (user === undefined || user['name'] !== 'admin'
+            || user['pass'] !== password) {
+        res.statusCode = 401;
+        res.end('Unauthorized');
+    } else {
+        var dynamics = {
+            date : Date.now(),
+            uptimeS : OS.uptime(),
+            uptimeN : process.uptime(),
+            cpu : {
+                one : load[0],
+                five : load[1],
+                fifteen : load[2],
+                cpus : OS.cpus(),
             },
-        },
-    };
+            mem : {
+                total : OS.totalmem(),
+                used : OS.totalmem() - free,
+                free : free,
+                v8 : {
+                    rss : v8.rss,
+                    total : v8.heapTotal,
+                    used : v8.heapUsed,
+                    free : v8.heapTotal - v8.heapUsed,
+                },
+            },
+        };
 
-    var diff = process.hrtime(start);
-    dynamics.ns = diff[0] * 1e9 + diff[1];
-    res.json(dynamics);
+        var diff = process.hrtime(start);
+        dynamics.ns = diff[0] * 1e9 + diff[1];
+        res.json(dynamics);
+    }
 });
 
 /**
  * exports function
  */
-exports = module.exports = monitor;
+exports = module.exports = monitode;
 if (!module.parent) {
     // if standalone
     monitor({
