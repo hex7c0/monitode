@@ -4,7 +4,7 @@
  * 
  * @package monitode
  * @subpackage index
- * @version 1.0.6
+ * @version 1.0.7
  * @author hex7c0 <0x7c0@teboss.tk>
  * @license GPLv3
  * @overview main module
@@ -27,17 +27,14 @@ try {
     console.log(MODULE_NOT_FOUND);
     process.exit(1);
 }
-
 // express settings
 app.enable('case sensitive routing');
 app.enable('strict routing');
 app.disable('x-powered-by');
 app.use(EXPRESS.static(__dirname + '/public/'));
 var AUTH = require('basic-auth');
-var password = null;
-var user = null;
 var start = 0;
-
+var diff = 0;
 // init
 function monitode(options) {
     /**
@@ -50,7 +47,9 @@ function monitode(options) {
     var options = options || {};
     options.port = parseInt(options.port) || 30000;
     options.output = Boolean(options.output);
-    password = options.password || 'password';
+    options.password = options.password || 'password';
+    options.agent = options.agent || null;
+    app.set('options', options);
 
     app.listen(options.port);
     if (options.output) {
@@ -69,94 +68,123 @@ function monitode(options) {
 
         return next();
     }
-
 };
+function middle(req, res, next) {
+    /**
+     * protection middleware
+     * 
+     * @param object req: request
+     * @param object res: response
+     * @param object next: continue routes
+     * @return void
+     */
 
-// routing
-app.get('/', function(req, res) {
-    user = AUTH(req);
+    var options = app.get('options');
+    var user = AUTH(req);
 
     if (user === undefined || user['name'] !== 'admin'
-            || user['pass'] !== password) {
-        res.statusCode = 401;
+            || user['pass'] !== options.password) {
         res.setHeader('WWW-Authenticate', 'Basic realm="Monitode"');
-        res.end('Unauthorized');
+        res.status(401).end('Unauthorized');
+    } else if (options.agent && options.agent === req.headers['user-agent']) {
+        next();
+    } else if (!options.agent) {
+        next();
     } else {
-        res.sendfile(__dirname + '/console/index.html');
+        res.status(403).end('Forbidden');
     }
-});
-app.post('/sta/', function(req, res) {
-    start = process.hrtime();
-    user = AUTH(req);
+    return;
+}
 
-    if (user === undefined || user['name'] !== 'admin'
-            || user['pass'] !== password) {
-        res.statusCode = 401;
-        res.end('Unauthorized');
-    } else {
-        var statics = {
-            date : Date.now(),
-            os : {
-                hostname : OS.hostname(),
-                platform : OS.platform(),
-                arch : OS.arch(),
-                type : OS.type(),
-                release : OS.release(),
-            },
-            version : process.versions,
-            process : {
-                gid : process.getgid(),
-                uid : process.getuid(),
-                pid : process.pid,
-                env : process.env,
-            },
-            network : OS.networkInterfaces(),
-        };
+/**
+ * routing
+ */
+app.get('/', middle, function(req, res) {
+    /**
+     * GET routing. Send html file
+     * 
+     * @param object req: request
+     * @param object res: response
+     * @return void
+     */
 
-        var diff = process.hrtime(start);
-        statics.ns = diff[0] * 1e9 + diff[1];
-        res.json(statics);
-    }
+    res.sendfile(__dirname + '/console/index.html');
+    return;
 });
-app.post('/dyn/', function(req, res) {
+app.post('/sta/', middle, function(req, res) {
+    /**
+     * POST routing. Build static info
+     * 
+     * @param object req: request
+     * @param object res: response
+     * @return void
+     */
+
     start = process.hrtime();
-    user = AUTH(req);
+    var statics = {
+        date : Date.now(),
+        os : {
+            hostname : OS.hostname(),
+            platform : OS.platform(),
+            arch : OS.arch(),
+            type : OS.type(),
+            release : OS.release(),
+        },
+        version : process.versions,
+        process : {
+            gid : process.getgid(),
+            uid : process.getuid(),
+            pid : process.pid,
+            env : process.env,
+        },
+        network : OS.networkInterfaces(),
+    };
+
+    diff = process.hrtime(start);
+    statics.ns = diff[0] * 1e9 + diff[1];
+    res.json(statics);
+    return;
+});
+app.post('/dyn/', middle, function(req, res) {
+    /**
+     * POST routing. Build dynamic info
+     * 
+     * @param object req: request
+     * @param object res: response
+     * @return void
+     */
+
+    start = process.hrtime();
     var load = OS.loadavg();
     var free = OS.freemem();
     var v8 = process.memoryUsage();
-
-    if (user === undefined || user['name'] !== 'admin'
-            || user['pass'] !== password) {
-        res.statusCode = 401;
-        res.end('Unauthorized');
-    } else {
-        var dynamics = {
-            date : Date.now(),
-            uptimeS : OS.uptime(),
-            uptimeN : process.uptime(),
-            cpu : {
-                one : load[0],
-                five : load[1],
-                fifteen : load[2],
-                cpus : OS.cpus(),
+    var dynamics = {
+        date : Date.now(),
+        uptimeS : OS.uptime(),
+        uptimeN : process.uptime(),
+        cpu : {
+            one : load[0],
+            five : load[1],
+            fifteen : load[2],
+            cpus : OS.cpus(),
+        },
+        mem : {
+            total : OS.totalmem(),
+            used : OS.totalmem() - free,
+            free : free,
+            v8 : {
+                rss : v8.rss,
+                total : v8.heapTotal,
+                used : v8.heapUsed,
+                free : v8.heapTotal - v8.heapUsed,
             },
-            mem : {
-                total : OS.totalmem(),
-                used : OS.totalmem() - free,
-                free : free,
-                v8 : {
-                    rss : v8.rss,
-                    total : v8.heapTotal,
-                    used : v8.heapUsed,
-                    free : v8.heapTotal - v8.heapUsed,
-                },
-            },
-        };
+        },
+    };
 
-        var diff = process.hrtime(start);
-        dynamics.ns = diff[0] * 1e9 + diff[1];
-        res.json(dynamics);
-    }
+    diff = process.hrtime(start);
+    dynamics.ns = diff[0] * 1e9 + diff[1];
+    res.json(dynamics);
+    return;
 });
 
 /**
@@ -165,7 +193,7 @@ app.post('/dyn/', function(req, res) {
 exports = module.exports = monitode;
 if (!module.parent) {
     // if standalone
-    monitor({
+    monitode({
         output : true,
     });
 }

@@ -29,8 +29,9 @@ monitode({
 
 #### Options
 
-  - `port` - Port for accept connection _(default 30000)_
+  - `port` - Port for accept connection _(default '30000')_
   - `password` - Password for authentication _(default 'admin', 'password')_
+  - `agent` - User Agent for authentication  _(default 'all accepted')_
   - `output` - Show log to console
 
 

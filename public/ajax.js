@@ -3,113 +3,90 @@ function dyna($http, $scope, $timeout) {
     /**
      * ajax post 'dynamic'
      * 
-     * @return void;
+     * @return void
      */
 
     $timeout.cancel(promise);
-
-    function loop() {
-        /**
-         * ajax POST loop
-         * 
-         * @return void;
-         */
-
-        $http({
-            method : 'POST',
-            url : '/dyn/'
-        })
-                .success(
-                        function(data, status, headers, config) {
-                            // avg
-                            store.x.push(new Date(data.date));
-                            store.one.push(data.cpu.one);
-                            store.five.push(data.cpu.five);
-                            store.fifteen.push(data.cpu.fifteen);
-                            // mem
-                            store.total.push(data.mem.total / 1024);
-                            store.used.push(data.mem.used / 1024);
-                            store.free.push(data.mem.free / 1024);
-                            store.v8rss.push(data.mem.v8.rss / 1024);
-                            store.v8total.push(data.mem.v8.total / 1024);
-                            store.v8used.push(data.mem.v8.used / 1024);
-                            store.v8free.push(data.mem.v8.free / 1024);
-                            // chart
-                            avg.load({
-                                columns : [ store.x, store.one, store.five,
-                                        store.fifteen ],
-                            });
-                            meml.load({
-                                columns : [ store.x, store.total, store.used,
-                                        store.v8rss, store.v8total,
-                                        store.v8used, ],
-                            });
-                            memp.load({
-                                columns : [ [ 'used', data.mem.used ],
-                                        [ 'free', data.mem.free ] ],
-                            });
-                            // cpu
-                            if (cpus.length == 0) {
-                                $scope.cpus = cpus = data.cpu.cpus;
-                                proc($scope.cpus);
-                            } else {
-                                for (var i = 0; i < data.cpu.cpus.length; i++) {
-                                    cpus[i]
-                                            .load({
-                                                columns : [
-                                                        [
-                                                                'user',
-                                                                data.cpu.cpus[i].times.user ],
-                                                        [
-                                                                'nice',
-                                                                data.cpu.cpus[i].times.nice ],
-                                                        [
-                                                                'sys',
-                                                                data.cpu.cpus[i].times.sys ],
-                                                        [
-                                                                'idle',
-                                                                data.cpu.cpus[i].times.idle ],
-                                                        [
-                                                                'irq',
-                                                                data.cpu.cpus[i].times.irq ] ],
-                                            });
-                                }
-                            }
-                            // info
-                            $scope.dynamics = [
-                                    {
-                                        title : 'Ajax lag',
-                                        info : (Date.now() - data.date)
-                                                + ' milliseconds',
-                                    },
-                                    {
-                                        title : 'System lag',
-                                        info : data.ns + ' nanoseconds',
-                                    },
-                                    {
-                                        title : 'System uptime',
-                                        info : Math.floor(data.uptimeS / 60)
-                                                + ' minutes',
-                                    },
-                                    {
-                                        title : 'System uptime Node',
-                                        info : Math.floor(data.uptimeN / 60)
-                                                + ' minutes',
-                                    }, ];
-                            return dyna($http, $scope, $timeout);
-
-                        }).error(function(data, status, headers, config) {
-                    alert('server donesn\'t respond');
-                    return;
-                });
-
-    }
-
     if ($scope.clock > 0) {
         promise = $timeout(loop, $scope.clock * 1000);
     } else if ($scope.clock == 0) {
         $scope.clock = 2;
         loop();
+    }
+    function loop() {
+        /**
+         * ajax POST loop
+         * 
+         * @return boolean (callback)
+         */
+
+        $http({
+            method : 'POST',
+            url : '/dyn/'
+        }).success(
+                function(data, status, headers, config) {
+                    // avg
+                    store.x.push(new Date(data.date));
+                    store.one.push(data.cpu.one);
+                    store.five.push(data.cpu.five);
+                    store.fifteen.push(data.cpu.fifteen);
+                    // mem
+                    store.total.push(data.mem.total / 1024);
+                    store.used.push(data.mem.used / 1024);
+                    store.free.push(data.mem.free / 1024);
+                    store.v8rss.push(data.mem.v8.rss / 1024);
+                    store.v8total.push(data.mem.v8.total / 1024);
+                    store.v8used.push(data.mem.v8.used / 1024);
+                    store.v8free.push(data.mem.v8.free / 1024);
+                    // chart
+                    avg.load({
+                        columns : [ store.x, store.one, store.five,
+                                store.fifteen ],
+                    });
+                    meml.load({
+                        columns : [ store.x, store.total, store.used,
+                                store.v8rss, store.v8total, store.v8used, ],
+                    });
+                    memp.load({
+                        columns : [ [ 'used', data.mem.used ],
+                                [ 'free', data.mem.free ] ],
+                    });
+                    // cpu
+                    if (cpus.length == 0) {
+                        $scope.cpus = cpus = data.cpu.cpus;
+                        proc($scope.cpus);
+                    } else {
+                        for (var i = 0; i < data.cpu.cpus.length; i++) {
+                            var cpu = data.cpu.cpus[i];
+                            cpus[i].load({
+                                columns : [ [ 'user', cpu.times.user ],
+                                        [ 'nice', cpu.times.nice ],
+                                        [ 'sys', cpu.times.sys ],
+                                        [ 'idle', cpu.times.idle ],
+                                        [ 'irq', cpu.times.irq ] ],
+                            });
+                        }
+                    }
+                    // info
+                    $scope.dynamics = [ {
+                        title : 'Ajax lag',
+                        info : (Date.now() - data.date) + ' milliseconds',
+                    }, {
+                        title : 'System lag',
+                        info : data.ns + ' nanoseconds',
+                    }, {
+                        title : 'System uptime',
+                        info : Math.floor(data.uptimeS / 60) + ' minutes',
+                    }, {
+                        title : 'System uptime Node',
+                        info : Math.floor(data.uptimeN / 60) + ' minutes',
+                    }, ];
+                    return dyna($http, $scope, $timeout);
+
+                }).error(function(data, status, headers, config) {
+            alert('server doesn\'t respond');
+            return false;
+        });
     }
     return;
 }
@@ -117,7 +94,7 @@ function stat($http, $scope) {
     /**
      * ajax post 'static'
      * 
-     * @return void;
+     * @return boolean (callback)
      */
 
     $http({
@@ -194,10 +171,8 @@ function stat($http, $scope) {
         }
         temp['child'] = temps;
         $scope.statics.push(temp)
-
+        return true;
     }).error(function(data, status, headers, config) {
-        alert('server donesn\'t respond');
+        return false;
     });
-
-    return;
 }

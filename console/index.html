@@ -1,5 +1,6 @@
 <!doctype html>
 <html lang="en">
+
     <head>
         <meta charset="utf-8">
         <title>Monitode</title>
@@ -18,10 +19,10 @@
         <div id="memory_pie" class="sub"></div>
         <div id="extra_data" class="sub">
             <div>
-                <button ng-click="data.refresh('stop', $event)">Stop refresh</button>
-                <button ng-click="data.refresh('dynamic', $event)">Dynamic refresh</button>
-                <button ng-click="data.refresh('static', $event)">Static refresh</button>
-                <button ng-click="data.refresh('csv', $event)">Build CSV</button>
+                <button ng-click="button('stop', $event)">Stop refresh</button>
+                <button ng-click="button('dynamic', $event)">Dynamic refresh</button>
+                <button ng-click="button('static', $event)">Static refresh</button>
+                <button ng-click="button('csv', $event)">Build CSV</button>
                 <ul style="overflow-x:auto;">
                     <li>
                         <label class="bold">Frequency</label>
@@ -55,7 +56,7 @@
                 <!-- @todo: ng-repeat="cpu in cpus" -->
             </ul>
         </div>
-        <script src="console.min.js"></script>
+        <script src="console.min.js" type="text/javascript"></script>
     </body>
 
 </html>

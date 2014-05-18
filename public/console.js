@@ -1,6 +1,6 @@
 "use strict";
 /*
- * monitode 1.0.6 (c) 2014 hex7c0, https://hex7c0.github.io/monitode/
+ * monitode 1.0.7 (c) 2014 hex7c0, https://hex7c0.github.io/monitode/
  * 
  * License: GPLv3
  */
@@ -23,6 +23,7 @@ var store = {
     v8used : [ 'v8used' ],
     v8free : [ 'v8free' ],
 };
+
 // functions
 function load() {
     /**
@@ -145,6 +146,7 @@ function proc(cpu) {
     /**
      * chart init for cpus
      * 
+     * @param array cpu: info about cpus
      * @return void
      */
 
@@ -164,7 +166,6 @@ function proc(cpu) {
                     idle : '#00a855',
                     sys : '#ff9900',
                 },
-
             },
             donut : {
                 title : 'CPU ' + (i + 1),
@@ -186,18 +187,18 @@ function proc(cpu) {
     }
     return;
 }
+
 // init
 load();
 app
         .controller(
                 'main',
                 function($scope, $http, $timeout) {
-                    $scope.data = {};
                     $scope.clock = 0;
                     dyna($http, $scope, $timeout);
                     stat($http, $scope);
                     // click
-                    $scope.data.refresh = function(item, event) {
+                    $scope.button = function(item, event) {
                         if (item == 'dynamic') {
                             dyna($http, $scope, $timeout);
                         } else if (item == 'static') {
@@ -205,7 +206,6 @@ app
                         } else if (item == 'stop') {
                             $timeout.cancel(promise);
                         } else if (item == 'csv') {
-                            var name = new Date().getDay() + '_monitode.csv';
                             var content = ('data:text/csv;charset=utf-8,');
                             content += 'date,average 1 min,average 5 min,average 15 min,memory used,memory free\n';
                             for (var i = 1; i < store.x.length; i++) {
