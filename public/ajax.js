@@ -1,4 +1,14 @@
+"use strict";
+/*
+ * monitode 1.0.7 (c) 2014 hex7c0, https://hex7c0.github.io/monitode/
+ * 
+ * License: GPLv3
+ */
+
+// variables
 var promise = null;
+
+// functions
 function dyna($http, $scope, $timeout) {
     /**
      * ajax post 'dynamic'
