@@ -21,7 +21,8 @@ try {
     var FS = require('fs');
     var READLINE = require('readline')
     // personal
-    var EXPRESS = require('express');
+    var EXPRESS = require('express')
+    var MONGO = require('mongodb');
     // load
     process.env.NODE_ENV = 'production';
     var app = EXPRESS();
@@ -50,23 +51,36 @@ var event = {};
 // init
 function monitode(options) {
     /**
-     * setting options
+     * option setting
      * 
-     * @param object options: various options. check README.md
+     * @param object options: various options. Check README.md
      * @return function
      */
 
     var options = options || {};
-    options.port = parseInt(options.port) || 30000;
     options.output = Boolean(options.output);
-    options.password = options.password || 'password';
-    options.agent = options.agent || null;
-    options.log = options.log || null;
+    // http
+    options.http = {};
+    options.http.enabled = options.web == false ? false : true;
+    options.http.port = parseInt(options.port) || 30000;
+    options.http.user = options.user || 'admin';
+    options.http.password = options.password || 'password';
+    options.http.agent = options.agent || null;
+    // logger
+    options.logger = {};
+    options.logger.log = options.log || null;
+    // database
+    options.db = {};
+    options.db.mongo = options.mongo || null;
+
     app.set('options', options);
 
-    app.listen(options.port);
-    if (options.output) {
-        console.log('starting monitor on port ' + options.port);
+    console.log(options)
+    if (options.http.enabled) {
+        app.listen(options.http.port);
+        if (options.output) {
+            console.log('starting monitor on port ' + options.http.port);
+        }
     }
 
     return function monitor(req, res, next) {
@@ -95,13 +109,14 @@ function middle(req, res, next) {
     var options = app.get('options');
     var user = AUTH(req);
 
-    if (user === undefined || user['name'] !== 'admin'
-            || user['pass'] !== options.password) {
+    if (user === undefined || user['name'] !== options.http.user
+            || user['pass'] !== options.http.password) {
         res.setHeader('WWW-Authenticate', 'Basic realm="monitode"');
         res.status(401).end('Unauthorized');
-    } else if (options.agent && options.agent === req.headers['user-agent']) {
+    } else if (options.http.agent
+            && options.http.agent === req.headers['user-agent']) {
         next();
-    } else if (!options.agent) {
+    } else if (!options.http.agent) {
         next();
     } else {
         res.status(403).end('Forbidden');
@@ -110,7 +125,7 @@ function middle(req, res, next) {
 }
 
 /**
- * routing
+ * express routing
  */
 app.get('/', middle, function(req, res) {
     /**
@@ -176,10 +191,10 @@ app
 
                     // logger-request reading ASYNC
                     var options = app.get('options');
-                    if (options.log && FS.existsSync(options.log)) {
+                    if (options.logger.log && FS.existsSync(options.logger.log)) {
                         var line = '';
-                        var size = FS.statSync(options.log).size;
-                        var input = FS.createReadStream(options.log, {
+                        var size = FS.statSync(options.logger.log).size;
+                        var input = FS.createReadStream(options.logger.log, {
                             flags : 'r',
                             mode : 444,
                             encoding : 'utf-8',
