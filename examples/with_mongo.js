@@ -14,8 +14,6 @@
  */
 // import
 try {
-    var app = require('express')();
-    var logger = require('logger-request');
     var monitor = require('../index.js'); // use 'monitode' instead
 } catch (MODULE_NOT_FOUND) {
     console.log(MODULE_NOT_FOUND);
@@ -24,14 +22,5 @@ try {
 
 // using middleware
 app.use(monitor({
-
+    mongo : 'uri',
 }));
-
-// express routing
-app.get('/', function(req, res) {
-    res.send('hello world!');
-});
-
-// server starting
-app.listen(3000);
-console.log('starting server on port 3000');
