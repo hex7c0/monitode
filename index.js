@@ -19,9 +19,9 @@ try {
     // global
     var OS = require('os');
     var FS = require('fs');
-    var READLINE = require('readline')
+    var READLINE = require('readline');
     // personal
-    var EXPRESS = require('express')
+    var EXPRESS = require('express');
     var MONGO = require('mongodb');
     // load
     process.env.NODE_ENV = 'production';
@@ -71,11 +71,11 @@ function monitode(options) {
     options.logger.log = options.log || null;
     // database
     options.db = {};
+    options.db.timeout = parseInt(options.timeout) || 5;
     options.db.mongo = options.mongo || null;
 
     app.set('options', options);
 
-    console.log(options)
     if (options.http.enabled) {
         app.listen(options.http.port);
         if (options.output) {
