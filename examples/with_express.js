@@ -14,6 +14,7 @@
  */
 // import
 try {
+    var app = require('express')();
     var monitor = require('../index.js'); // use 'monitode' instead
 } catch (MODULE_NOT_FOUND) {
     console.log(MODULE_NOT_FOUND);
@@ -21,6 +22,13 @@ try {
 }
 
 // using middleware
-monitor({
-    output : true,
-})
+app.use(monitor())
+
+// express routing
+app.get('/', function(req, res) {
+    res.send('hello world!');
+});
+
+// server starting
+app.listen(3000);
+console.log('starting server on port 3000');

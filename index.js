@@ -97,7 +97,7 @@ function middle(req, res, next) {
 
     if (user === undefined || user['name'] !== 'admin'
             || user['pass'] !== options.password) {
-        res.setHeader('WWW-Authenticate', 'Basic realm="Monitode"');
+        res.setHeader('WWW-Authenticate', 'Basic realm="monitode"');
         res.status(401).end('Unauthorized');
     } else if (options.agent && options.agent === req.headers['user-agent']) {
         next();
@@ -144,7 +144,7 @@ app
                     var free = OS.freemem();
                     var v8 = process.memoryUsage();
                     var cpus = OS.cpus()
-                    for ( var i in cpus) {
+                    for ( var i in cpus) { // smaller json
                         cpus[i].model = '';
                     }
                     var dynamics = {
@@ -197,7 +197,6 @@ app
                         if (log.size < size) {
                             log.size = size;
                             event = {};
-
                             stream
                                     .on(
                                             'line',
@@ -240,7 +239,6 @@ app.post('/sta/', middle, function(req, res) {
      * @return void
      */
 
-    ns.start = process.hrtime();
     var statics = {
         date : Date.now(),
         os : {
@@ -260,8 +258,6 @@ app.post('/sta/', middle, function(req, res) {
         network : OS.networkInterfaces(),
     };
 
-    ns.diff = process.hrtime(ns.start);
-    statics.ns = ns.diff[0] * 1e9 + ns.diff[1];
     res.json(statics);
     return;
 });
