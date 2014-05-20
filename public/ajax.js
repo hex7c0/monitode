@@ -1,12 +1,13 @@
 "use strict";
 /*
- * monitode 1.0.7 (c) 2014 hex7c0, https://hex7c0.github.io/monitode/
+ * monitode 1.1.0 (c) 2014 hex7c0, https://hex7c0.github.io/monitode/
  * 
  * License: GPLv3
  */
 
 // variables
 var promise = null;
+var flag = false;
 
 // functions
 function dyna($http, $scope, $timeout) {
@@ -20,9 +21,10 @@ function dyna($http, $scope, $timeout) {
     if ($scope.clock > 0) {
         promise = $timeout(loop, $scope.clock * 1000);
     } else if ($scope.clock == 0) {
-        $scope.clock = 2;
+        $scope.clock = 5;
         loop();
     }
+
     function loop() {
         /**
          * ajax POST loop
@@ -77,7 +79,9 @@ function dyna($http, $scope, $timeout) {
                             });
                         }
                     }
-                    // info
+                    /*
+                     * info dynamics
+                     */
                     $scope.dynamics = [ {
                         title : 'Ajax lag',
                         info : (Date.now() - data.date) + ' milliseconds',
@@ -91,8 +95,57 @@ function dyna($http, $scope, $timeout) {
                         title : 'System uptime Node',
                         info : Math.floor(data.uptimeN / 60) + ' minutes',
                     }, ];
-                    return dyna($http, $scope, $timeout);
+                    /*
+                     * info refresh
+                     */
+                    $scope.refresh = [];
+                    // 0 logger
+                    var temp = {
+                        title : 'Logger',
+                        child : [],
+                    };
+                    var temps = [];
+                    for ( var property in data.log) {
+                        temps.push({
+                            title : property,
+                            info : data.log[property],
+                        })
+                    }
+                    if (data.log.counter) {
+                        temp['child'] = temps;
+                    } else {
+                        temp['info'] = 'disabled';
+                    }
+                    $scope.refresh[0] = temp;
+                    // 1 logger
+                    if (data.event) {
+                        var temp = {
+                            title : 'Logger story event',
+                            child : [],
+                        };
+                        var temps = store.logger;
+                        for ( var property0 in data.event) { // url
+                            flag = true;
+                            var arr0 = data.event[property0];
+                            for ( var property1 in arr0) { // method
+                                var arr1 = arr0[property1];
+                                for ( var property2 in arr1) { // status
+                                    var arr2 = arr1[property2];
+                                    temps.push({
+                                        title : property0 + ':',
+                                        info : property1 + ' ' + property2
+                                                + ' * ' + arr2.counter,
+                                    })
+                                }
+                            }
+                        }
+                        if (flag) {
+                            temp['child'] = temps
+                            $scope.refresh.push(temp);
+                        }
+                    }
 
+                    return dyna($http, $scope, $timeout);
                 }).error(function(data, status, headers, config) {
             alert('server doesn\'t respond');
             return false;
@@ -139,7 +192,7 @@ function stat($http, $scope) {
         }, ];
         // 0 environment
         var temp = {
-            title : 'Process env',
+            title : 'Process environment',
         };
         var temps = [];
         for ( var property in data.process.env) {
@@ -149,7 +202,7 @@ function stat($http, $scope) {
             })
         }
         temp['child'] = temps;
-        $scope.statics.push(temp)
+        $scope.statics.push(temp);
         // 1 interfaces
         var temp = {
             title : 'Network interfaces',
@@ -167,7 +220,7 @@ function stat($http, $scope) {
             }
         }
         temp['child'] = temps;
-        $scope.statics.push(temp)
+        $scope.statics.push(temp);
         // 2 version
         var temp = {
             title : 'Node version',
@@ -180,7 +233,7 @@ function stat($http, $scope) {
             })
         }
         temp['child'] = temps;
-        $scope.statics.push(temp)
+        $scope.statics.push(temp);
         return true;
     }).error(function(data, status, headers, config) {
         return false;

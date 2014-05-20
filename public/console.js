@@ -1,6 +1,6 @@
 "use strict";
 /*
- * monitode 1.0.7 (c) 2014 hex7c0, https://hex7c0.github.io/monitode/
+ * monitode 1.1.0 (c) 2014 hex7c0, https://hex7c0.github.io/monitode/
  * 
  * License: GPLv3
  */
@@ -22,6 +22,7 @@ var store = {
     v8total : [ 'v8total' ],
     v8used : [ 'v8used' ],
     v8free : [ 'v8free' ],
+    logger : [],
 };
 
 // functions

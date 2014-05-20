@@ -6,6 +6,15 @@ resource monitor for [nodejs](http://nodejs.org) using a web console based with 
 
 ## API
 
+inside nodejs project
+```js
+var monitode = require('monitode');
+
+monitode({
+    password : 'psw',
+});
+```
+
 inside expressjs project
 ```js
 var app = require('express')();
@@ -16,14 +25,21 @@ app.use(monitode({
 }));
 ```
 
-inside nodejs project
+inside expressjs project with [logger-request](https://github.com/hex7c0/logger-request)
 ```js
+var app = require('express')();
 var monitode = require('monitode');
+var logger = require('logger-request');
 
-monitode({
-    password : 'psw',
-});
+var file = __dirname + '/monitode.log'
+app.use(logger({
+    filename : file,
+}));
+app.use(monitor({
+    log : file,
+}));
 ```
+
 
 ### monitode(options)
 
@@ -33,6 +49,7 @@ monitode({
   - `password` - Password for authentication _(default 'admin', 'password')_
   - `agent` - User Agent for authentication  _(default 'all accepted')_
   - `output` - Show log to console
+  - `log` - Path to log file
 
 
 #### Examples
@@ -41,4 +58,5 @@ Take a look at my [examples](https://github.com/hex7c0/monitode/tree/master/exam
 
 ## License
 Copyright (c) 2014 hex7c0
+
 Licensed under the GPLv3 license.

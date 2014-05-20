@@ -19,6 +19,9 @@
       "express": "4.2.0",
       "basic-auth": "0.0.1"
   },
+  "devDependencies":{
+      "logger-request": "1.0.5"
+  },
   "engines": {
     "node": ">=0.8.0"
   },
