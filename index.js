@@ -4,7 +4,7 @@
  * 
  * @package monitode
  * @subpackage index
- * @version 1.1.0
+ * @version 1.1.1
  * @author hex7c0 <0x7c0@teboss.tk>
  * @license GPLv3
  * @overview main module
@@ -139,12 +139,12 @@ app
 
                     ns.start = process.hrtime();
 
-                    // node info
+                    // node info SYNC
                     var load = OS.loadavg();
                     var free = OS.freemem();
                     var v8 = process.memoryUsage();
                     var cpus = OS.cpus()
-                    for ( var i in cpus) { // smaller json
+                    for ( var i in cpus) { // slim json
                         cpus[i].model = '';
                     }
                     var dynamics = {
@@ -160,12 +160,10 @@ app
                         mem : {
                             total : OS.totalmem(),
                             used : OS.totalmem() - free,
-                            free : free,
                             v8 : {
                                 rss : v8.rss,
                                 total : v8.heapTotal,
                                 used : v8.heapUsed,
-                                free : v8.heapTotal - v8.heapUsed,
                             },
                         },
                         log : log,
@@ -176,7 +174,7 @@ app
                     dynamics.ns = ns.diff[0] * 1e9 + ns.diff[1];
                     res.json(dynamics);
 
-                    // logger-request reading
+                    // logger-request reading ASYNC
                     var options = app.get('options');
                     if (options.log && FS.existsSync(options.log)) {
                         var line = '';

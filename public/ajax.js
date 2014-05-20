@@ -1,6 +1,6 @@
 "use strict";
 /*
- * monitode 1.1.0 (c) 2014 hex7c0, https://hex7c0.github.io/monitode/
+ * monitode 1.1.1 (c) 2014 hex7c0, https://hex7c0.github.io/monitode/
  * 
  * License: GPLv3
  */
@@ -45,11 +45,10 @@ function dyna($http, $scope, $timeout) {
                     // mem
                     store.total.push(data.mem.total / 1024);
                     store.used.push(data.mem.used / 1024);
-                    store.free.push(data.mem.free / 1024);
+                    var mfree = data.mem.total - data.mem.used;
                     store.v8rss.push(data.mem.v8.rss / 1024);
                     store.v8total.push(data.mem.v8.total / 1024);
                     store.v8used.push(data.mem.v8.used / 1024);
-                    store.v8free.push(data.mem.v8.free / 1024);
                     // chart
                     avg.load({
                         columns : [ store.x, store.one, store.five,
@@ -61,7 +60,7 @@ function dyna($http, $scope, $timeout) {
                     });
                     memp.load({
                         columns : [ [ 'used', data.mem.used ],
-                                [ 'free', data.mem.free ] ],
+                                [ 'free', mfree ] ],
                     });
                     // cpu
                     if (cpus.length == 0) {

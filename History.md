@@ -1,3 +1,9 @@
+1.1.1 / 2014-05-20
+==================
+
+  * Remove free object (derivable)
+  * Update Graph library
+
 1.1.0 / 2014-05-20
 ==================
 

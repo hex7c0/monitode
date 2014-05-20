@@ -1,9 +1,10 @@
 "use strict";
 /*
- * monitode 1.1.0 (c) 2014 hex7c0, https://hex7c0.github.io/monitode/
+ * monitode 1.1.1 (c) 2014 hex7c0, https://hex7c0.github.io/monitode/
  * 
  * License: GPLv3
  */
+
 // variables
 var avg = null;
 var meml = null;
@@ -17,11 +18,9 @@ var store = {
     fifteen : [ 'fifteen' ],
     total : [ 'total' ],
     used : [ 'used' ],
-    free : [ 'free' ],
     v8rss : [ 'v8rss' ],
     v8total : [ 'v8total' ],
     v8used : [ 'v8used' ],
-    v8free : [ 'v8free' ],
     logger : [],
 };
 
@@ -208,13 +207,12 @@ app
                             $timeout.cancel(promise);
                         } else if (item == 'csv') {
                             var content = ('data:text/csv;charset=utf-8,');
-                            content += 'date,average 1 min,average 5 min,average 15 min,memory used,memory free\n';
+                            content += 'date,average 1 min,average 5 min,average 15 min,memory used\n';
                             for (var i = 1; i < store.x.length; i++) {
                                 content += store.x[i] + ',' + store.one[i]
                                         + ',' + store.five[i] + ','
                                         + store.fifteen[i] + ','
-                                        + store.used[i] + ',' + store.free[i]
-                                        + '\n';
+                                        + store.used[i] + '\n';
                             }
                             window.open(encodeURI(content));
                         }
