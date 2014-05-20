@@ -22,7 +22,8 @@ try {
     var READLINE = require('readline');
     // personal
     var EXPRESS = require('express');
-    var MONGO = require('mongodb');
+    var AUTH = require('basic-auth');
+    var CLIENT = require('mongodb').MongoClient;
     // load
     process.env.NODE_ENV = 'production';
     var app = EXPRESS();
@@ -32,11 +33,6 @@ try {
 }
 
 // express settings
-app.enable('case sensitive routing');
-app.enable('strict routing');
-app.disable('x-powered-by');
-app.use(EXPRESS.static(__dirname + '/public/'));
-var AUTH = require('basic-auth');
 var ns = {
     start : 0,
     diff : 0,
@@ -77,10 +73,28 @@ function monitode(options) {
     app.set('options', options);
 
     if (options.http.enabled) {
+        // express runnning
+        app.enable('case sensitive routing');
+        app.enable('strict routing');
+        app.disable('x-powered-by');
+        app.use(EXPRESS.static(__dirname + '/public/'));
         app.listen(options.http.port);
         if (options.output) {
             console.log('starting monitor on port ' + options.http.port);
         }
+    }
+    if (options.db.mongo) {
+        // mongodb runnning
+        CLIENT.connect(options.db.mongo, function(error, database) {
+            if (error) {
+                console.log(error);
+            } else {
+                options.db.mongo = database;
+                if (options.output) {
+                    console.log('starting monitor on database');
+                }
+            }
+        });
     }
 
     return function monitor(req, res, next) {
