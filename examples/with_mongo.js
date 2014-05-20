@@ -1,6 +1,6 @@
 "use strict";
 /**
- * example with express
+ * example with mongodb
  * 
  * @package monitode
  * @subpackage examples
@@ -22,5 +22,6 @@ try {
 
 // using standalone
 monitor({
-    output : true,
-})
+    web : false,
+    mongo : 'uri', // mongodb://<dbuser>:<dbpassword>@<dbdomain>.mongolab.com:<dbport>/<dbdatabase>
+});

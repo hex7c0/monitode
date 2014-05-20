@@ -131,7 +131,7 @@ function dyna($http, $scope, $timeout) {
                                 for ( var property2 in arr1) { // status
                                     var arr2 = arr1[property2];
                                     temps.push({
-                                        title : property0 + ':',
+                                        title : property0,
                                         info : property1 + ' ' + property2
                                                 + ' * ' + arr2.counter,
                                     })

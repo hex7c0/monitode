@@ -4,7 +4,7 @@
  * 
  * @package monitode
  * @subpackage index
- * @version 1.1.1
+ * @version 1.2.0
  * @author hex7c0 <0x7c0@teboss.tk>
  * @license GPLv3
  * @overview main module
@@ -19,9 +19,11 @@ try {
     // global
     var OS = require('os');
     var FS = require('fs');
-    var READLINE = require('readline')
+    var READLINE = require('readline');
     // personal
     var EXPRESS = require('express');
+    var AUTH = require('basic-auth');
+    var CLIENT = require('mongodb').MongoClient;
     // load
     process.env.NODE_ENV = 'production';
     var app = EXPRESS();
@@ -30,19 +32,14 @@ try {
     process.exit(1);
 }
 
-// express settings
-app.enable('case sensitive routing');
-app.enable('strict routing');
-app.disable('x-powered-by');
-app.use(EXPRESS.static(__dirname + '/public/'));
-var AUTH = require('basic-auth');
+// variables
+var timeout = null;
 var ns = {
     start : 0,
     diff : 0,
 }
 var log = {
     counter : 0,
-    single : 0,
     size : 0,
 };
 var event = {};
@@ -50,23 +47,63 @@ var event = {};
 // init
 function monitode(options) {
     /**
-     * setting options
+     * option setting
      * 
-     * @param object options: various options. check README.md
+     * @param object options: various options. Check README.md
      * @return function
      */
 
     var options = options || {};
-    options.port = parseInt(options.port) || 30000;
     options.output = Boolean(options.output);
-    options.password = options.password || 'password';
-    options.agent = options.agent || null;
-    options.log = options.log || null;
+    // http
+    options.http = {};
+    options.http.enabled = options.web == false ? false : true;
+    options.http.port = parseInt(options.port) || 30000;
+    options.http.user = String(options.user || 'admin');
+    options.http.password = String(options.password || 'password');
+    options.http.agent = options.agent || null;
+    // logger
+    options.logger = {};
+    options.logger.log = options.log || null;
+    // database
+    options.db = {};
+    options.db.mongo = options.mongo || null;
+    options.db.timeout = (parseInt(options.timeout) || 5) * 1000;
+    options.db.database = null;
+
     app.set('options', options);
 
-    app.listen(options.port);
-    if (options.output) {
-        console.log('starting monitor on port ' + options.port);
+    if (options.http.enabled) {
+        // express runnning
+        app.enable('case sensitive routing');
+        app.enable('strict routing');
+        app.disable('x-powered-by');
+        app.use(EXPRESS.static(__dirname + '/public/'));
+        app.listen(options.http.port);
+        if (options.output) {
+            console.log('starting monitor on port ' + options.http.port);
+        }
+    }
+    if (options.db.mongo) {
+        // mongodb runnning
+        CLIENT.connect(options.db.mongo, function(error, database) {
+            if (error) {
+                console.log(error);
+            } else {
+                database.createCollection('monitode',
+                        function(error, collection) {
+                            if (error) {
+                                console.log(error);
+                            } else {
+                                options.db.database = collection;
+                                timeout = setTimeout(query, 0);
+                            }
+                        });
+                if (options.output) {
+                    console.log('starting monitor on database');
+                }
+            }
+        });
     }
 
     return function monitor(req, res, next) {
@@ -82,6 +119,57 @@ function monitode(options) {
         return next();
     }
 };
+function query() {
+    /**
+     * query loop
+     * 
+     * @return void
+     */
+
+    ns.start = process.hrtime();
+    clearTimeout(timeout);
+    var options = app.get('options');
+
+    // node info SYNC
+    var load = OS.loadavg();
+    var free = OS.freemem();
+    var v8 = process.memoryUsage();
+    var cpus = OS.cpus()
+    for ( var i in cpus) { // slim json
+        cpus[i].model = '';
+    }
+    var insert = {
+        date : Date.now(),
+        uptimeS : OS.uptime(),
+        uptimeN : process.uptime(),
+        cpu : {
+            one : load[0],
+            five : load[1],
+            fifteen : load[2],
+            cpus : cpus,
+        },
+        mem : {
+            total : OS.totalmem(),
+            used : OS.totalmem() - free,
+            v8 : {
+                rss : v8.rss,
+                total : v8.heapTotal,
+                used : v8.heapUsed,
+            },
+        },
+    };
+
+    ns.diff = process.hrtime(ns.start);
+    insert.ns = ns.diff[0] * 1e9 + ns.diff[1];
+    options.db.database.insert(insert, function(error, result) {
+        if (error) {
+            console.log(error);
+        } else {
+            timeout = setTimeout(query, options.db.timeout);
+        }
+    });
+    return;
+}
 function middle(req, res, next) {
     /**
      * protection middleware
@@ -95,13 +183,14 @@ function middle(req, res, next) {
     var options = app.get('options');
     var user = AUTH(req);
 
-    if (user === undefined || user['name'] !== 'admin'
-            || user['pass'] !== options.password) {
+    if (user === undefined || user['name'] !== options.http.user
+            || user['pass'] !== options.http.password) {
         res.setHeader('WWW-Authenticate', 'Basic realm="monitode"');
         res.status(401).end('Unauthorized');
-    } else if (options.agent && options.agent === req.headers['user-agent']) {
+    } else if (options.http.agent
+            && options.http.agent === req.headers['user-agent']) {
         next();
-    } else if (!options.agent) {
+    } else if (!options.http.agent) {
         next();
     } else {
         res.status(403).end('Forbidden');
@@ -110,7 +199,7 @@ function middle(req, res, next) {
 }
 
 /**
- * routing
+ * express routing
  */
 app.get('/', middle, function(req, res) {
     /**
@@ -176,10 +265,10 @@ app
 
                     // logger-request reading ASYNC
                     var options = app.get('options');
-                    if (options.log && FS.existsSync(options.log)) {
+                    if (options.logger.log && FS.existsSync(options.logger.log)) {
                         var line = '';
-                        var size = FS.statSync(options.log).size;
-                        var input = FS.createReadStream(options.log, {
+                        var size = FS.statSync(options.logger.log).size;
+                        var input = FS.createReadStream(options.logger.log, {
                             flags : 'r',
                             mode : 444,
                             encoding : 'utf-8',
@@ -191,7 +280,6 @@ app
                             output : null,
                             terminal : false,
                         });
-                        log.single = 0;
                         if (log.size < size) {
                             log.size = size;
                             event = {};
@@ -200,7 +288,6 @@ app
                                             'line',
                                             function(line) {
                                                 log.counter++;
-                                                log.single++;
                                                 line = JSON.parse(line);
                                                 // builder
                                                 try {
