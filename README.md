@@ -1,6 +1,6 @@
 [![monitode logo](https://raw.githubusercontent.com/hex7c0/monitode/master/public/monitode.png)](https://hex7c0.github.io/monitode/)
 
-resource monitor for [nodejs](http://nodejs.org) using a web console based with [expressjs](http://expressjs.com/)
+resource monitor for [nodejs](http://nodejs.org) using a full stack of [MEAN](http://en.wikipedia.org/wiki/MEAN)
 
 [![Build Status](https://travis-ci.org/hex7c0/monitode.svg?branch=master)](https://travis-ci.org/hex7c0/monitode) [![NPM version](https://badge.fury.io/js/monitode.svg)](http://badge.fury.io/js/monitode)
 
@@ -45,17 +45,14 @@ app.use(monitor({
 #### Options
 
  - `output` - **Boolean** If show log to console *(default 'false')*
-
  - `web` - **Boolean** If enable web support of console *(default 'true')*
-  - `port` - **Integer** Which port accept connection of web console *(default '30000')*
-  - `user` - **String** User for authentication *(default 'admin')*
-  - `password` - **String** Password for authentication *(default 'password')*
-  - `agent` - **String** User Agent for authentication *(default 'all accepted')*
-
- - `log` - **String** Path to log file, using [logger-request](https://github.com/hex7c0/logger-request)
-
- - `mongo` - **String** URI for MongoDB connection
-  - `timeout` - **Integer** Time (second) for database refresh *(default '5')*
+ - `port` - **Integer** Which port accept connection of web console *(default '30000')*
+ - `user` - **String** User for authentication *(default 'admin')*
+ - `password` - **String** Password for authentication *(default 'password')*
+ - `agent` - **String** User Agent for authentication *(default 'all accepted')*
+ - `log` - **String** Path to log file, using [logger-request](https://github.com/hex7c0/logger-request) *(default 'disabled')*
+ - `mongo` - **String** URI for MongoDB connection *(default 'disabled')*
+ - `timeout` - **Integer** Time (second) for database refresh *(default '5')*
 
 #### Examples
 

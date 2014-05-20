@@ -40,7 +40,6 @@ var ns = {
 }
 var log = {
     counter : 0,
-    single : 0,
     size : 0,
 };
 var event = {};
@@ -60,8 +59,8 @@ function monitode(options) {
     options.http = {};
     options.http.enabled = options.web == false ? false : true;
     options.http.port = parseInt(options.port) || 30000;
-    options.http.user = options.user || 'admin';
-    options.http.password = options.password || 'password';
+    options.http.user = String(options.user || 'admin');
+    options.http.password = String(options.password || 'password');
     options.http.agent = options.agent || null;
     // logger
     options.logger = {};
@@ -281,7 +280,6 @@ app
                             output : null,
                             terminal : false,
                         });
-                        log.single = 0;
                         if (log.size < size) {
                             log.size = size;
                             event = {};
@@ -290,7 +288,6 @@ app
                                             'line',
                                             function(line) {
                                                 log.counter++;
-                                                log.single++;
                                                 line = JSON.parse(line);
                                                 // builder
                                                 try {
