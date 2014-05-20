@@ -49,7 +49,7 @@ app.use(monitor({
   - `password` - Password for authentication _(default 'admin', 'password')_
   - `agent` - User Agent for authentication  _(default 'all accepted')_
   - `output` - Show log to console
-  - `log` - Path to log file
+  - `log` - Path to log file, using [logger-request](https://github.com/hex7c0/logger-request)
 
 
 #### Examples

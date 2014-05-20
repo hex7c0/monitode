@@ -124,40 +124,6 @@ app.get('/', middle, function(req, res) {
     res.sendfile(__dirname + '/console/index.html');
     return;
 });
-app.post('/sta/', middle, function(req, res) {
-    /**
-     * POST routing. Build static info
-     * 
-     * @param object req: request
-     * @param object res: response
-     * @return void
-     */
-
-    ns.start = process.hrtime();
-    var statics = {
-        date : Date.now(),
-        os : {
-            hostname : OS.hostname(),
-            platform : OS.platform(),
-            arch : OS.arch(),
-            type : OS.type(),
-            release : OS.release(),
-        },
-        version : process.versions,
-        process : {
-            gid : process.getgid(),
-            uid : process.getuid(),
-            pid : process.pid,
-            env : process.env,
-        },
-        network : OS.networkInterfaces(),
-    };
-
-    ns.diff = process.hrtime(ns.start);
-    statics.ns = ns.diff[0] * 1e9 + ns.diff[1];
-    res.json(statics);
-    return;
-});
 app
         .post(
                 '/dyn/',
@@ -265,6 +231,40 @@ app
 
                     return;
                 });
+app.post('/sta/', middle, function(req, res) {
+    /**
+     * POST routing. Build static info
+     * 
+     * @param object req: request
+     * @param object res: response
+     * @return void
+     */
+
+    ns.start = process.hrtime();
+    var statics = {
+        date : Date.now(),
+        os : {
+            hostname : OS.hostname(),
+            platform : OS.platform(),
+            arch : OS.arch(),
+            type : OS.type(),
+            release : OS.release(),
+        },
+        version : process.versions,
+        process : {
+            gid : process.getgid(),
+            uid : process.getuid(),
+            pid : process.pid,
+            env : process.env,
+        },
+        network : OS.networkInterfaces(),
+    };
+
+    ns.diff = process.hrtime(ns.start);
+    statics.ns = ns.diff[0] * 1e9 + ns.diff[1];
+    res.json(statics);
+    return;
+});
 
 /**
  * exports function
