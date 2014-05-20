@@ -20,7 +20,8 @@ try {
     process.exit(1);
 }
 
-// using middleware
-app.use(monitor({
-    mongo : 'uri',
-}));
+// using standalone
+monitor({
+    web : false,
+    mongo : 'uri', // mongodb://<dbuser>:<dbpassword>@<dbdomain>.mongolab.com:<dbport>/<dbdatabase>
+});

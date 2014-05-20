@@ -4,7 +4,7 @@
  * 
  * @package monitode
  * @subpackage index
- * @version 1.1.1
+ * @version 1.2.0
  * @author hex7c0 <0x7c0@teboss.tk>
  * @license GPLv3
  * @overview main module
@@ -32,7 +32,8 @@ try {
     process.exit(1);
 }
 
-// express settings
+// variables
+var timeout = null;
 var ns = {
     start : 0,
     diff : 0,
@@ -67,8 +68,9 @@ function monitode(options) {
     options.logger.log = options.log || null;
     // database
     options.db = {};
-    options.db.timeout = parseInt(options.timeout) || 5;
     options.db.mongo = options.mongo || null;
+    options.db.timeout = (parseInt(options.timeout) || 5) * 1000;
+    options.db.database = null;
 
     app.set('options', options);
 
@@ -89,7 +91,15 @@ function monitode(options) {
             if (error) {
                 console.log(error);
             } else {
-                options.db.mongo = database;
+                database.createCollection('monitode',
+                        function(error, collection) {
+                            if (error) {
+                                console.log(error);
+                            } else {
+                                options.db.database = collection;
+                                timeout = setTimeout(query, 0);
+                            }
+                        });
                 if (options.output) {
                     console.log('starting monitor on database');
                 }
@@ -110,6 +120,57 @@ function monitode(options) {
         return next();
     }
 };
+function query() {
+    /**
+     * query loop
+     * 
+     * @return void
+     */
+
+    ns.start = process.hrtime();
+    clearTimeout(timeout);
+    var options = app.get('options');
+
+    // node info SYNC
+    var load = OS.loadavg();
+    var free = OS.freemem();
+    var v8 = process.memoryUsage();
+    var cpus = OS.cpus()
+    for ( var i in cpus) { // slim json
+        cpus[i].model = '';
+    }
+    var insert = {
+        date : Date.now(),
+        uptimeS : OS.uptime(),
+        uptimeN : process.uptime(),
+        cpu : {
+            one : load[0],
+            five : load[1],
+            fifteen : load[2],
+            cpus : cpus,
+        },
+        mem : {
+            total : OS.totalmem(),
+            used : OS.totalmem() - free,
+            v8 : {
+                rss : v8.rss,
+                total : v8.heapTotal,
+                used : v8.heapUsed,
+            },
+        },
+    };
+
+    ns.diff = process.hrtime(ns.start);
+    insert.ns = ns.diff[0] * 1e9 + ns.diff[1];
+    options.db.database.insert(insert, function(error, result) {
+        if (error) {
+            console.log(error);
+        } else {
+            timeout = setTimeout(query, options.db.timeout);
+        }
+    });
+    return;
+}
 function middle(req, res, next) {
     /**
      * protection middleware

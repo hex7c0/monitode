@@ -20,7 +20,7 @@ try {
     process.exit(1);
 }
 
-// using middleware
+// using standalone
 monitor({
     output : true,
 })
