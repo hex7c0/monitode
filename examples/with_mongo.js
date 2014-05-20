@@ -1,6 +1,6 @@
 "use strict";
 /**
- * example with express and logger-request
+ * example with mongodb
  * 
  * @package monitode
  * @subpackage examples
