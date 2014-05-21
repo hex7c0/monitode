@@ -137,19 +137,16 @@ function query() {
     var load = OS.loadavg();
     var free = OS.freemem();
     var v8 = process.memoryUsage();
-    var cpus = OS.cpus()
-    for ( var i in cpus) { // slim json
-        cpus[i].model = '';
-    }
     var insert = {
         date : Date.now(),
-        uptimeS : OS.uptime(),
-        uptimeN : process.uptime(),
+        uptime : {
+            os : OS.uptime(),
+            node : process.uptime(),
+        },
         cpu : {
             one : load[0],
             five : load[1],
             fifteen : load[2],
-            cpus : cpus,
         },
         mem : {
             total : OS.totalmem(),
@@ -160,7 +157,6 @@ function query() {
                 used : v8.heapUsed,
             },
         },
-        log : log,
         event : event,
     };
 
