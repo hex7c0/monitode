@@ -1,7 +1,12 @@
+1.2.2 / 2014-05-21
+==================
+
+  * Logger best integration inside web console and database
+
 1.2.0 / 2014-05-21
 ==================
 
-  * Save data to MongoDB
+  * Save data to MongoDB (option)
 
 1.1.1 / 2014-05-20
 ==================
@@ -12,7 +17,7 @@
 1.1.0 / 2014-05-20
 ==================
 
-  * Logger-request integration
+  * Logger-request integration (option)
 
 1.0.7 / 2014-05-18
 ==================

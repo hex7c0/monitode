@@ -119,6 +119,10 @@ function monitode(options) {
         return next();
     }
 };
+
+/**
+ * functions
+ */
 function query() {
     /**
      * query loop
@@ -130,23 +134,19 @@ function query() {
     clearTimeout(timeout);
     var options = app.get('options');
 
-    // node info SYNC
     var load = OS.loadavg();
     var free = OS.freemem();
     var v8 = process.memoryUsage();
-    var cpus = OS.cpus()
-    for ( var i in cpus) { // slim json
-        cpus[i].model = '';
-    }
     var insert = {
         date : Date.now(),
-        uptimeS : OS.uptime(),
-        uptimeN : process.uptime(),
+        uptime : {
+            os : OS.uptime(),
+            node : process.uptime(),
+        },
         cpu : {
             one : load[0],
             five : load[1],
             fifteen : load[2],
-            cpus : cpus,
         },
         mem : {
             total : OS.totalmem(),
@@ -157,6 +157,7 @@ function query() {
                 used : v8.heapUsed,
             },
         },
+        event : event,
     };
 
     ns.diff = process.hrtime(ns.start);
@@ -168,6 +169,65 @@ function query() {
             timeout = setTimeout(query, options.db.timeout);
         }
     });
+
+    if (options.logger.log) {
+        FS.exists(options.logger.log, function() {
+            logger();
+        })
+    }
+    return;
+}
+function logger() {
+    /**
+     * async read of log file
+     * 
+     * @return void
+     */
+
+    var options = app.get('options');
+    var line = '';
+    var size = FS.statSync(options.logger.log).size;
+    var input = FS.createReadStream(options.logger.log, {
+        flags : 'r',
+        mode : 444,
+        encoding : 'utf-8',
+        start : log.size,
+        fd : null,
+    });
+    var stream = READLINE.createInterface({
+        input : input,
+        output : null,
+        terminal : false,
+    });
+
+    if (log.size < size) {
+        log.size = size;
+        event = {};
+        stream.on('line', function(line) {
+            log.counter++;
+            line = JSON.parse(line);
+            // builder
+            try {
+                event[line.url][line.method][line.status].counter++;
+            } catch (TypeError) {
+                if (event[line.url] == undefined) {
+                    event[line.url] = {};
+                }
+                if (event[line.url][line.method] == undefined) {
+                    event[line.url][line.method] = {};
+                }
+                if (event[line.url][line.method][line.status] == undefined) {
+                    event[line.url][line.method][line.status] = {
+                        counter : 1,
+                    }
+                }
+            }
+
+        });
+    } else {
+        // clear
+        event = {};
+    }
     return;
 }
 function middle(req, res, next) {
@@ -213,108 +273,59 @@ app.get('/', middle, function(req, res) {
     res.sendfile(__dirname + '/console/index.html');
     return;
 });
-app
-        .post(
-                '/dyn/',
-                middle,
-                function(req, res) {
-                    /**
-                     * POST routing. Build dynamic info
-                     * 
-                     * @param object req: request
-                     * @param object res: response
-                     * @return void
-                     */
+app.post('/dyn/', middle, function(req, res) {
+    /**
+     * POST routing. Build dynamic info
+     * 
+     * @param object req: request
+     * @param object res: response
+     * @return void
+     */
 
-                    ns.start = process.hrtime();
+    ns.start = process.hrtime();
+    var options = app.get('options');
 
-                    // node info SYNC
-                    var load = OS.loadavg();
-                    var free = OS.freemem();
-                    var v8 = process.memoryUsage();
-                    var cpus = OS.cpus()
-                    for ( var i in cpus) { // slim json
-                        cpus[i].model = '';
-                    }
-                    var dynamics = {
-                        date : Date.now(),
-                        uptimeS : OS.uptime(),
-                        uptimeN : process.uptime(),
-                        cpu : {
-                            one : load[0],
-                            five : load[1],
-                            fifteen : load[2],
-                            cpus : cpus,
-                        },
-                        mem : {
-                            total : OS.totalmem(),
-                            used : OS.totalmem() - free,
-                            v8 : {
-                                rss : v8.rss,
-                                total : v8.heapTotal,
-                                used : v8.heapUsed,
-                            },
-                        },
-                        log : log,
-                        event : event,
-                    };
+    var load = OS.loadavg();
+    var free = OS.freemem();
+    var v8 = process.memoryUsage();
+    var cpus = OS.cpus()
+    for ( var i in cpus) { // slim json
+        cpus[i].model = '';
+    }
+    var dynamics = {
+        date : Date.now(),
+        uptimeS : OS.uptime(),
+        uptimeN : process.uptime(),
+        cpu : {
+            one : load[0],
+            five : load[1],
+            fifteen : load[2],
+            cpus : cpus,
+        },
+        mem : {
+            total : OS.totalmem(),
+            used : OS.totalmem() - free,
+            v8 : {
+                rss : v8.rss,
+                total : v8.heapTotal,
+                used : v8.heapUsed,
+            },
+        },
+        log : log,
+        event : event,
+    };
 
-                    ns.diff = process.hrtime(ns.start);
-                    dynamics.ns = ns.diff[0] * 1e9 + ns.diff[1];
-                    res.json(dynamics);
+    ns.diff = process.hrtime(ns.start);
+    dynamics.ns = ns.diff[0] * 1e9 + ns.diff[1];
+    res.json(dynamics);
 
-                    // logger-request reading ASYNC
-                    var options = app.get('options');
-                    if (options.logger.log && FS.existsSync(options.logger.log)) {
-                        var line = '';
-                        var size = FS.statSync(options.logger.log).size;
-                        var input = FS.createReadStream(options.logger.log, {
-                            flags : 'r',
-                            mode : 444,
-                            encoding : 'utf-8',
-                            start : log.size,
-                            fd : null,
-                        });
-                        var stream = READLINE.createInterface({
-                            input : input,
-                            output : null,
-                            terminal : false,
-                        });
-                        if (log.size < size) {
-                            log.size = size;
-                            event = {};
-                            stream
-                                    .on(
-                                            'line',
-                                            function(line) {
-                                                log.counter++;
-                                                line = JSON.parse(line);
-                                                // builder
-                                                try {
-                                                    event[line.url][line.method][line.status].counter++;
-                                                } catch (TypeError) {
-                                                    if (event[line.url] == undefined) {
-                                                        event[line.url] = {};
-                                                    }
-                                                    if (event[line.url][line.method] == undefined) {
-                                                        event[line.url][line.method] = {};
-                                                    }
-                                                    if (event[line.url][line.method][line.status] == undefined) {
-                                                        event[line.url][line.method][line.status] = {
-                                                            counter : 1,
-                                                        }
-                                                    }
-                                                }
-
-                                            });
-                        } else {
-                            // clear
-                            event = {};
-                        }
-                    }
-
-                    return;
-                });
+    if (options.logger.log) {
+        FS.exists(options.logger.log, function() {
+            logger();
+        })
+    }
+    return;
+});
 app.post('/sta/', middle, function(req, res) {
     /**
      * POST routing. Build static info

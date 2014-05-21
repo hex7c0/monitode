@@ -1,6 +1,6 @@
 {
   "name": "monitode",
-  "version": "1.2.1",
+  "version": "1.2.2",
   "description": "resource monitor for nodejs",
   "main": "index.js",
   "repository": {
@@ -16,12 +16,12 @@
     "url": "http://hex7c0.tk/"
   },
   "dependencies": {
-      "express": "4.2.0",
+      "express": "4.3.0",
       "basic-auth": "0.0.1",
-      "mongodb":"1.4.4"
+      "mongodb":"1.4.5"
   },
   "devDependencies":{
-      "logger-request": "1.0.5"
+      "logger-request": "1.0.6"
   },
   "engines": {
     "node": ">=0.8.0"
