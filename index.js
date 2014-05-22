@@ -4,18 +4,19 @@
  * 
  * @package monitode
  * @subpackage index
- * @version 1.3.0
+ * @version 1.3.1
  * @author hex7c0 <0x7c0@teboss.tk>
  * @license GPLv3
- * @overview main
  * @copyright hex7c0 2014
  */
 
 /**
  * initialize module
+ * 
+ * @global
  */
 // import
-try {
+try{
     // global
     var OS = require('os'); // !important
     var FS = require('fs');
@@ -28,24 +29,24 @@ try {
     // load
     process.env.NODE_ENV = 'production';
     var app = EXPRESS();
-} catch (MODULE_NOT_FOUND) {
+} catch (MODULE_NOT_FOUND){
     console.log(MODULE_NOT_FOUND);
     process.exit(1);
 }
 
 // variables
 var timeout = {
-    file : null,
-    query : null,
+    file: null,
+    query: null,
 };
 var log = {
-    counter : 0,
-    size : 0,
+    counter: 0,
+    size: 0,
 };
 var event = {};
 
 // init
-function monitode(options) {
+function monitode(options){
     /**
      * option setting
      * 
@@ -74,66 +75,67 @@ function monitode(options) {
 
     GLOBAL._options = options;
 
-    if (options.http.enabled) {
+    if (options.http.enabled){
         // express runnning
         app.enable('case sensitive routing');
         app.enable('strict routing');
         app.disable('x-powered-by');
         app.use(EXPRESS.static(__dirname + '/public/'));
-        if (options.output) {
+        if (options.output){
             console.log('starting monitor on port ' + options.http.port);
         }
         app.listen(options.http.port);
-    } else {
+    } else{
         // remove obsolete
-        EXPRESS = AUTH = app = middle = null;
+        EXPRESS = AUTH = app = auth = null;
     }
-    if (options.logger.file) {
+    if (options.logger.file){
         // logger-request
         options.logger.file = LOGGER({
-            level : 'debug',
-            filename : options.logger.file,
-            maxsize : null,
-            json : false,
-            standalone : true,
+            logger: 'monitode',
+            level: 'debug',
+            filename: options.logger.file,
+            maxsize: null,
+            json: false,
+            standalone: true,
         });
-        if (options.output) {
+        if (options.output){
             console.log('starting monitor on file ' + options.logger.file);
         }
-        timeout.file = setTimeout(file, 0);
-    } else {
+        timeout.file = setTimeout(file,0);
+    } else{
         // remove obsolete
         LOGGER = file = null;
     }
-    if (options.db.mongo) {
+    if (options.db.mongo){
         // mongodb runnning
-        CLIENT.connect(options.db.mongo, function(error, database) {
-            if (error) {
+        CLIENT.connect(options.db.mongo,function(error,database){
+            if (error){
                 console.log(error);
-            } else {
-                database.createCollection('monitode', function(error, collection) {
-                    if (error) {
+            } else{
+                database.createCollection('monitode',function(error,collection){
+                    if (error){
                         console.log(error);
-                    } else {
+                    } else{
                         options.db.database = collection;
-                        if (options.output) {
+                        if (options.output){
                             console.log('starting monitor on database');
                         }
-                        timeout.query = setTimeout(query, 0);
+                        timeout.query = setTimeout(query,0);
                     }
                 });
             }
         });
-    } else {
+    } else{
         // remove obsolete
         CLIENT = query = null;
     }
-    if (!options.logger.log) {
+    if (!options.logger.log){
         // remove obsolete
         FS = READLINE = logger = log = event = null;
     }
 
-    return function monitor(req, res, next) {
+    return function monitor(req,res,next){
         /**
          * future implementation
          * 
@@ -144,13 +146,13 @@ function monitode(options) {
          */
 
         return next();
-    }
-};
+    };
+}
 
 /**
  * functions
  */
-function file() {
+function file(){
     /**
      * file loop
      * 
@@ -164,27 +166,27 @@ function file() {
     var free = OS.freemem();
     var v8 = process.memoryUsage();
     var write = {
-        cpu : {
-            one : load[0],
-            five : load[1],
-            fifteen : load[2],
+        cpu: {
+            one: load[0],
+            five: load[1],
+            fifteen: load[2],
         },
-        mem : {
-            total : OS.totalmem(),
-            used : OS.totalmem() - free,
-            v8 : {
-                v8rss : v8.rss,
-                v8total : v8.heapTotal,
-                v8used : v8.heapUsed,
+        mem: {
+            total: OS.totalmem(),
+            used: OS.totalmem() - free,
+            v8: {
+                v8rss: v8.rss,
+                v8total: v8.heapTotal,
+                v8used: v8.heapUsed,
             },
         },
     };
-    options.logger.file('monitode', write);
+    options.logger.file('monitode',write);
 
-    timeout.file = setTimeout(file, options.timeout);
+    timeout.file = setTimeout(file,options.timeout);
     return;
 }
-function query() {
+function query(){
     /**
      * query loop
      * 
@@ -199,46 +201,46 @@ function query() {
     var free = OS.freemem();
     var v8 = process.memoryUsage();
     var insert = {
-        date : Date.now(),
-        uptime : {
-            os : OS.uptime(),
-            node : process.uptime(),
+        date: Date.now(),
+        uptime: {
+            os: OS.uptime(),
+            node: process.uptime(),
         },
-        cpu : {
-            one : load[0],
-            five : load[1],
-            fifteen : load[2],
+        cpu: {
+            one: load[0],
+            five: load[1],
+            fifteen: load[2],
         },
-        mem : {
-            total : OS.totalmem(),
-            used : OS.totalmem() - free,
-            v8 : {
-                rss : v8.rss,
-                total : v8.heapTotal,
-                used : v8.heapUsed,
+        mem: {
+            total: OS.totalmem(),
+            used: OS.totalmem() - free,
+            v8: {
+                rss: v8.rss,
+                total: v8.heapTotal,
+                used: v8.heapUsed,
             },
         },
-        event : event,
+        event: event,
     };
 
     var diff = process.hrtime(start);
     insert.ns = diff[0] * 1e9 + diff[1];
-    options.db.database.insert(insert, function(error, result) {
-        if (error) {
+    options.db.database.insert(insert,function(error,result){
+        if (error){
             console.log(error);
-        } else {
-            timeout.query = setTimeout(query, options.timeout);
+        } else{
+            timeout.query = setTimeout(query,options.timeout);
         }
     });
 
-    if (options.logger.log) {
-        FS.exists(options.logger.log, function() {
+    if (options.logger.log){
+        FS.exists(options.logger.log,function(){
             logger();
-        })
+        });
     }
     return;
 }
-function logger() {
+function logger(){
     /**
      * async read of log file
      * 
@@ -246,52 +248,58 @@ function logger() {
      */
 
     var options = GLOBAL._options.logger;
-    var line = '';
     var size = FS.statSync(options.log).size;
-    var input = FS.createReadStream(options.log, {
-        flags : 'r',
-        mode : 444,
-        encoding : 'utf-8',
-        start : log.size,
-        fd : null,
+    var input = FS.createReadStream(options.log,{
+        flags: 'r',
+        mode: 444,
+        encoding: 'utf-8',
+        start: log.size,
+        fd: null,
     });
     var stream = READLINE.createInterface({
-        input : input,
-        output : null,
-        terminal : false,
+        input: input,
+        output: null,
+        terminal: false,
     });
 
-    if (log.size < size) {
+    if (log.size < size){
         log.size = size;
         event = {};
-        stream.on('line', function(line) {
+        stream.on('line',function(lines){
+            /**
+             * read one line for once
+             * 
+             * @param string line: line from log file
+             */
+
             log.counter++;
-            line = JSON.parse(line);
+            var line = JSON.parse(lines);
             // builder
-            try {
+            try{
                 event[line.url][line.method][line.status].counter++;
-            } catch (TypeError) {
-                if (event[line.url] == undefined) {
+            } catch (TypeError){
+                if (event[line.url] == undefined){
                     event[line.url] = {};
                 }
-                if (event[line.url][line.method] == undefined) {
+                if (event[line.url][line.method] == undefined){
                     event[line.url][line.method] = {};
                 }
-                if (event[line.url][line.method][line.status] == undefined) {
+                if (event[line.url][line.method][line.status] == undefined){
                     event[line.url][line.method][line.status] = {
-                        counter : 1,
-                    }
+                        counter: 1,
+                    };
                 }
             }
 
+            return;
         });
-    } else {
+    } else{
         // clear
         event = {};
     }
     return;
 }
-function middle(req, res, next) {
+function auth(req,res,next){
     /**
      * protection middleware
      * 
@@ -304,14 +312,14 @@ function middle(req, res, next) {
     var options = GLOBAL._options.http;
     var user = AUTH(req);
 
-    if (user === undefined || user['name'] !== options.user || user['pass'] !== options.password) {
-        res.setHeader('WWW-Authenticate', 'Basic realm="monitode"');
+    if (user === undefined || user['name'] !== options.user || user['pass'] !== options.password){
+        res.setHeader('WWW-Authenticate','Basic realm="monitode"');
         res.status(401).end('Unauthorized');
-    } else if (options.agent && options.agent === req.headers['user-agent']) {
+    } else if (options.agent && options.agent === req.headers['user-agent']){
         next();
-    } else if (!options.agent) {
+    } else if (!options.agent){
         next();
-    } else {
+    } else{
         res.status(403).end('Forbidden');
     }
     return;
@@ -320,7 +328,7 @@ function middle(req, res, next) {
 /**
  * express routing
  */
-app.get('/', middle, function(req, res) {
+app.get('/',auth,function(req,res){
     /**
      * GET routing. Send html file
      * 
@@ -332,7 +340,7 @@ app.get('/', middle, function(req, res) {
     res.sendfile(__dirname + '/console/index.html');
     return;
 });
-app.post('/dyn/', middle, function(req, res) {
+app.post('/dyn/',auth,function(req,res){
     /**
      * POST routing. Build dynamic info
      * 
@@ -347,45 +355,45 @@ app.post('/dyn/', middle, function(req, res) {
     var load = OS.loadavg();
     var free = OS.freemem();
     var v8 = process.memoryUsage();
-    var cpus = OS.cpus()
-    for ( var i in cpus) { // slim json
+    var cpus = OS.cpus();
+    for ( var i in cpus){ // slim json
         cpus[i].model = '';
     }
     var dynamics = {
-        date : Date.now(),
-        uptimeS : OS.uptime(),
-        uptimeN : process.uptime(),
-        cpu : {
-            one : load[0],
-            five : load[1],
-            fifteen : load[2],
-            cpus : cpus,
+        date: Date.now(),
+        uptimeS: OS.uptime(),
+        uptimeN: process.uptime(),
+        cpu: {
+            one: load[0],
+            five: load[1],
+            fifteen: load[2],
+            cpus: cpus,
         },
-        mem : {
-            total : OS.totalmem(),
-            used : OS.totalmem() - free,
-            v8 : {
-                rss : v8.rss,
-                total : v8.heapTotal,
-                used : v8.heapUsed,
+        mem: {
+            total: OS.totalmem(),
+            used: OS.totalmem() - free,
+            v8: {
+                rss: v8.rss,
+                total: v8.heapTotal,
+                used: v8.heapUsed,
             },
         },
-        log : log,
-        event : event,
+        log: log,
+        event: event,
     };
 
     var diff = process.hrtime(start);
     dynamics.ns = diff[0] * 1e9 + diff[1];
     res.json(dynamics);
 
-    if (options.log) {
-        FS.exists(options.log, function() {
+    if (options.log){
+        FS.exists(options.log,function(){
             logger();
-        })
+        });
     }
     return;
 });
-app.post('/sta/', middle, function(req, res) {
+app.post('/sta/',auth,function(req,res){
     /**
      * POST routing. Build static info
      * 
@@ -395,21 +403,21 @@ app.post('/sta/', middle, function(req, res) {
      */
 
     var statics = {
-        os : {
-            hostname : OS.hostname(),
-            platform : OS.platform(),
-            arch : OS.arch(),
-            type : OS.type(),
-            release : OS.release(),
+        os: {
+            hostname: OS.hostname(),
+            platform: OS.platform(),
+            arch: OS.arch(),
+            type: OS.type(),
+            release: OS.release(),
         },
-        version : process.versions,
-        process : {
-            gid : process.getgid(),
-            uid : process.getuid(),
-            pid : process.pid,
-            env : process.env,
+        version: process.versions,
+        process: {
+            gid: process.getgid(),
+            uid: process.getuid(),
+            pid: process.pid,
+            env: process.env,
         },
-        network : OS.networkInterfaces(),
+        network: OS.networkInterfaces(),
     };
 
     res.json(statics);
@@ -419,10 +427,10 @@ app.post('/sta/', middle, function(req, res) {
 /**
  * exports function
  */
-exports = module.exports = monitode;
-if (!module.parent) {
+module.exports = monitode;
+if (!module.parent){
     // if standalone testing
     monitode({
-        output : true,
+        output: true,
     });
 }

@@ -1,6 +1,11 @@
 1.3.0 / 2014-05-22
 ==================
 
+  * Update `[logger-request](https://github.com/hex7c0/logger-request)`
+
+1.3.0 / 2014-05-22
+==================
+
   * Save data to file (option)
   * Best use of memory (nodejs)
   * Clear memory button (web console)
@@ -19,7 +24,7 @@
 ==================
 
   * Remove free object (derivable)
-  * Update Graph library
+  * Update Graph library (`d3`, `c3`)
 
 1.1.0 / 2014-05-20
 ==================

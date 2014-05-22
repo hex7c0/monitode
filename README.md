@@ -50,10 +50,10 @@ app.use(monitor({
  - `user` - **String** User for web authentication *(default 'admin')*
  - `password` - **String** Password for web authentication *(default 'password')*
  - `agent` - **String** Browser User Agent for web authentication *(default 'all accepted')*
- - `log` - **String** Path to log file, using [logger-request](https://github.com/hex7c0/logger-request) *(default 'disabled')* Parsing information stored inside log, and show it to web console or file/db
+ - `log` - **String** Path to log file, using [logger-request](https://github.com/hex7c0/logger-request) *(default 'disabled')* Parsing information stored inside log, and show it to web console or file/database
  - `file` - **String** Path to file *(default 'disabled')* Save stats at regular intervals to file
  - `mongo` - **String** URI for MongoDB connection *(default 'disabled')* Save stats at regular intervals to database
- - `timeout` - **Integer** Time (second) for database refresh *(default '5')*
+ - `timeout` - **Integer** Time (second) for file/database refresh *(default '5')*
 
 #### Examples
 
