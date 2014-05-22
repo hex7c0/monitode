@@ -1,6 +1,6 @@
 "use strict";
 /**
- * example with mongodb
+ * example with file
  * 
  * @package monitode
  * @subpackage examples
@@ -21,8 +21,8 @@ try {
 }
 
 // using standalone
+var file = __dirname + '/example.txt';
 monitor({
     output : true,
-    web : false,
-    mongo : 'uri', // mongodb://<dbuser>:<dbpassword>@<dbdomain>.mongolab.com:<dbport>/<dbdatabase>
+    file : file,
 });

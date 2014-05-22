@@ -23,7 +23,7 @@ try {
 }
 
 // using middleware
-var file = __dirname + '/monitode.log'
+var file = __dirname + '/example.log'
 app.use(logger({
     filename : file,
     timestamp : Date.now,
