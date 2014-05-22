@@ -44,15 +44,15 @@ app.use(monitor({
 
 #### Options
 
- - `output` - **Boolean** If enabled, show log to console *(default 'false')*
+ - `output` - **Boolean** If enabled, show output to shell console *(default 'false')*
  - `web` - **Boolean** If disabled, don't run web support *(default 'true')*
  - `port` - **Integer** Which port accept connection of web console *(default '30000')*
- - `user` - **String** User for authentication *(default 'admin')*
+ - `user` - **String** User for web authentication *(default 'admin')*
  - `password` - **String** Password for web authentication *(default 'password')*
- - `agent` - **String** User Agent for web authentication *(default 'all accepted')*
- - `log` - **String** Path to log file, using [logger-request](https://github.com/hex7c0/logger-request) *(default 'disabled')*
- - `file` - **String** Path to file *(default 'disabled')*
- - `mongo` - **String** URI for MongoDB connection *(default 'disabled')*
+ - `agent` - **String** Browser User Agent for web authentication *(default 'all accepted')*
+ - `log` - **String** Path to log file, using [logger-request](https://github.com/hex7c0/logger-request) *(default 'disabled')* Parsing information stored inside log, and show it to web console or files/db
+ - `file` - **String** Path to file *(default 'disabled')* Save stats at regular intervals to file
+ - `mongo` - **String** URI for MongoDB connection *(default 'disabled')* Save stats at regular intervals to database
  - `timeout` - **Integer** Time (second) for database refresh *(default '5')*
 
 #### Examples

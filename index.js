@@ -63,7 +63,7 @@ function monitode(options) {
     options.http.user = String(options.user || 'admin');
     options.http.password = String(options.password || 'password');
     options.http.agent = options.agent || null;
-    // file
+    // logger
     options.logger = {};
     options.logger.log = options.log || null;
     options.logger.file = options.file || null;

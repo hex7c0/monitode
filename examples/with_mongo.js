@@ -22,7 +22,6 @@ try {
 
 // using standalone
 monitor({
-    output : true,
     web : false,
     mongo : 'uri', // mongodb://<dbuser>:<dbpassword>@<dbdomain>.mongolab.com:<dbport>/<dbdatabase>
 });
