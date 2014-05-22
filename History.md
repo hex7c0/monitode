@@ -1,7 +1,7 @@
-1.3.0 / 2014-05-22
+1.3.1 / 2014-05-23
 ==================
 
-  * Update `[logger-request](https://github.com/hex7c0/logger-request)`
+  * Update [`logger-request`](https://github.com/hex7c0/logger-request)
 
 1.3.0 / 2014-05-22
 ==================
@@ -41,7 +41,7 @@
 ==================
 
   * Loop fix
-  * Angular 1.3.b9
+  * Update `Angular 1.3.b9`
 
 1.0.5 / 2014-05-17
 ==================
