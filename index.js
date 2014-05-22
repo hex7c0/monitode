@@ -4,10 +4,10 @@
  * 
  * @package monitode
  * @subpackage index
- * @version 1.2.0
+ * @version 1.3.0
  * @author hex7c0 <0x7c0@teboss.tk>
  * @license GPLv3
- * @overview main module
+ * @overview main
  * @copyright hex7c0 2014
  */
 
@@ -17,12 +17,13 @@
 // import
 try {
     // global
-    var OS = require('os');
+    var OS = require('os'); // !important
     var FS = require('fs');
     var READLINE = require('readline');
     // personal
     var EXPRESS = require('express');
     var AUTH = require('basic-auth');
+    var LOGGER = require('logger-request');
     var CLIENT = require('mongodb').MongoClient;
     // load
     process.env.NODE_ENV = 'production';
@@ -33,11 +34,10 @@ try {
 }
 
 // variables
-var timeout = null;
-var ns = {
-    start : 0,
-    diff : 0,
-}
+var timeout = {
+    file : null,
+    query : null,
+};
 var log = {
     counter : 0,
     size : 0,
@@ -55,6 +55,7 @@ function monitode(options) {
 
     var options = options || {};
     options.output = Boolean(options.output);
+    options.timeout = (parseInt(options.timeout) || 5) * 1000;
     // http
     options.http = {};
     options.http.enabled = options.web == false ? false : true;
@@ -65,13 +66,13 @@ function monitode(options) {
     // logger
     options.logger = {};
     options.logger.log = options.log || null;
+    options.logger.file = options.file || null;
     // database
     options.db = {};
     options.db.mongo = options.mongo || null;
-    options.db.timeout = (parseInt(options.timeout) || 5) * 1000;
     options.db.database = null;
 
-    app.set('options', options);
+    GLOBAL._options = options;
 
     if (options.http.enabled) {
         // express runnning
@@ -79,10 +80,30 @@ function monitode(options) {
         app.enable('strict routing');
         app.disable('x-powered-by');
         app.use(EXPRESS.static(__dirname + '/public/'));
-        app.listen(options.http.port);
         if (options.output) {
             console.log('starting monitor on port ' + options.http.port);
         }
+        app.listen(options.http.port);
+    } else {
+        // remove obsolete
+        EXPRESS = AUTH = app = middle = null;
+    }
+    if (options.logger.file) {
+        // logger-request
+        options.logger.file = LOGGER({
+            level : 'debug',
+            filename : options.logger.file,
+            maxsize : null,
+            json : false,
+            standalone : true,
+        });
+        if (options.output) {
+            console.log('starting monitor on file ' + options.logger.file);
+        }
+        timeout.file = setTimeout(file, 0);
+    } else {
+        // remove obsolete
+        LOGGER = file = null;
     }
     if (options.db.mongo) {
         // mongodb runnning
@@ -90,20 +111,26 @@ function monitode(options) {
             if (error) {
                 console.log(error);
             } else {
-                database.createCollection('monitode',
-                        function(error, collection) {
-                            if (error) {
-                                console.log(error);
-                            } else {
-                                options.db.database = collection;
-                                timeout = setTimeout(query, 0);
-                            }
-                        });
-                if (options.output) {
-                    console.log('starting monitor on database');
-                }
+                database.createCollection('monitode', function(error, collection) {
+                    if (error) {
+                        console.log(error);
+                    } else {
+                        options.db.database = collection;
+                        if (options.output) {
+                            console.log('starting monitor on database');
+                        }
+                        timeout.query = setTimeout(query, 0);
+                    }
+                });
             }
         });
+    } else {
+        // remove obsolete
+        CLIENT = query = null;
+    }
+    if (!options.logger.log) {
+        // remove obsolete
+        FS = READLINE = logger = log = event = null;
     }
 
     return function monitor(req, res, next) {
@@ -123,6 +150,40 @@ function monitode(options) {
 /**
  * functions
  */
+function file() {
+    /**
+     * file loop
+     * 
+     * @return void
+     */
+
+    clearTimeout(timeout.file);
+    var options = GLOBAL._options;
+
+    var load = OS.loadavg();
+    var free = OS.freemem();
+    var v8 = process.memoryUsage();
+    var write = {
+        cpu : {
+            one : load[0],
+            five : load[1],
+            fifteen : load[2],
+        },
+        mem : {
+            total : OS.totalmem(),
+            used : OS.totalmem() - free,
+            v8 : {
+                v8rss : v8.rss,
+                v8total : v8.heapTotal,
+                v8used : v8.heapUsed,
+            },
+        },
+    };
+    options.logger.file('monitode', write);
+
+    timeout.file = setTimeout(file, options.timeout);
+    return;
+}
 function query() {
     /**
      * query loop
@@ -130,9 +191,9 @@ function query() {
      * @return void
      */
 
-    ns.start = process.hrtime();
-    clearTimeout(timeout);
-    var options = app.get('options');
+    var start = process.hrtime();
+    clearTimeout(timeout.query);
+    var options = GLOBAL._options;
 
     var load = OS.loadavg();
     var free = OS.freemem();
@@ -160,13 +221,13 @@ function query() {
         event : event,
     };
 
-    ns.diff = process.hrtime(ns.start);
-    insert.ns = ns.diff[0] * 1e9 + ns.diff[1];
+    var diff = process.hrtime(start);
+    insert.ns = diff[0] * 1e9 + diff[1];
     options.db.database.insert(insert, function(error, result) {
         if (error) {
             console.log(error);
         } else {
-            timeout = setTimeout(query, options.db.timeout);
+            timeout.query = setTimeout(query, options.timeout);
         }
     });
 
@@ -184,10 +245,10 @@ function logger() {
      * @return void
      */
 
-    var options = app.get('options');
+    var options = GLOBAL._options.logger;
     var line = '';
-    var size = FS.statSync(options.logger.log).size;
-    var input = FS.createReadStream(options.logger.log, {
+    var size = FS.statSync(options.log).size;
+    var input = FS.createReadStream(options.log, {
         flags : 'r',
         mode : 444,
         encoding : 'utf-8',
@@ -240,17 +301,15 @@ function middle(req, res, next) {
      * @return void
      */
 
-    var options = app.get('options');
+    var options = GLOBAL._options.http;
     var user = AUTH(req);
 
-    if (user === undefined || user['name'] !== options.http.user
-            || user['pass'] !== options.http.password) {
+    if (user === undefined || user['name'] !== options.user || user['pass'] !== options.password) {
         res.setHeader('WWW-Authenticate', 'Basic realm="monitode"');
         res.status(401).end('Unauthorized');
-    } else if (options.http.agent
-            && options.http.agent === req.headers['user-agent']) {
+    } else if (options.agent && options.agent === req.headers['user-agent']) {
         next();
-    } else if (!options.http.agent) {
+    } else if (!options.agent) {
         next();
     } else {
         res.status(403).end('Forbidden');
@@ -282,8 +341,8 @@ app.post('/dyn/', middle, function(req, res) {
      * @return void
      */
 
-    ns.start = process.hrtime();
-    var options = app.get('options');
+    var start = process.hrtime();
+    var options = GLOBAL._options.logger;
 
     var load = OS.loadavg();
     var free = OS.freemem();
@@ -315,12 +374,12 @@ app.post('/dyn/', middle, function(req, res) {
         event : event,
     };
 
-    ns.diff = process.hrtime(ns.start);
-    dynamics.ns = ns.diff[0] * 1e9 + ns.diff[1];
+    var diff = process.hrtime(start);
+    dynamics.ns = diff[0] * 1e9 + diff[1];
     res.json(dynamics);
 
-    if (options.logger.log) {
-        FS.exists(options.logger.log, function() {
+    if (options.log) {
+        FS.exists(options.log, function() {
             logger();
         })
     }
@@ -336,7 +395,6 @@ app.post('/sta/', middle, function(req, res) {
      */
 
     var statics = {
-        date : Date.now(),
         os : {
             hostname : OS.hostname(),
             platform : OS.platform(),
@@ -363,7 +421,7 @@ app.post('/sta/', middle, function(req, res) {
  */
 exports = module.exports = monitode;
 if (!module.parent) {
-    // if standalone
+    // if standalone testing
     monitode({
         output : true,
     });

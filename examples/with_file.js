@@ -1,6 +1,6 @@
 "use strict";
 /**
- * standalone example
+ * example with file
  * 
  * @package monitode
  * @subpackage examples
@@ -21,6 +21,8 @@ try {
 }
 
 // using standalone
+var file = __dirname + '/example.txt';
 monitor({
     output : true,
-})
+    file : file,
+});
