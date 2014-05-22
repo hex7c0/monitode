@@ -1,6 +1,6 @@
 "use strict";
 /**
- * example with express
+ * standalone example
  * 
  * @package monitode
  * @subpackage examples

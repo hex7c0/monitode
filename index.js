@@ -421,7 +421,7 @@ app.post('/sta/', middle, function(req, res) {
  */
 exports = module.exports = monitode;
 if (!module.parent) {
-    // if standalone
+    // if standalone testing
     monitode({
         output : true,
     });

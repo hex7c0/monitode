@@ -30,6 +30,7 @@ app.use(logger({
     json : true,
 }));
 app.use(monitor({
+    web : true,
     log : file,
 }));
 
@@ -37,7 +38,6 @@ app.use(monitor({
 app.get('/', function(req, res) {
     res.send('hello world!');
 });
-
 // server starting
 app.listen(3000);
-console.log('starting server on port 3000');
+console.log('starting "hello world" on port 3000');
