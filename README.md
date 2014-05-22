@@ -44,13 +44,14 @@ app.use(monitor({
 
 #### Options
 
- - `output` - **Boolean** If show log to console *(default 'false')*
- - `web` - **Boolean** If enable web support of console *(default 'true')*
+ - `output` - **Boolean** If enabled, show log to console *(default 'false')*
+ - `web` - **Boolean** If disabled, don't run web support *(default 'true')*
  - `port` - **Integer** Which port accept connection of web console *(default '30000')*
  - `user` - **String** User for authentication *(default 'admin')*
- - `password` - **String** Password for authentication *(default 'password')*
- - `agent` - **String** User Agent for authentication *(default 'all accepted')*
+ - `password` - **String** Password for web authentication *(default 'password')*
+ - `agent` - **String** User Agent for web authentication *(default 'all accepted')*
  - `log` - **String** Path to log file, using [logger-request](https://github.com/hex7c0/logger-request) *(default 'disabled')*
+ - `file` - **String** Path to file *(default 'disabled')*
  - `mongo` - **String** URI for MongoDB connection *(default 'disabled')*
  - `timeout` - **Integer** Time (second) for database refresh *(default '5')*
 

@@ -1,3 +1,10 @@
+1.3.0 / 2014-05-22
+==================
+
+  * Save data to file (option)
+  * Best use of memory (nodejs)
+  * Clear memory button (web console)
+
 1.2.2 / 2014-05-21
 ==================
 
