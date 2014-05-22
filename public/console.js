@@ -1,6 +1,6 @@
 "use strict";
 /*
- * monitode 1.2.2 (c) 2014 hex7c0, https://hex7c0.github.io/monitode/
+ * monitode 1.3.0 (c) 2014 hex7c0, https://hex7c0.github.io/monitode/
  * 
  * License: GPLv3
  */
@@ -78,49 +78,50 @@ function load() {
             }
         },
     });
-    meml = c3.generate({
-        bindto : '#memory_lin',
-        data : {
-            type : 'bar',
-            types : {
-                total : 'area',
-                used : 'spline',
-                v8total : 'line',
-            },
-            groups : [ [ 'v8rss', 'v8used' ] ],
-            x : 'x',
-            columns : [ store.x, store.total, store.used, store.v8rss,
-                    store.v8total, store.v8used ],
-            names : {
-                total : 'total memory',
-                used : 'memory used',
-                v8rss : 'V8 rss',
-                v8total : 'V8 total memory',
-                v8used : 'V8 memory used',
-            },
-            colors : {
-                used : 'red',
-                total : 'gray',
-            },
-        },
-        size : {
-            height : 400,
-        },
-        axis : {
-            x : {
-                type : 'timeseries',
-                label : 'time',
-                localtime : false,
-                tick : {
-                    count : 5,
-                    format : '%d %H:%M:%S',
+    meml = c3
+            .generate({
+                bindto : '#memory_lin',
+                data : {
+                    type : 'bar',
+                    types : {
+                        total : 'area',
+                        used : 'spline',
+                        v8total : 'line',
+                    },
+                    groups : [ [ 'v8rss', 'v8used' ] ],
+                    x : 'x',
+                    columns : [ store.x, store.total, store.used, store.v8rss, store.v8total,
+                            store.v8used ],
+                    names : {
+                        total : 'total memory',
+                        used : 'memory used',
+                        v8rss : 'V8 rss',
+                        v8total : 'V8 total memory',
+                        v8used : 'V8 memory used',
+                    },
+                    colors : {
+                        used : 'red',
+                        total : 'gray',
+                    },
                 },
-            },
-            y : {
-                label : 'kilobytes',
-            }
-        },
-    });
+                size : {
+                    height : 400,
+                },
+                axis : {
+                    x : {
+                        type : 'timeseries',
+                        label : 'time',
+                        localtime : false,
+                        tick : {
+                            count : 5,
+                            format : '%d %H:%M:%S',
+                        },
+                    },
+                    y : {
+                        label : 'kilobytes',
+                    }
+                },
+            });
     memp = c3.generate({
         bindto : '#memory_pie',
         data : {
@@ -156,10 +157,8 @@ function proc(cpu) {
             bindto : '#cpu_' + i,
             data : {
                 type : 'donut',
-                columns : [ [ 'user', buff[i].times.user ],
-                        [ 'nice', buff[i].times.nice ],
-                        [ 'sys', buff[i].times.sys ],
-                        [ 'idle', buff[i].times.idle ],
+                columns : [ [ 'user', buff[i].times.user ], [ 'nice', buff[i].times.nice ],
+                        [ 'sys', buff[i].times.sys ], [ 'idle', buff[i].times.idle ],
                         [ 'irq', buff[i].times.irq ] ],
                 colors : {
                     user : '#107aff',
@@ -190,32 +189,38 @@ function proc(cpu) {
 
 // init
 load();
-app
-        .controller(
-                'main',
-                function($scope, $http, $timeout) {
-                    $scope.clock = 0;
-                    dyna($http, $scope, $timeout);
-                    stat($http, $scope);
-                    // click
-                    $scope.button = function(item, event) {
-                        if (item == 'dynamic') {
-                            dyna($http, $scope, $timeout);
-                        } else if (item == 'static') {
-                            stat($http, $scope);
-                        } else if (item == 'stop') {
-                            $timeout.cancel(promise);
-                        } else if (item == 'csv') {
-                            var content = ('data:text/csv;charset=utf-8,');
-                            content += 'date,average 1 min,average 5 min,average 15 min,memory used\n';
-                            for (var i = 1; i < store.x.length; i++) {
-                                content += store.x[i] + ',' + store.one[i]
-                                        + ',' + store.five[i] + ','
-                                        + store.fifteen[i] + ','
-                                        + store.used[i] + '\n';
-                            }
-                            window.open(encodeURI(content));
-                        }
-
-                    };
-                });
+app.controller('main', function($scope, $http, $timeout) {
+    $scope.clock = 0;
+    dyna($http, $scope, $timeout);
+    stat($http, $scope);
+    // click
+    $scope.button = function(item, event) {
+        switch (item) {
+        case 'dynamic':
+            dyna($http, $scope, $timeout);
+            break;
+        case 'static':
+            stat($http, $scope);
+            break;
+        case 'stop':
+            $timeout.cancel(promise);
+            break;
+        case 'csv':
+            var content = ('data:text/csv;charset=utf-8,');
+            content += 'date,average 1 min,average 5 min,average 15 min,memory used\n';
+            for (var i = 1; i < store.x.length; i++) {
+                content += store.x[i] + ',' + store.one[i] + ',' + store.five[i] + ','
+                        + store.fifteen[i] + ',' + store.used[i] + '\n';
+            }
+            window.open(encodeURI(content));
+            break;
+        case 'clear':
+            var len = store.x.length
+            for ( var property in store) {
+                store[property].splice(1, len);
+            }
+            store.logger = [];
+            break;
+        }
+    };
+});

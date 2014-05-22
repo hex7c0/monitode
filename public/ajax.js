@@ -1,6 +1,6 @@
 "use strict";
 /*
- * monitode 1.2.2 (c) 2014 hex7c0, https://hex7c0.github.io/monitode/
+ * monitode 1.3.0 (c) 2014 hex7c0, https://hex7c0.github.io/monitode/
  * 
  * License: GPLv3
  */
@@ -51,16 +51,14 @@ function dyna($http, $scope, $timeout) {
                     store.v8used.push(data.mem.v8.used / 1024);
                     // chart
                     avg.load({
-                        columns : [ store.x, store.one, store.five,
-                                store.fifteen ],
+                        columns : [ store.x, store.one, store.five, store.fifteen ],
                     });
                     meml.load({
-                        columns : [ store.x, store.total, store.used,
-                                store.v8rss, store.v8total, store.v8used, ],
+                        columns : [ store.x, store.total, store.used, store.v8rss, store.v8total,
+                                store.v8used, ],
                     });
                     memp.load({
-                        columns : [ [ 'used', data.mem.used ],
-                                [ 'free', mfree ] ],
+                        columns : [ [ 'used', data.mem.used ], [ 'free', mfree ] ],
                     });
                     // cpu
                     if (cpus.length == 0) {
@@ -70,10 +68,8 @@ function dyna($http, $scope, $timeout) {
                         for (var i = 0; i < data.cpu.cpus.length; i++) {
                             var cpu = data.cpu.cpus[i];
                             cpus[i].load({
-                                columns : [ [ 'user', cpu.times.user ],
-                                        [ 'nice', cpu.times.nice ],
-                                        [ 'sys', cpu.times.sys ],
-                                        [ 'idle', cpu.times.idle ],
+                                columns : [ [ 'user', cpu.times.user ], [ 'nice', cpu.times.nice ],
+                                        [ 'sys', cpu.times.sys ], [ 'idle', cpu.times.idle ],
                                         [ 'irq', cpu.times.irq ] ],
                             });
                         }
@@ -110,12 +106,16 @@ function dyna($http, $scope, $timeout) {
                             info : data.log[property],
                         })
                     }
-                    if (data.log.counter) {
-                        temp['child'] = temps;
-                    } else {
-                        temp['info'] = 'disabled';
+                    try {
+                        if (data.log.counter) {
+                            temp['child'] = temps;
+                        } else {
+                            temp['info'] = 'disabled';
+                        }
+                        $scope.refresh[0] = temp;
+                    } catch (TypeError) {
+
                     }
-                    $scope.refresh[0] = temp;
                     // 1 logger
                     if (data.event) {
                         var temp = {
@@ -132,8 +132,7 @@ function dyna($http, $scope, $timeout) {
                                     var arr2 = arr1[property2];
                                     temps.push({
                                         title : property0,
-                                        info : property1 + ' ' + property2
-                                                + ' * ' + arr2.counter,
+                                        info : property1 + ' ' + property2 + ' * ' + arr2.counter,
                                     })
                                 }
                             }
