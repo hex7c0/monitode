@@ -83,7 +83,7 @@ app.use(monitor({
   - `subject` - **String** Email subject *(default 'password')*
   - `timeout` - **Integer** Timeout (second) for email send *(default '60')*
  
- - `status` - **Object** Setting up a check of status of any number of websites
+ - `status` - **Object** Setting up a check of status of any number of websites and save status to file
   - `enabled` - **Boolean** If disabled, don't run check status *(default 'disabled')*
   - `sites` - **Array** Write here your list of checking websites *(default 'empty')*
   - `port` - **Array** Write here your list of websites port *(default 'empty')*

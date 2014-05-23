@@ -1,6 +1,6 @@
 "use strict";
 /**
- * example with express and logger-request
+ * example with logger-request and express
  * 
  * @package monitode
  * @subpackage examples
@@ -15,8 +15,8 @@
 // import
 try{
     var monitor = require('../index.js'); // use 'monitode' instead
-    var app = require('express')();
     var logger = require('logger-request');
+    var app = require('express')();
 } catch (MODULE_NOT_FOUND){
     console.log(MODULE_NOT_FOUND);
     process.exit(1);
