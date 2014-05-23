@@ -1,3 +1,13 @@
+2.0.0 / 2014-05-23
+==================
+
+  * **Change API**, check README.md
+  * New module integration
+  * Adding email output [`nodemailer`](https://github.com/andris9/Nodemailer)
+  * Adding status check
+  * New examples
+  * GLOBAL var
+
 1.3.1 / 2014-05-23
 ==================
 

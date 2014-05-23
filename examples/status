@@ -1,0 +1,5 @@
+2014-05-23T09:40:06.187Z - debug: file host=127.0.0.1, status=401, message=Unauthorized, www-authenticate=Basic realm="monitode", date=Fri, 23 May 2014 09:40:06 GMT, connection=close, transfer-encoding=chunked
+2014-05-23T09:41:27.092Z - debug: status host=127.0.0.1, status=401, message=Unauthorized, www-authenticate=Basic realm="monitode", date=Fri, 23 May 2014 09:41:27 GMT, connection=close, transfer-encoding=chunked
+2014-05-23T09:43:27.086Z - debug: status host=127.0.0.1, status=401, message=Unauthorized, www-authenticate=Basic realm="monitode", date=Fri, 23 May 2014 09:43:27 GMT, connection=close, transfer-encoding=chunked
+2014-05-23T09:43:27.091Z - debug: status host=192.168.2.1, status=401, message=Unauthorized, www-authenticate=Basic realm="NETGEAR DGND3700", content-type=text/html
+2014-05-23T09:45:27.698Z - debug: Status host=127.0.0.1, status=401, message=Unauthorized, www-authenticate=Basic realm="monitode", date=Fri, 23 May 2014 09:45:27 GMT, connection=close, transfer-encoding=chunked
