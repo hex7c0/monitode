@@ -1,6 +1,6 @@
 "use strict";
 /**
- * example with file
+ * example with status
  * 
  * @package monitode
  * @subpackage examples
@@ -15,16 +15,25 @@
 // import
 try{
     var monitor = require('../index.js'); // use 'monitode' instead
+    var app = require('express')();
 } catch (MODULE_NOT_FOUND){
     console.log(MODULE_NOT_FOUND);
     process.exit(1);
 }
 
 // using standalone
-var file = __dirname + '/example.txt';
 monitor({
-    output: true,
-    logger: {
-        file: file,
+    status: {
+        enabled: true,
+        site: ['127.0.0.1','http://192.168.2.1'],
+        port: [30000,80],
     }
 });
+
+// express routing
+app.get('/',function(req,res){
+    res.send('hello world!');
+});
+// server starting
+app.listen(3000);
+console.log('starting "hello world" on port 3000');

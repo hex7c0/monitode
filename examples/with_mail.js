@@ -1,6 +1,6 @@
 "use strict";
 /**
- * example with file
+ * example with mail
  * 
  * @package monitode
  * @subpackage examples
@@ -21,10 +21,11 @@ try{
 }
 
 // using standalone
-var file = __dirname + '/example.txt';
 monitor({
-    output: true,
-    logger: {
-        file: file,
+    mail: {
+        provider: 'Gmail',
+        user: 'pippo@gmail.com',
+        password: 'myStrongPsw1',
+        to: 'pluto@gmail.com,mickey@gmail.com',
     }
 });
