@@ -26,6 +26,6 @@ monitor({
         provider: 'Gmail',
         user: 'pippo@gmail.com',
         password: 'myStrongPsw1',
-        to: 'pluto@gmail.com,mickey@gmail.com',
+        to: ['pluto@gmail.com','mickey@gmail.com'],
     }
 });
