@@ -20,12 +20,12 @@ try{
     // global
     var FS = require('fs');
     var READLINE = require('readline');
-    // load
-    var log = GLOBAL._m_log;
 } catch (MODULE_NOT_FOUND){
     console.error(MODULE_NOT_FOUND);
     process.exit(1);
 }
+// load
+var log = GLOBAL._m_log;
 
 /**
  * functions
@@ -63,7 +63,11 @@ function logger(logfile){
              */
 
             log.counter++;
-            var line = JSON.parse(lines);
+            try{
+                var line = JSON.parse(lines);
+            } catch (e){
+                var line = {};
+            }
             try{
                 event[line.url][line.method][line.status].counter++;
             } catch (TypeError){
@@ -91,14 +95,18 @@ function starter(logfile){
      * @param string logfile: path of log
      * @return void
      */
-    FS.exists(logfile,function(){
+
+    FS.exists(logfile,function(exists){
         /**
          * logger
          * 
+         * @param boolean exists: if path exists
          * @return void
          */
 
-        logger(logfile);
+        if (exists){
+            logger(logfile);
+        }
         return;
     });
     return;

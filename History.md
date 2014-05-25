@@ -1,7 +1,9 @@
 2.1.0 / 2014-05-25
 ==================
 
-
+  * Better use of memory
+  * Update [`logger-request`](https://github.com/hex7c0/logger-request)
+  * Update [`express`](https://github.com/visionmedia/express)
 
 2.0.0 / 2014-05-23
 ==================

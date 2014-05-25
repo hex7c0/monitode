@@ -14,7 +14,7 @@
  */
 // import
 try{
-    var monitor = require('../index.js'); // use 'monitode' instead
+    var monitode = require('../index.js'); // use 'monitode' instead
     var logger = require('logger-request');
     var app = require('express')();
 } catch (MODULE_NOT_FOUND){
@@ -26,10 +26,9 @@ try{
 var file = __dirname + '/example.log';
 app.use(logger({
     filename: file,
-    timestamp: Date.now,
     json: true,
 }));
-app.use(monitor({
+app.use(monitode({
     http: {
         enabled: true,
     },

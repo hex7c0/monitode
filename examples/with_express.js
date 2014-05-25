@@ -15,14 +15,14 @@
 // import
 try{
     var app = require('express')();
-    var monitor = require('../index.js'); // use 'monitode' instead
+    var monitode = require('../index.js'); // use 'monitode' instead
 } catch (MODULE_NOT_FOUND){
     console.log(MODULE_NOT_FOUND);
     process.exit(1);
 }
 
 // using middleware
-app.use(monitor());
+app.use(monitode());
 
 // express routing
 app.get('/',function(req,res){

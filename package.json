@@ -16,7 +16,7 @@
     "url": "http://hex7c0.tk/"
   },
   "dependencies": {
-    "logger-request": "1.0.9",
+    "logger-request": "1.0.10",
     "express": "4.3.1",
     "basic-auth": "0.0.1",
     "mongodb":"1.4.5",

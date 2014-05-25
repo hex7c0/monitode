@@ -14,7 +14,7 @@
  */
 // import
 try{
-    var monitor = require('../index.js'); // use 'monitode' instead
+    var monitode = require('../index.js'); // use 'monitode' instead
     var app = require('express')();
 } catch (MODULE_NOT_FOUND){
     console.log(MODULE_NOT_FOUND);
@@ -22,7 +22,7 @@ try{
 }
 
 // using standalone
-monitor({
+monitode({
     status: {
         enabled: true,
         site: ['127.0.0.1','http://192.168.2.1','https://www.google.com'],
