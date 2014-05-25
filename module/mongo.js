@@ -4,7 +4,7 @@
  * 
  * @package monitode
  * @subpackage module
- * @version 2.0.0
+ * @version 2.1.0
  * @author hex7c0 <0x7c0@teboss.tk>
  * @license GPLv3
  * @copyright hex7c0 2014
@@ -19,20 +19,58 @@
 try{
     // global
     var OS = require('os');
-    var FS = require('fs');
     // personal
     var CLIENT = require('mongodb').MongoClient;
-    // load
-    var log = require('./lib/log.js');
 } catch (MODULE_NOT_FOUND){
-    console.log(MODULE_NOT_FOUND);
+    console.error(MODULE_NOT_FOUND);
     process.exit(1);
 }
+// load
 var timeout = null;
+var log = null;
+var end = without_log;
 
 /**
  * functions
  */
+function with_log(json){
+    /**
+     * sending object
+     * 
+     * @param object json: builded object
+     * @return void
+     */
+
+    var options = GLOBAL._m_options;
+    json.event = GLOBAL._m_event;
+    options.db.database.insert(json,function(error,result){
+        if (error){
+            console.log(error);
+        } else{
+            timeout = setTimeout(query,options.db.timeout);
+        }
+    });
+    log(options.logger.log);
+    return;
+}
+function without_log(json){
+    /**
+     * sending object
+     * 
+     * @param object json: builded object
+     * @return void
+     */
+
+    var options = GLOBAL._m_options.db;
+    options.database.insert(json,function(error,result){
+        if (error){
+            console.log(error);
+        } else{
+            timeout = setTimeout(query,options.timeout);
+        }
+    });
+    return;
+}
 function query(){
     /**
      * query loop
@@ -40,12 +78,10 @@ function query(){
      * @return void
      */
 
-    var start = process.hrtime();
     clearTimeout(timeout);
-    var options = GLOBAL._m_options;
-
+    var start = process.hrtime();
     var load = OS.loadavg();
-    var free = OS.freemem();
+    var total = OS.totalmem();
     var v8 = process.memoryUsage();
     var insert = {
         date: Date.now(),
@@ -59,32 +95,18 @@ function query(){
             fifteen: load[2],
         },
         mem: {
-            total: OS.totalmem(),
-            used: OS.totalmem() - free,
+            total: total,
+            used: total - OS.freemem(),
             v8: {
                 rss: v8.rss,
                 total: v8.heapTotal,
                 used: v8.heapUsed,
             },
         },
-        event: GLOBAL._m_event,
     };
-
     var diff = process.hrtime(start);
     insert.ns = diff[0] * 1e9 + diff[1];
-    options.db.database.insert(insert,function(error,result){
-        if (error){
-            console.log(error);
-        } else{
-            query = setTimeout(query,options.db.timeout);
-        }
-    });
-
-    if (options.logger.log){
-        FS.exists(options.logger.log,function(){
-            log();
-        });
-    }
+    end(insert);
     return;
 }
 
@@ -99,7 +121,10 @@ module.exports = function(){
      */
 
     var options = GLOBAL._m_options;
-
+    if (options.logger.log){
+        log = require('./lib/log.js');
+        end = with_log;
+    }
     CLIENT.connect(options.db.mongo,function(error,database){
         if (error){
             console.log(error);

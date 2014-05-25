@@ -4,7 +4,7 @@
  * 
  * @package monitode
  * @subpackage module
- * @version 2.0.0
+ * @version 2.1.0
  * @author hex7c0 <0x7c0@teboss.tk>
  * @license GPLv3
  * @copyright hex7c0 2014
@@ -22,9 +22,10 @@ try{
     // personal
     var LOGGER = require('logger-request');
 } catch (MODULE_NOT_FOUND){
-    console.log(MODULE_NOT_FOUND);
+    console.error(MODULE_NOT_FOUND);
     process.exit(1);
 }
+// load
 var timeout = null;
 
 /**
@@ -39,9 +40,8 @@ function file(){
 
     clearTimeout(timeout);
     var options = GLOBAL._m_options.logger;
-
     var load = OS.loadavg();
-    var free = OS.freemem();
+    var total = OS.totalmem();
     var v8 = process.memoryUsage();
     var write = {
         cpu: {
@@ -50,8 +50,8 @@ function file(){
             fifteen: load[2],
         },
         mem: {
-            total: OS.totalmem(),
-            used: OS.totalmem() - free,
+            total: total,
+            used: total - OS.freemem(),
             v8: {
                 v8rss: v8.rss,
                 v8total: v8.heapTotal,
@@ -59,8 +59,7 @@ function file(){
             },
         },
     };
-    options.file('File',write);
-
+    options.file('moniFile',write);
     timeout = setTimeout(file,options.timeout);
     return;
 }
@@ -76,7 +75,6 @@ module.exports = function(){
      */
 
     var options = GLOBAL._m_options;
-
     if (options.output){
         console.log('starting monitor on file ' + options.logger.file);
     }
@@ -88,7 +86,6 @@ module.exports = function(){
         json: false,
         standalone: true,
     });
-
     timeout = setTimeout(file,0);
     return;
 };

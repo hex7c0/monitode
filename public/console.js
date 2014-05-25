@@ -1,6 +1,6 @@
 "use strict";
 /*
- * monitode 2.0.0 (c) 2014 hex7c0, https://hex7c0.github.io/monitode/
+ * monitode 2.1.0 (c) 2014 hex7c0, https://hex7c0.github.io/monitode/
  * 
  * License: GPLv3
  */
@@ -138,7 +138,6 @@ function load(){
             height: 250,
         },
     });
-
     return;
 }
 function proc(cpu){
@@ -149,7 +148,7 @@ function proc(cpu){
      * @return void
      */
 
-    var buff = cpu
+    var buff = cpu;
     for (var i = 0; i < buff.length; i++){
         cpus[i] = c3.generate({
             bindto: '#cpu_' + i,
@@ -207,13 +206,16 @@ app.controller('main',function($scope,$http,$timeout){
                 var content = ('data:text/csv;charset=utf-8,');
                 content += 'date,average 1 min,average 5 min,average 15 min,memory used\n';
                 for (var i = 1; i < store.x.length; i++){
-                    content += store.x[i] + ',' + store.one[i] + ',' + store.five[i] + ','
-                            + store.fifteen[i] + ',' + store.used[i] + '\n';
+                    content += store.x[i] + ',';
+                    content += store.one[i] + ',';
+                    content += store.five[i] + ',';
+                    content += store.fifteen[i] + ',';
+                    content += store.used[i] + '\n';
                 }
                 window.open(encodeURI(content));
             break;
             case 'clear':
-                var len = store.x.length
+                var len = store.x.length;
                 for ( var property in store){
                     store[property].splice(1,len);
                 }

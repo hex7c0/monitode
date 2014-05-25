@@ -4,7 +4,7 @@
  * 
  * @package monitode
  * @subpackage module
- * @version 2.0.0
+ * @version 2.1.0
  * @author hex7c0 <0x7c0@teboss.tk>
  * @license GPLv3
  * @copyright hex7c0 2014
@@ -24,9 +24,10 @@ try{
     // personal
     var LOGGER = require('logger-request');
 } catch (MODULE_NOT_FOUND){
-    console.log(MODULE_NOT_FOUND);
+    console.error(MODULE_NOT_FOUND);
     process.exit(1);
 }
+// load
 var timeout = null;
 
 /**
@@ -41,7 +42,6 @@ function complete(res){
      */
 
     var options = GLOBAL._m_options.status;
-
     var status = Math.floor(res.statusCode / 100);
     if (status >= 4){
         console.log(new Date().toUTCString() + ' ' + res.connection._host + ' ' + res.statusCode);
@@ -52,7 +52,7 @@ function complete(res){
         message: res.statusMessage,
         headers: res.headers,
     };
-    options.file('Status',write);
+    options.file('moniStatus',write);
     return;
 }
 function request(){
@@ -64,8 +64,7 @@ function request(){
 
     clearTimeout(timeout);
     var options = GLOBAL._m_options.status;
-
-    for (var i = 0; i < options.site.length; i++){
+    for (var i = 0, il = options.site.length; i < il; i++){
         var url = URL.parse(options.site[i]);
         var module = HTTP;
         try{
@@ -75,7 +74,6 @@ function request(){
         } catch (TypeError){
             // pass
         }
-
         var req = null;
         if (url.hostname){
             req = module.request({
@@ -98,13 +96,11 @@ function request(){
                 agent: false,
             },complete);
         }
-
         req.on('error',function(error){
             console.log(error);
         });
         req.end();
     }
-
     timeout = setTimeout(request,options.timeout);
     return;
 }
@@ -120,7 +116,6 @@ module.exports = function(){
      */
 
     var options = GLOBAL._m_options;
-
     options.status.file = LOGGER({
         logger: '_m_status',
         level: 'debug',
@@ -132,7 +127,6 @@ module.exports = function(){
     if (options.output){
         console.log('starting monitor with status');
     }
-
     timeout = setTimeout(request,0);
     return;
 };

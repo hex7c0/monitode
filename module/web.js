@@ -4,7 +4,7 @@
  * 
  * @package monitode
  * @subpackage module
- * @version 2.0.0
+ * @version 2.1.0
  * @author hex7c0 <0x7c0@teboss.tk>
  * @license GPLv3
  * @copyright hex7c0 2014
@@ -19,17 +19,17 @@
 try{
     // global
     var OS = require('os');
-    var FS = require('fs');
     // personal
     var EXPRESS = require('express');
     var AUTH = require('basic-auth');
-    // load
-    var app = EXPRESS();
-    var log = require('./lib/log.js');
 } catch (MODULE_NOT_FOUND){
-    console.log(MODULE_NOT_FOUND);
+    console.error(MODULE_NOT_FOUND);
     process.exit(1);
 }
+// load
+var app = EXPRESS();
+var log = null;
+var end = without_log;
 
 /**
  * functions
@@ -59,6 +59,35 @@ function auth(req,res,next){
     }
     return;
 }
+function with_log(res,json){
+    /**
+     * sending object
+     * 
+     * @param object res: response
+     * @param object json: builded object
+     * @return void
+     */
+
+    var options = GLOBAL._m_options.logger.log;
+    json.log = GLOBAL._m_log;
+    json.event = GLOBAL._m_event;
+    res.json(json);
+    res.end();
+    log(options);
+    return;
+}
+function without_log(res,json){
+    /**
+     * sending object
+     * 
+     * @param object res: response
+     * @param object json: builded object
+     * @return void
+     */
+
+    res.json(json);
+    return;
+}
 
 /**
  * express routing
@@ -85,13 +114,11 @@ app.post('/dyn/',auth,function(req,res){
      */
 
     var start = process.hrtime();
-    var options = GLOBAL._m_options.logger;
-
     var load = OS.loadavg();
-    var free = OS.freemem();
+    var total = OS.totalmem();
     var v8 = process.memoryUsage();
     var cpus = OS.cpus();
-    for ( var i in cpus){ // slim json
+    for (var i = 0, il = cpus.length; i < il; i++){ // slim json
         cpus[i].model = '';
     }
     var dynamics = {
@@ -105,27 +132,18 @@ app.post('/dyn/',auth,function(req,res){
             cpus: cpus,
         },
         mem: {
-            total: OS.totalmem(),
-            used: OS.totalmem() - free,
+            total: total,
+            used: total - OS.freemem(),
             v8: {
                 rss: v8.rss,
                 total: v8.heapTotal,
                 used: v8.heapUsed,
             },
         },
-        log: GLOBAL._m_log,
-        event: GLOBAL._m_event,
     };
-
     var diff = process.hrtime(start);
     dynamics.ns = diff[0] * 1e9 + diff[1];
-    res.json(dynamics);
-
-    if (options.log){
-        FS.exists(options.log,function(){
-            log();
-        });
-    }
+    end(res,dynamics);
     return;
 });
 app.post('/sta/',auth,function(req,res){
@@ -154,7 +172,6 @@ app.post('/sta/',auth,function(req,res){
         },
         network: OS.networkInterfaces(),
     };
-
     res.json(statics);
     return;
 });
@@ -170,7 +187,10 @@ module.exports = function(){
      */
 
     var options = GLOBAL._m_options;
-
+    if (options.logger.log){
+        log = require('./lib/log.js');
+        end = with_log;
+    }
     app.enable('case sensitive routing');
     app.enable('strict routing');
     app.disable('x-powered-by');
@@ -179,6 +199,5 @@ module.exports = function(){
         console.log('starting monitor on port ' + options.http.port);
     }
     app.listen(options.http.port);
-
     return;
 };

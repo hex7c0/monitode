@@ -65,7 +65,7 @@ function dyna($http,$scope,$timeout){
                         $scope.cpus = cpus = data.cpu.cpus;
                         proc($scope.cpus);
                     } else{
-                        for (var i = 0; i < data.cpu.cpus.length; i++){
+                        for (var i = 0, il = data.cpu.cpus.length; i < il; i++){
                             var cpu = data.cpu.cpus[i];
                             cpus[i].load({
                                 columns: [['user',cpu.times.user],['nice',cpu.times.nice],
@@ -104,7 +104,7 @@ function dyna($http,$scope,$timeout){
                         temps.push({
                             title: property,
                             info: data.log[property],
-                        })
+                        });
                     }
                     try{
                         if (data.log.counter){
@@ -114,7 +114,7 @@ function dyna($http,$scope,$timeout){
                         }
                         $scope.refresh[0] = temp;
                     } catch (TypeError){
-
+                        // pass
                     }
                     // 1 logger
                     if (data.event){
@@ -133,16 +133,15 @@ function dyna($http,$scope,$timeout){
                                     temps.push({
                                         title: property0,
                                         info: property1 + ' ' + property2 + ' * ' + arr2.counter,
-                                    })
+                                    });
                                 }
                             }
                         }
                         if (flag){
-                            temp['child'] = temps
-                            $scope.refresh.push(temp);
+                            temp['child'] = temps;
+                            $scope.refresh[1] = temp;
                         }
                     }
-
                     return dyna($http,$scope,$timeout);
                 }).error(function(data,status,headers,config){
             alert('server doesn\'t respond');
@@ -197,7 +196,7 @@ function stat($http,$scope){
             temps.push({
                 title: property,
                 info: data.process.env[property],
-            })
+            });
         }
         temp['child'] = temps;
         $scope.statics.push(temp);
@@ -208,12 +207,12 @@ function stat($http,$scope){
         var temps = [];
         for ( var property in data.network){
             for ( var inside in data.network[property]){
-                var obj = data.network[property][inside]
+                var obj = data.network[property][inside];
                 if (!obj.internal){ // skip loopback
                     temps.push({
                         title: property + ' (' + obj.family + ')',
                         info: obj.address,
-                    })
+                    });
                 }
             }
         }
@@ -228,7 +227,7 @@ function stat($http,$scope){
             temps.push({
                 title: property,
                 info: data.version[property],
-            })
+            });
         }
         temp['child'] = temps;
         $scope.statics.push(temp);

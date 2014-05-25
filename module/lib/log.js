@@ -4,7 +4,7 @@
  * 
  * @package monitode
  * @subpackage lib
- * @version 2.0.0
+ * @version 2.1.0
  * @author hex7c0 <0x7c0@teboss.tk>
  * @license GPLv3
  * @copyright hex7c0 2014
@@ -20,25 +20,27 @@ try{
     // global
     var FS = require('fs');
     var READLINE = require('readline');
+    // load
+    var log = GLOBAL._m_log;
 } catch (MODULE_NOT_FOUND){
-    console.log(MODULE_NOT_FOUND);
+    console.error(MODULE_NOT_FOUND);
     process.exit(1);
 }
 
 /**
  * functions
  */
-function logger(){
+function logger(logfile){
     /**
      * async read of log file
      * 
+     * @param string logfile: path of log
      * @return void
      */
 
-    var options = GLOBAL._m_options.logger;
-    var log = GLOBAL._m_log;
-    var size = FS.statSync(options.log).size;
-    var input = FS.createReadStream(options.log,{
+    var event = GLOBAL._m_event = {};
+    var size = FS.statSync(logfile).size;
+    var input = FS.createReadStream(logfile,{
         flags: 'r',
         mode: 444,
         encoding: 'utf-8',
@@ -52,7 +54,6 @@ function logger(){
     });
 
     if (log.size < size){
-        var event = GLOBAL._m_event = {};
         log.size = size;
         stream.on('line',function(lines){
             /**
@@ -63,7 +64,6 @@ function logger(){
 
             log.counter++;
             var line = JSON.parse(lines);
-            // builder
             try{
                 event[line.url][line.method][line.status].counter++;
             } catch (TypeError){
@@ -79,17 +79,32 @@ function logger(){
                     };
                 }
             }
-
             return;
         });
-    } else{
-        // clear
-        GLOBAL._m_event = {};
     }
+    return;
+}
+function starter(logfile){
+    /**
+     * log starter
+     * 
+     * @param string logfile: path of log
+     * @return void
+     */
+    FS.exists(logfile,function(){
+        /**
+         * logger
+         * 
+         * @return void
+         */
+
+        logger(logfile);
+        return;
+    });
     return;
 }
 
 /**
  * exports function
  */
-module.exports = logger;
+module.exports = starter;

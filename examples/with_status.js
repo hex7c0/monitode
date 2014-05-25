@@ -25,8 +25,8 @@ try{
 monitor({
     status: {
         enabled: true,
-        site: ['127.0.0.1','http://192.168.2.1'],
-        port: [30000,80],
+        site: ['127.0.0.1','http://192.168.2.1','https://www.google.com'],
+        port: [30000,80,443],
     }
 });
 

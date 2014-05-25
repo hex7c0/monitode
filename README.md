@@ -55,7 +55,7 @@ app.use(monitor({
 
 ### monitode(options)
 
-#### Options
+#### options
 
  - `output` - **Boolean** If enabled, show output to shell console *(default 'false')*
  

@@ -21,76 +21,92 @@ function monitode(options){
      * @return function
      */
 
+    // global
+    var spinterogeno = [];
+    var my = GLOBAL._m_options = {};
     var options = options || {};
-    options.output = Boolean(options.output);
-    // http
-    options.http = {};
-    options.http.enabled = options.http.enabled == false ? false : true;
-    options.http.port = parseInt(options.http.port) || 30000;
-    options.http.user = String(options.http.user || 'admin');
-    options.http.password = String(options.http.password || 'password');
-    options.http.agent = options.http.agent || null;
-    // logger
-    options.logger = options.logger || {};
-    options.logger.log = options.logger.log || null;
-    options.logger.file = options.logger.file || null;
-    options.logger.timeout = (parseInt(options.logger.timeout) || 5) * 1000;
-    // database
-    options.db = options.db || {};
-    options.db.mongo = options.db.mongo || null;
-    options.db.database = null;
-    options.db.timeout = (parseInt(options.db.timeout) || 20) * 1000;
-    // mail
-    options.mail = options.mail || {};
-    options.mail.provider = options.mail.provider || null;
-    options.mail.user = String(options.mail.user || 'admin');
-    options.mail.password = String(options.mail.password || 'password');
-    options.mail.to = options.mail.to || [];
-    options.mail.subject = String(options.mail.subject || 'monitode report');
-    options.mail.timeout = (parseInt(options.mail.timeout) || 60) * 1000;
-    // status
-    options.status = options.status || {};
-    options.status.enabled = Boolean(options.status.enabled);
-    options.status.site = options.status.site || [];
-    options.status.port = options.status.port || [];
-    options.status.method = String(options.status.method || 'GET');
-    options.status.agent = String(options.status.agent || 'monitode crawl');
-    options.status.file = options.status.file || 'status';
-    options.status.timeout = (parseInt(options.status.timeout) || 120) * 1000;
-
-    GLOBAL._m_options = options;
-    GLOBAL._m_log = {
-        counter: 0,
-        size: 0,
-    };
-    GLOBAL._m_event = {};
+    my.output = Boolean(options.output);
     process.env.NODE_ENV = 'production';
     process.env._m_main = __dirname;
 
+    // http
+    options.http = options.http || {};
+    options.http.enabled = options.http.enabled == false ? false : true;
     if (options.http.enabled){
-        // web runnning
-        require('./module/web.js')();
+        my.http = {
+            port: parseInt(options.http.port) || 30000,
+            user: options.http.user = String(options.http.user || 'admin'),
+            password: String(options.http.password || 'password'),
+            agent: options.http.agent || null,
+        };
+        spinterogeno.push(require('./module/web.js'));
     }
+
+    // logger
+    options.logger = options.logger || {};
     if (options.logger.file){
-        // file runnning
-        require('./module/file.js')();
+        my.logger = {
+            file: String(options.logger.file),
+            timeout: (parseInt(options.logger.timeout) || 5) * 1000,
+        };
+        spinterogeno.push(require('./module/file.js'));
+    } else{
+        my.logger = {};
     }
+    if (options.logger.log){
+        my.logger.log = String(options.logger.log);
+        GLOBAL._m_log = {
+            counter: 0,
+            size: 0,
+        };
+        GLOBAL._m_event = {};
+    }
+
+    // database
+    options.db = options.db || {};
     if (options.db.mongo){
-        // mongodb runnning
-        require('./module/mongo.js')();
+        my.db = {
+            database: null,
+            mongo: String(options.db.mongo),
+            timeout: (parseInt(options.db.timeout) || 20) * 1000,
+        };
+        spinterogeno.push(require('./module/mongo.js'));
     }
+
+    // mail
+    options.mail = options.mail || {};
     if (options.mail.provider){
-        // mongodb runnning
-        require('./module/mail.js')();
+        my.mail = {
+            provider: String(options.mail.provider),
+            user: String(options.mail.user || 'admin'),
+            password: String(options.mail.password || 'password'),
+            to: options.mail.to || [],
+            subject: String(options.mail.subject || 'monitode report'),
+            timeout: (parseInt(options.mail.timeout) || 60) * 1000,
+        };
+        spinterogeno.push(require('./module/mail.js'));
     }
+
+    // status
+    options.status = options.status || {};
+    options.status.enabled = Boolean(options.status.enabled);
     if (options.status.enabled){
-        // mongodb runnning
-        require('./module/status.js')();
+        my.status = {
+            site: options.status.site || [],
+            port: options.status.port || [],
+            method: String(options.status.method || 'GET'),
+            agent: String(options.status.agent || 'monitode crawl'),
+            file: String(options.status.file || 'status'),
+            timeout: (parseInt(options.status.timeout) || 120) * 1000,
+        };
+        spinterogeno.push(require('./module/status.js'));
     }
-    if (!options.logger.log){
-        // remove obsolete
-        GLOBAL._m_log = GLOBAL._m_event = null;
+
+    // start
+    for (var i = 0, il = spinterogeno.length; i < il; i++){
+        spinterogeno[i]();
     }
+    options = spinterogeno = null;
 
     return function monitor(req,res,next){
         /**

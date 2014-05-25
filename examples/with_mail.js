@@ -23,7 +23,7 @@ try{
 // using standalone
 monitor({
     mail: {
-        provider: 'Gmail',
+        provider: 'gmail',
         user: 'pippo@gmail.com',
         password: 'myStrongPsw1',
         to: ['pluto@gmail.com','mickey@gmail.com'],
