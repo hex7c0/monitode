@@ -4,7 +4,7 @@
  * 
  * @package monitode
  * @subpackage index
- * @version 1.3.1
+ * @version 2.2.1
  * @author hex7c0 <0x7c0@teboss.tk>
  * @license GPLv3
  * @copyright hex7c0 2014
@@ -26,7 +26,7 @@ function monitode(options){
     var my = GLOBAL._m_options = {};
     var options = options || {};
     my.output = Boolean(options.output);
-    process.env.NODE_ENV = 'production';
+    process.env.NODE_ENV = process.env.NODE_ENV || 'production';
     process.env._m_main = __dirname;
 
     // http
@@ -92,8 +92,8 @@ function monitode(options){
     options.status.enabled = Boolean(options.status.enabled);
     if (options.status.enabled){
         my.status = {
-            site: options.status.site || [],
-            port: options.status.port || [],
+            site: Array.isArray(options.status.site) || [],
+            port: Array.isArray(options.status.port) || [],
             method: String(options.status.method || 'GET'),
             agent: String(options.status.agent || 'monitode crawl'),
             file: String(options.status.file || 'status'),

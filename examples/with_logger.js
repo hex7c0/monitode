@@ -26,6 +26,7 @@ try{
 var file = __dirname + '/example.log';
 app.use(logger({
     filename: file,
+    timestamp: Date.now,
     json: true,
 }));
 app.use(monitode({
