@@ -25,11 +25,11 @@ function middle(req,res,next) {
 /**
  * option setting
  * 
- * @function main
+ * @function monitode
  * @param {Object} options - various options. Check README.md
  * @return {function}
  */
-function main(options) {
+function monitode(options) {
 
     var spinterogeno = [], my = GLOBAL._m_options = {}, options = options || {};
     // global
@@ -117,13 +117,13 @@ function main(options) {
 /**
  * exports function
  * 
- * @exports main
+ * @exports monitode
  */
-module.exports = main;
+module.exports = monitode;
 
 if (!module.parent) {
     // if standalone testing
-    main({
+    monitode({
         output: true,
     });
 }
