@@ -1,42 +1,51 @@
 "use strict";
 /**
- * file module
+ * mail module
  * 
- * @package monitode
+ * @file monitode mail
+ * @module monitode
  * @subpackage module
- * @version 2.1.0
- * @author hex7c0 <0x7c0@teboss.tk>
- * @license GPLv3
+ * @version 2.1.2
+ * @author hex7c0 <hex7c0@gmail.com>
  * @copyright hex7c0 2014
+ * @license GPLv3
  */
 
-/**
+/*
  * initialize module
- * 
- * @global
  */
 // import
-try{
+try {
     // global
+    /**
+     * @global
+     */
     var OS = require('os');
     // personal
+    /**
+     * @global
+     */
     var MAIL = require('nodemailer');
-} catch (MODULE_NOT_FOUND){
+} catch (MODULE_NOT_FOUND) {
     console.error(MODULE_NOT_FOUND);
     process.exit(1);
 }
 // load
+/**
+ * @global
+ */
 var timeout = null;
 
-/**
+/*
  * functions
  */
-function email(){
-    /**
-     * email loop
-     * 
-     * @return void
-     */
+/**
+ * email loop
+ * 
+ * @function file
+ * @return
+ */
+function email() {
 
     clearTimeout(timeout);
     var options = GLOBAL._m_options.mail;
@@ -61,26 +70,24 @@ function email(){
         },
     };
     options.to.text = JSON.stringify(text);
-    options.provider.sendMail(options.to,function(error,response){
-        if (error){
+    options.provider.sendMail(options.to,function(error,response) {
+        if (error) {
             console.log(error);
-        } else{
+        } else {
             timeout = setTimeout(email,options.timeout);
         }
         options.provider.close();
     });
     return;
-}
 
+}
 /**
- * exports function
+ * init for file module. Using global var for sharing info
+ * 
+ * @function main
+ * @return
  */
-module.exports = function(){
-    /**
-     * init for file module. Using global var for sharing info
-     * 
-     * @return void
-     */
+function main() {
 
     var options = GLOBAL._m_options;
     options.mail.provider = MAIL.createTransport('SMTP',{
@@ -91,13 +98,21 @@ module.exports = function(){
         }
     });
     options.mail.to = {
-        from: '<' + options.mail.user + '>',
+        from: options.mail.user + ' <' + options.mail.user + '>',
         to: options.mail.to.toString(),
         subject: options.mail.subject,
     };
-    if (options.output){
+    if (options.output) {
         console.log('starting monitor with email');
     }
     timeout = setTimeout(email,0);
     return;
-};
+
+}
+
+/**
+ * exports function
+ * 
+ * @export main
+ */
+module.exports = main;

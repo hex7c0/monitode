@@ -11,7 +11,7 @@
  * @license GPLv3
  */
 
-/**
+/*
  * initialize module
  */
 // import
@@ -35,11 +35,14 @@ try {
  */
 var log = GLOBAL._m_log;
 
+/*
+ * functions
+ */
 /**
  * async read of log file
  * 
  * @function logger
- * @param {string} logfile - path of log
+ * @param {String} logfile - path of log
  * @return
  */
 function logger(logfile) {
@@ -97,31 +100,33 @@ function logger(logfile) {
     }
     return;
 }
-function starter(logfile) {
-    /**
-     * log starter
-     * 
-     * @param string logfile: path of log
-     * @return void
-     */
+/**
+ * log bootstrap
+ * 
+ * @function main
+ * @param {String} logfile - path of log
+ * @return
+ */
+function main(logfile) {
 
+    /**
+     * logger check
+     * 
+     * @function okay
+     * @param {Boolean} exists - if path exists
+     * @return
+     */
     FS.exists(logfile,function(exists) {
-        /**
-         * logger
-         * 
-         * @param boolean exists: if path exists
-         * @return void
-         */
 
         if (exists) {
             logger(logfile);
         }
         return;
+
     });
-    return;
 }
 
 /**
  * exports function
  */
-module.exports = starter;
+module.exports = main;

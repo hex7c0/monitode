@@ -12,8 +12,8 @@
  * express middleware
  * 
  * @function middle
- * @param {object} req - client request
- * @param {object} res - response to client
+ * @param {Object} req - client request
+ * @param {Object} res - response to client
  * @param {next} next - continue routes
  * @return
  */
@@ -26,7 +26,7 @@ function middle(req,res,next) {
  * option setting
  * 
  * @function main
- * @param {object} options - various options. Check README.md
+ * @param {Object} options - various options. Check README.md
  * @return {function}
  */
 function main(options) {
@@ -117,7 +117,7 @@ function main(options) {
 /**
  * exports function
  * 
- * @exports monitode
+ * @exports main
  */
 module.exports = main;
 

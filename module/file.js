@@ -2,41 +2,50 @@
 /**
  * file module
  * 
- * @package monitode
+ * @file monitode file
+ * @module monitode
  * @subpackage module
- * @version 2.1.0
- * @author hex7c0 <0x7c0@teboss.tk>
- * @license GPLv3
+ * @version 2.1.2
+ * @author hex7c0 <hex7c0@gmail.com>
  * @copyright hex7c0 2014
+ * @license GPLv3
  */
 
-/**
+/*
  * initialize module
- * 
- * @global
  */
 // import
-try{
+try {
     // global
+    /**
+     * @global
+     */
     var OS = require('os');
     // personal
+    /**
+     * @global
+     */
     var LOGGER = require('logger-request');
-} catch (MODULE_NOT_FOUND){
+} catch (MODULE_NOT_FOUND) {
     console.error(MODULE_NOT_FOUND);
     process.exit(1);
 }
 // load
+/**
+ * @global
+ */
 var timeout = null;
 
-/**
+/*
  * functions
  */
-function file(){
-    /**
-     * file loop
-     * 
-     * @return void
-     */
+/**
+ * file loop
+ * 
+ * @function file
+ * @return
+ */
+function file() {
 
     clearTimeout(timeout);
     var options = GLOBAL._m_options.logger;
@@ -62,20 +71,18 @@ function file(){
     options.file('moniFile',write);
     timeout = setTimeout(file,options.timeout);
     return;
-}
 
+}
 /**
- * exports function
+ * init for file module. Using global var for sharing info
+ * 
+ * @function main
+ * @return
  */
-module.exports = function(){
-    /**
-     * init for file module. Using global var for sharing info
-     * 
-     * @return void
-     */
+function main() {
 
     var options = GLOBAL._m_options;
-    if (options.output){
+    if (options.output) {
         console.log('starting monitor on file ' + options.logger.file);
     }
     options.logger.file = LOGGER({
@@ -88,4 +95,12 @@ module.exports = function(){
     });
     timeout = setTimeout(file,0);
     return;
-};
+
+}
+
+/**
+ * exports function
+ * 
+ * @exports main
+ */
+module.exports = main;

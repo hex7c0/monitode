@@ -2,81 +2,92 @@
 /**
  * mongo module
  * 
- * @package monitode
+ * @file monitode mongo
+ * @module monitode
  * @subpackage module
- * @version 2.1.0
- * @author hex7c0 <0x7c0@teboss.tk>
- * @license GPLv3
+ * @version 2.1.2
+ * @author hex7c0 <hex7c0@gmail.com>
  * @copyright hex7c0 2014
+ * @license GPLv3
  */
 
-/**
+/*
  * initialize module
- * 
- * @global
  */
 // import
-try{
+try {
     // global
+    /**
+     * @global
+     */
     var OS = require('os');
     // personal
+    /**
+     * @global
+     */
     var CLIENT = require('mongodb').MongoClient;
-} catch (MODULE_NOT_FOUND){
+} catch (MODULE_NOT_FOUND) {
     console.error(MODULE_NOT_FOUND);
     process.exit(1);
 }
 // load
-var timeout = null;
-var log = null;
-var end = without_log;
-
 /**
+ * @global
+ */
+var timeout = null, log = null, end = without_log;
+
+/*
  * functions
  */
-function with_log(json){
-    /**
-     * sending object
-     * 
-     * @param object json: builded object
-     * @return void
-     */
+/**
+ * sending object with log
+ * 
+ * @function with_log
+ * @param {Object} json - builded object
+ * @return
+ */
+function with_log(json) {
 
     var options = GLOBAL._m_options;
     json.event = GLOBAL._m_event;
-    options.db.database.insert(json,function(error,result){
-        if (error){
+    options.db.database.insert(json,function(error,result) {
+        if (error) {
             console.log(error);
-        } else{
+        } else {
             timeout = setTimeout(query,options.db.timeout);
         }
     });
     log(options.logger.log);
     return;
+
 }
-function without_log(json){
-    /**
-     * sending object
-     * 
-     * @param object json: builded object
-     * @return void
-     */
+/**
+ * sending object without log
+ * 
+ * @function without_log
+ * @param {Object} json - builded object
+ * @return
+ */
+function without_log(json) {
 
     var options = GLOBAL._m_options.db;
-    options.database.insert(json,function(error,result){
-        if (error){
+    options.database.insert(json,function(error,result) {
+        if (error) {
             console.log(error);
-        } else{
+        } else {
             timeout = setTimeout(query,options.timeout);
         }
     });
     return;
+
 }
-function query(){
-    /**
-     * query loop
-     * 
-     * @return void
-     */
+/**
+ * query loop
+ * 
+ * @function file
+ * @return
+ */
+function query() {
 
     clearTimeout(timeout);
     var start = process.hrtime();
@@ -108,33 +119,31 @@ function query(){
     insert.ns = diff[0] * 1e9 + diff[1];
     end(insert);
     return;
-}
 
+}
 /**
- * exports function
+ * init for mongo module. Using global var for sharing info
+ * 
+ * @function main
+ * @return
  */
-module.exports = function(){
-    /**
-     * init for mongo module. Using global var for sharing info
-     * 
-     * @return void
-     */
+function main() {
 
     var options = GLOBAL._m_options;
-    if (options.logger.log){
+    if (options.logger.log) {
         log = require('./lib/log.js');
         end = with_log;
     }
-    CLIENT.connect(options.db.mongo,function(error,database){
-        if (error){
+    CLIENT.connect(options.db.mongo,function(error,database) {
+        if (error) {
             console.log(error);
-        } else{
-            database.createCollection('monitode',function(error,collection){
-                if (error){
+        } else {
+            database.createCollection('monitode',function(error,collection) {
+                if (error) {
                     console.log(error);
-                } else{
+                } else {
                     options.db.database = collection;
-                    if (options.output){
+                    if (options.output) {
                         console.log('starting monitor on database');
                     }
                     timeout = setTimeout(query,0);
@@ -142,6 +151,13 @@ module.exports = function(){
             });
         }
     });
-
     return;
-};
+
+}
+
+/**
+ * exports function
+ * 
+ * @exports main
+ */
+module.exports = main;

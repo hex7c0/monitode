@@ -2,48 +2,63 @@
 /**
  * status module
  * 
- * @package monitode
+ * @file monitode status
+ * @module monitode
  * @subpackage module
- * @version 2.1.0
- * @author hex7c0 <0x7c0@teboss.tk>
- * @license GPLv3
+ * @version 2.1.2
+ * @author hex7c0 <hex7c0@gmail.com>
  * @copyright hex7c0 2014
+ * @license GPLv3
  */
 
-/**
+/*
  * initialize module
- * 
- * @global
  */
 // import
-try{
+try {
     // global
+    /**
+     * @global
+     */
     var HTTP = require('http');
+    /**
+     * @global
+     */
     var HTTPS = require('https');
+    /**
+     * @global
+     */
     var URL = require('url');
     // personal
+    /**
+     * @global
+     */
     var LOGGER = require('logger-request');
-} catch (MODULE_NOT_FOUND){
+} catch (MODULE_NOT_FOUND) {
     console.error(MODULE_NOT_FOUND);
     process.exit(1);
 }
 // load
+/**
+ * @global
+ */
 var timeout = null;
 
-/**
+/*
  * functions
  */
-function complete(res){
-    /**
-     * callback function for request
-     * 
-     * @param object res: response for website
-     * @return void
-     */
+/**
+ * callback function for request
+ * 
+ * @function complete
+ * @param {Object} res - response for website
+ * @return
+ */
+function complete(res) {
 
     var options = GLOBAL._m_options.status;
     var status = Math.floor(res.statusCode / 100);
-    if (status >= 4){
+    if (status >= 4) {
         console.log(new Date().toUTCString() + ' ' + res.connection._host + ' ' + res.statusCode);
     }
     var write = {
@@ -54,28 +69,30 @@ function complete(res){
     };
     options.file('moniStatus',write);
     return;
+
 }
-function request(){
-    /**
-     * request loop
-     * 
-     * @return void
-     */
+/**
+ * request loop
+ * 
+ * @function request
+ * @return
+ */
+function request() {
 
     clearTimeout(timeout);
     var options = GLOBAL._m_options.status;
-    for (var i = 0, il = options.site.length; i < il; i++){
+    for (var i = 0, il = options.site.length; i < il; i++) {
         var url = URL.parse(options.site[i]);
         var module = HTTP;
-        try{
-            if (url.protocol.substr(0,5) == 'https'){
+        try {
+            if (url.protocol.substr(0,5) == 'https') {
                 module = HTTPS;
             }
-        } catch (TypeError){
+        } catch (TypeError) {
             // pass
         }
         var req = null;
-        if (url.hostname){
+        if (url.hostname) {
             req = module.request({
                 port: options.port[i],
                 hostname: url.hostname,
@@ -85,7 +102,7 @@ function request(){
                 method: options.method,
                 agent: false,
             },complete);
-        } else{
+        } else {
             req = module.request({
                 port: options.port[i],
                 host: options.site[i],
@@ -96,24 +113,22 @@ function request(){
                 agent: false,
             },complete);
         }
-        req.on('error',function(error){
+        req.on('error',function(error) {
             console.log(error);
         });
         req.end();
     }
     timeout = setTimeout(request,options.timeout);
     return;
-}
 
+}
 /**
- * exports function
+ * init for file module. Using global var for sharing info
+ * 
+ * @function main
+ * @return
  */
-module.exports = function(){
-    /**
-     * init for file module. Using global var for sharing info
-     * 
-     * @return void
-     */
+function main() {
 
     var options = GLOBAL._m_options;
     options.status.file = LOGGER({
@@ -124,9 +139,17 @@ module.exports = function(){
         json: false,
         standalone: true,
     });
-    if (options.output){
+    if (options.output) {
         console.log('starting monitor with status');
     }
     timeout = setTimeout(request,0);
     return;
-};
+
+}
+
+/**
+ * exports function
+ * 
+ * @exports main
+ */
+module.exports = main;
