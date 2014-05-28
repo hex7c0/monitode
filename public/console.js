@@ -1,16 +1,18 @@
 "use strict";
 /*
- * monitode 2.1.0 (c) 2014 hex7c0, https://hex7c0.github.io/monitode/
+ * monitode 2.1.2 (c) 2014 hex7c0, https://hex7c0.github.io/monitode/
  * 
  * License: GPLv3
  */
 
 // variables
-var avg = null;
-var meml = null;
-var memp = null;
-var cpus = [];
-var app = angular.module('monitode',[]);
+/**
+ * @global
+ */
+var avg = null, meml = null, memp = null, cpus = [], app = angular.module('monitode',[]);
+/**
+ * @global
+ */
 var store = {
     x: ['x'],
     one: ['one'],
@@ -25,12 +27,13 @@ var store = {
 };
 
 // functions
-function load(){
-    /**
-     * onload function
-     * 
-     * @return void
-     */
+/**
+ * onload function
+ * 
+ * @function load
+ * @return
+ */
+function load() {
 
     avg = c3.generate({
         bindto: '#average',
@@ -139,17 +142,19 @@ function load(){
         },
     });
     return;
+
 }
-function proc(cpu){
-    /**
-     * chart init for cpus
-     * 
-     * @param array cpu: info about cpus
-     * @return void
-     */
+/**
+ * chart init for cpus
+ * 
+ * @function proc
+ * @param {Array} cpu - info about cpus
+ * @return
+ */
+function proc(cpu) {
 
     var buff = cpu;
-    for (var i = 0; i < buff.length; i++){
+    for (var i = 0; i < buff.length; i++) {
         cpus[i] = c3.generate({
             bindto: '#cpu_' + i,
             data: {
@@ -182,16 +187,24 @@ function proc(cpu){
         });
     }
     return;
-}
 
-// init
-load();
-app.controller('main',function($scope,$http,$timeout){
+}
+/**
+ * controller of angular
+ * 
+ * @function controller
+ * @param {Object} http - angular http object
+ * @param {Object} scope - angular scope object
+ * @param {Object} timeout - angular timeout object
+ * @return
+ */
+function controller($scope,$http,$timeout) {
+
     $scope.clock = 0;
     dyna($http,$scope,$timeout);
     stat($http,$scope);
     // click
-    $scope.button = function(item,event){
+    $scope.button = function(item,event) {
         switch (item){
             case 'dynamic':
                 dyna($http,$scope,$timeout);
@@ -205,7 +218,7 @@ app.controller('main',function($scope,$http,$timeout){
             case 'csv':
                 var content = ('data:text/csv;charset=utf-8,');
                 content += 'date,average 1 min,average 5 min,average 15 min,memory used\n';
-                for (var i = 1; i < store.x.length; i++){
+                for (var i = 1; i < store.x.length; i++) {
                     content += store.x[i] + ',';
                     content += store.one[i] + ',';
                     content += store.five[i] + ',';
@@ -216,11 +229,17 @@ app.controller('main',function($scope,$http,$timeout){
             break;
             case 'clear':
                 var len = store.x.length;
-                for ( var property in store){
+                for ( var property in store) {
                     store[property].splice(1,len);
                 }
                 store.logger = [];
             break;
         }
     };
-});
+    return;
+
+}
+
+// init
+load();
+app.controller('main',controller);

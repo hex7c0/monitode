@@ -2,41 +2,47 @@
 /**
  * logger parse function
  * 
- * @package monitode
+ * @file monitode parse logger
+ * @module monitode
  * @subpackage lib
- * @version 2.1.0
- * @author hex7c0 <0x7c0@teboss.tk>
- * @license GPLv3
+ * @version 2.1.2
+ * @author hex7c0 <hex7c0@gmail.com>
  * @copyright hex7c0 2014
+ * @license GPLv3
  */
 
 /**
  * initialize module
- * 
- * @global
  */
 // import
-try{
+try {
     // global
+    /**
+     * @global
+     */
     var FS = require('fs');
+    /**
+     * @global
+     */
     var READLINE = require('readline');
-} catch (MODULE_NOT_FOUND){
+} catch (MODULE_NOT_FOUND) {
     console.error(MODULE_NOT_FOUND);
     process.exit(1);
 }
 // load
+/**
+ * @global
+ */
 var log = GLOBAL._m_log;
 
 /**
- * functions
+ * async read of log file
+ * 
+ * @function logger
+ * @param {string} logfile - path of log
+ * @return
  */
-function logger(logfile){
-    /**
-     * async read of log file
-     * 
-     * @param string logfile: path of log
-     * @return void
-     */
+function logger(logfile) {
 
     var event = GLOBAL._m_event = {};
     var size = FS.statSync(logfile).size;
@@ -53,31 +59,34 @@ function logger(logfile){
         terminal: false,
     });
 
-    if (log.size < size){
+    if (log.size < size) {
         log.size = size;
-        stream.on('line',function(lines){
-            /**
-             * read one line for once
-             * 
-             * @param string line: line from log file
-             */
+
+        /**
+         * read one line for once
+         * 
+         * @param {string} line - line from log file
+         * @return
+         */
+        stream.on('line',function(lines) {
 
             log.counter++;
-            try{
-                var line = JSON.parse(lines);
-            } catch (e){
-                var line = {};
+            var line = {};
+            try {
+                line = JSON.parse(lines);
+            } catch (e) {
+                // pass
             }
-            try{
+            try {
                 event[line.url][line.method][line.status].counter++;
-            } catch (TypeError){
-                if (event[line.url] == undefined){
+            } catch (TypeError) {
+                if (event[line.url] == undefined) {
                     event[line.url] = {};
                 }
-                if (event[line.url][line.method] == undefined){
+                if (event[line.url][line.method] == undefined) {
                     event[line.url][line.method] = {};
                 }
-                if (event[line.url][line.method][line.status] == undefined){
+                if (event[line.url][line.method][line.status] == undefined) {
                     event[line.url][line.method][line.status] = {
                         counter: 1,
                     };
@@ -88,7 +97,7 @@ function logger(logfile){
     }
     return;
 }
-function starter(logfile){
+function starter(logfile) {
     /**
      * log starter
      * 
@@ -96,7 +105,7 @@ function starter(logfile){
      * @return void
      */
 
-    FS.exists(logfile,function(exists){
+    FS.exists(logfile,function(exists) {
         /**
          * logger
          * 
@@ -104,7 +113,7 @@ function starter(logfile){
          * @return void
          */
 
-        if (exists){
+        if (exists) {
             logger(logfile);
         }
         return;

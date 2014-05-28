@@ -1,38 +1,45 @@
 "use strict";
 /**
- * monitode
- * 
- * @package monitode
- * @subpackage index
- * @version 2.2.1
- * @author hex7c0 <0x7c0@teboss.tk>
- * @license GPLv3
+ * @file monitode main
+ * @module monitode
+ * @version 2.1.2
+ * @author hex7c0 <hex7c0@gmail.com>
  * @copyright hex7c0 2014
+ * @license GPLv3
  */
 
 /**
- * main
+ * express middleware
+ * 
+ * @function middle
+ * @param {object} req - client request
+ * @param {object} res - response to client
+ * @param {next} next - continue routes
+ * @return
  */
-function monitode(options){
-    /**
-     * option setting
-     * 
-     * @param object options: various options. Check README.md
-     * @return function
-     */
+function middle(req,res,next) {
 
+    return next();
+
+}
+/**
+ * option setting
+ * 
+ * @function main
+ * @param {object} options - various options. Check README.md
+ * @return {function}
+ */
+function main(options) {
+
+    var spinterogeno = [], my = GLOBAL._m_options = {}, options = options || {};
     // global
-    var spinterogeno = [];
-    var my = GLOBAL._m_options = {};
-    var options = options || {};
     my.output = Boolean(options.output);
     process.env.NODE_ENV = process.env.NODE_ENV || 'production';
     process.env._m_main = __dirname;
-
     // http
     options.http = options.http || {};
     options.http.enabled = options.http.enabled == false ? false : true;
-    if (options.http.enabled){
+    if (options.http.enabled) {
         my.http = {
             port: parseInt(options.http.port) || 30000,
             user: options.http.user = String(options.http.user || 'admin'),
@@ -41,19 +48,18 @@ function monitode(options){
         };
         spinterogeno.push(require('./module/web.js'));
     }
-
     // logger
     options.logger = options.logger || {};
-    if (options.logger.file){
+    if (options.logger.file) {
         my.logger = {
             file: String(options.logger.file),
             timeout: (parseInt(options.logger.timeout) || 5) * 1000,
         };
         spinterogeno.push(require('./module/file.js'));
-    } else{
+    } else {
         my.logger = {};
     }
-    if (options.logger.log){
+    if (options.logger.log) {
         my.logger.log = String(options.logger.log);
         GLOBAL._m_log = {
             counter: 0,
@@ -61,10 +67,9 @@ function monitode(options){
         };
         GLOBAL._m_event = {};
     }
-
     // database
     options.db = options.db || {};
-    if (options.db.mongo){
+    if (options.db.mongo) {
         my.db = {
             database: null,
             mongo: String(options.db.mongo),
@@ -72,10 +77,9 @@ function monitode(options){
         };
         spinterogeno.push(require('./module/mongo.js'));
     }
-
     // mail
     options.mail = options.mail || {};
-    if (options.mail.provider){
+    if (options.mail.provider) {
         my.mail = {
             provider: String(options.mail.provider),
             user: String(options.mail.user || 'admin'),
@@ -86,11 +90,10 @@ function monitode(options){
         };
         spinterogeno.push(require('./module/mail.js'));
     }
-
     // status
     options.status = options.status || {};
     options.status.enabled = Boolean(options.status.enabled);
-    if (options.status.enabled){
+    if (options.status.enabled) {
         my.status = {
             site: Array.isArray(options.status.site) || [],
             port: Array.isArray(options.status.port) || [],
@@ -101,34 +104,26 @@ function monitode(options){
         };
         spinterogeno.push(require('./module/status.js'));
     }
-
     // start
-    for (var i = 0, il = spinterogeno.length; i < il; i++){
+    for (var i = 0, il = spinterogeno.length; i < il; i++) {
         spinterogeno[i]();
     }
     options = spinterogeno = null;
 
-    return function monitor(req,res,next){
-        /**
-         * express middleware
-         * 
-         * @param object req: request
-         * @param object res: response
-         * @param object next: continue routes
-         * @return function
-         */
+    return middle;
 
-        return next();
-    };
 }
 
 /**
  * exports function
+ * 
+ * @exports monitode
  */
-module.exports = monitode;
-if (!module.parent){
+module.exports = main;
+
+if (!module.parent) {
     // if standalone testing
-    monitode({
+    main({
         output: true,
     });
 }

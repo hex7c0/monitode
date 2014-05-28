@@ -1,42 +1,49 @@
 "use strict";
 /*
- * monitode 2.0.0 (c) 2014 hex7c0, https://hex7c0.github.io/monitode/
+ * monitode 2.1.2 (c) 2014 hex7c0, https://hex7c0.github.io/monitode/
  * 
  * License: GPLv3
  */
 
 // variables
-var promise = null;
-var flag = false;
+/**
+ * @global
+ */
+var promise = null, flag = false;
 
 // functions
-function dyna($http,$scope,$timeout){
-    /**
-     * ajax post 'dynamic'
-     * 
-     * @return void
-     */
+/**
+ * ajax post 'dynamic'
+ * 
+ * @function dyna
+ * @param {Object} http - angular http object
+ * @param {Object} scope - angular scope object
+ * @param {Object} timeout - angular timeout object
+ * @return
+ */
+function dyna($http,$scope,$timeout) {
 
     $timeout.cancel(promise);
-    if ($scope.clock > 0){
+    if ($scope.clock > 0) {
         promise = $timeout(loop,$scope.clock * 1000);
-    } else if ($scope.clock == 0){
+    } else if ($scope.clock == 0) {
         $scope.clock = 5;
         loop();
     }
 
-    function loop(){
-        /**
-         * ajax POST loop
-         * 
-         * @return boolean (callback)
-         */
+    /**
+     * ajax POST loop
+     * 
+     * @function loop
+     * @return
+     */
+    function loop() {
 
         $http({
             method: 'POST',
             url: '/dyn/'
         }).success(
-                function(data,status,headers,config){
+                function(data,status,headers,config) {
                     // avg
                     store.x.push(new Date(data.date));
                     store.one.push(data.cpu.one);
@@ -61,11 +68,11 @@ function dyna($http,$scope,$timeout){
                         columns: [['used',data.mem.used],['free',mfree]],
                     });
                     // cpu
-                    if (cpus.length == 0){
+                    if (cpus.length == 0) {
                         $scope.cpus = cpus = data.cpu.cpus;
                         proc($scope.cpus);
-                    } else{
-                        for (var i = 0, il = data.cpu.cpus.length; i < il; i++){
+                    } else {
+                        for (var i = 0, il = data.cpu.cpus.length; i < il; i++) {
                             var cpu = data.cpu.cpus[i];
                             cpus[i].load({
                                 columns: [['user',cpu.times.user],['nice',cpu.times.nice],
@@ -100,35 +107,35 @@ function dyna($http,$scope,$timeout){
                         child: [],
                     };
                     var temps = [];
-                    for ( var property in data.log){
+                    for ( var property in data.log) {
                         temps.push({
                             title: property,
                             info: data.log[property],
                         });
                     }
-                    try{
-                        if (data.log.counter){
+                    try {
+                        if (data.log.counter) {
                             temp['child'] = temps;
-                        } else{
+                        } else {
                             temp['info'] = 'disabled';
                         }
                         $scope.refresh[0] = temp;
-                    } catch (TypeError){
+                    } catch (TypeError) {
                         // pass
                     }
                     // 1 logger
-                    if (data.event){
+                    if (data.event) {
                         var temp = {
                             title: 'Logger story event',
                             child: [],
                         };
                         var temps = store.logger;
-                        for ( var property0 in data.event){ // url
+                        for ( var property0 in data.event) { // url
                             flag = true;
                             var arr0 = data.event[property0];
-                            for ( var property1 in arr0){ // method
+                            for ( var property1 in arr0) { // method
                                 var arr1 = arr0[property1];
-                                for ( var property2 in arr1){ // status
+                                for ( var property2 in arr1) { // status
                                     var arr2 = arr1[property2];
                                     temps.push({
                                         title: property0,
@@ -137,30 +144,33 @@ function dyna($http,$scope,$timeout){
                                 }
                             }
                         }
-                        if (flag){
+                        if (flag) {
                             temp['child'] = temps;
                             $scope.refresh[1] = temp;
                         }
                     }
                     return dyna($http,$scope,$timeout);
-                }).error(function(data,status,headers,config){
+                }).error(function(data,status,headers,config) {
             alert('server doesn\'t respond');
-            return false;
         });
     }
     return;
+
 }
-function stat($http,$scope){
-    /**
-     * ajax post 'static'
-     * 
-     * @return boolean (callback)
-     */
+/**
+ * ajax post 'static'
+ * 
+ * @function stat
+ * @param {Object} http - angular http object
+ * @param {Object} scope - angular scope object
+ * @return
+ */
+function stat($http,$scope) {
 
     $http({
         method: 'POST',
         url: '/sta/'
-    }).success(function(data,status,headers,config){
+    }).success(function(data,status,headers,config) {
         // info
         $scope.statics = [{
             title: 'CPU architecture',
@@ -192,7 +202,7 @@ function stat($http,$scope){
             title: 'Process environment',
         };
         var temps = [];
-        for ( var property in data.process.env){
+        for ( var property in data.process.env) {
             temps.push({
                 title: property,
                 info: data.process.env[property],
@@ -205,10 +215,10 @@ function stat($http,$scope){
             title: 'Network interfaces',
         };
         var temps = [];
-        for ( var property in data.network){
-            for ( var inside in data.network[property]){
+        for ( var property in data.network) {
+            for ( var inside in data.network[property]) {
                 var obj = data.network[property][inside];
-                if (!obj.internal){ // skip loopback
+                if (!obj.internal) { // skip loopback
                     temps.push({
                         title: property + ' (' + obj.family + ')',
                         info: obj.address,
@@ -223,7 +233,7 @@ function stat($http,$scope){
             title: 'Node version',
         };
         var temps = [];
-        for ( var property in data.version){
+        for ( var property in data.version) {
             temps.push({
                 title: property,
                 info: data.version[property],
@@ -231,8 +241,9 @@ function stat($http,$scope){
         }
         temp['child'] = temps;
         $scope.statics.push(temp);
-        return true;
-    }).error(function(data,status,headers,config){
-        return false;
+    }).error(function(data,status,headers,config) {
+        // pass
     });
+    return;
+
 }
