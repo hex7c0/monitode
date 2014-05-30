@@ -1,7 +1,5 @@
 "use strict";
 /**
- * web module
- * 
  * @file monitode web
  * @module monitode
  * @subpackage module

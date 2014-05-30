@@ -1,7 +1,5 @@
 "use strict";
 /**
- * status module
- * 
  * @file monitode status
  * @module monitode
  * @subpackage module

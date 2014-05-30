@@ -1,7 +1,5 @@
 "use strict";
 /**
- * mongo module
- * 
  * @file monitode mongo
  * @module monitode
  * @subpackage module

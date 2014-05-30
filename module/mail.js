@@ -1,7 +1,5 @@
 "use strict";
 /**
- * mail module
- * 
  * @file monitode mail
  * @module monitode
  * @subpackage module
