@@ -2,7 +2,7 @@
 /**
  * @file monitode main
  * @module monitode
- * @version 2.1.2
+ * @version 2.1.3
  * @author hex7c0 <hex7c0@gmail.com>
  * @copyright hex7c0 2014
  * @license GPLv3
@@ -20,7 +20,6 @@
 function middle(req,res,next) {
 
     return next();
-
 }
 /**
  * option setting
@@ -111,7 +110,6 @@ function monitode(options) {
     options = spinterogeno = null;
 
     return middle;
-
 }
 
 /**
