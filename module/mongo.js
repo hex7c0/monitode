@@ -38,23 +38,6 @@ var timeout = null, log = null, end = without_log;
  * functions
  */
 /**
- * callback of query
- * 
- * @function query_callback
- * @param {String} error - error output
- * @param {Object} result - result of query
- * @return
- */
-function query_callback(error,result) {
-
-    if (error) {
-        console.log(error);
-    } else {
-        timeout = setTimeout(query,options.db.timeout);
-    }
-    return;
-}
-/**
  * sending object with log
  * 
  * @function with_log
@@ -65,7 +48,23 @@ function with_log(json) {
 
     var options = GLOBAL._m_options;
     json.event = GLOBAL._m_event;
-    options.db.database.insert(json,query_callback);
+    /**
+     * callback of query
+     * 
+     * @function
+     * @param {String} error - error output
+     * @param {Object} result - result of query
+     * @return
+     */
+    options.db.database.insert(json,function(error,result) {
+
+        if (error) {
+            console.log(error);
+        } else {
+            timeout = setTimeout(query,options.db.timeout);
+        }
+        return;
+    });
     log(options.logger.log);
     return;
 }
@@ -79,7 +78,23 @@ function with_log(json) {
 function without_log(json) {
 
     var options = GLOBAL._m_options.db;
-    options.database.insert(json,query_callback)
+    /**
+     * callback of query
+     * 
+     * @function
+     * @param {String} error - error output
+     * @param {Object} result - result of query
+     * @return
+     */
+    options.database.insert(json,function(error,result) {
+
+        if (error) {
+            console.log(error);
+        } else {
+            timeout = setTimeout(query,options.timeout);
+        }
+        return;
+    });
     return;
 }
 /**

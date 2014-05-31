@@ -1,3 +1,9 @@
+2.1.4 / 2014-05-30
+==================
+
+  * Remove `basic-auth` dependencies. Using own code
+  * More accurate system lag
+
 2.1.3 / 2014-05-28
 ==================
 
