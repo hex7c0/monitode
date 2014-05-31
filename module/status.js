@@ -3,7 +3,7 @@
  * @file monitode status
  * @module monitode
  * @subpackage module
- * @version 2.1.2
+ * @version 2.1.4
  * @author hex7c0 <hex7c0@gmail.com>
  * @copyright hex7c0 2014
  * @license GPLv3
@@ -67,7 +67,6 @@ function complete(res) {
     };
     options.file('moniStatus',write);
     return;
-
 }
 /**
  * request loop
@@ -112,13 +111,13 @@ function request() {
             },complete);
         }
         req.on('error',function(error) {
+
             console.log(error);
         });
         req.end();
     }
     timeout = setTimeout(request,options.timeout);
     return;
-
 }
 /**
  * init for file module. Using global var for sharing info
@@ -142,7 +141,6 @@ function main() {
     }
     timeout = setTimeout(request,0);
     return;
-
 }
 
 /**

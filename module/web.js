@@ -24,10 +24,6 @@ try {
      * @global
      */
     var EXPRESS = require('express');
-    /**
-     * @global
-     */
-    var AUTH = require('basic-auth');
 } catch (MODULE_NOT_FOUND) {
     console.error(MODULE_NOT_FOUND);
     process.exit(1);
@@ -42,7 +38,7 @@ var app = EXPRESS(), log = null, end = without_log;
  * functions
  */
 /**
- * protection middleware
+ * protection middleware with basic authentication
  * 
  * @function auth
  * @param {Object} req - client request
@@ -53,12 +49,25 @@ var app = EXPRESS(), log = null, end = without_log;
 function auth(req,res,next) {
 
     var options = GLOBAL._m_options.http;
-    var user = AUTH(req);
+    var user = false, auth = null;
+    if (auth = req.headers.authorization) {
+        auth = auth.split(' ');
+        if ('basic' == auth[0].toLowerCase() && auth[1]) {
+            auth = new Buffer(auth[1],'base64').toString();
+            auth = auth.match(/^([^:]+):(.+)$/);
+            if (auth) {
+                user = {
+                    name: auth[1],
+                    password: auth[2],
+                }
+            }
+        }
+    }
 
-    if (user === undefined || user['name'] !== options.user || user['pass'] !== options.password) {
+    if (!user || user.name != options.user || user.password != options.password) {
         res.setHeader('WWW-Authenticate','Basic realm="monitode"');
         res.status(401).end('Unauthorized');
-    } else if (options.agent && options.agent === req.headers['user-agent']) {
+    } else if (options.agent && options.agent == req.headers['user-agent']) {
         next();
     } else if (!options.agent) {
         next();
@@ -78,14 +87,16 @@ function auth(req,res,next) {
  */
 function with_log(res,json) {
 
-    var options = GLOBAL._m_options.logger.log;
     json.log = GLOBAL._m_log;
     json.event = GLOBAL._m_event;
+    var diff = process.hrtime(json.ns);
+    json.ns = diff[0] * 1e9 + diff[1];
     res.json(json);
     res.end();
+
+    var options = GLOBAL._m_options.logger.log;
     log(options);
     return;
-
 }
 /**
  * sending object without log
@@ -97,9 +108,11 @@ function with_log(res,json) {
  */
 function without_log(res,json) {
 
+    var diff = process.hrtime(json.ns);
+    json.ns = diff[0] * 1e9 + diff[1];
     res.json(json);
+    res.end();
     return;
-
 }
 /**
  * init for web module. Using global var for sharing info
@@ -123,9 +136,7 @@ function main() {
     }
     app.listen(options.http.port);
     return;
-
 }
-
 /**
  * exports function
  * 
@@ -144,17 +155,9 @@ module.exports = main;
  * @return
  */
 app.get('/',auth,function(req,res) {
-    /**
-     * GET routing. Send html file
-     * 
-     * @param object req: request
-     * @param object res: response
-     * @return void
-     */
 
     res.sendfile(process.env._m_main + '/console/index.html');
     return;
-
 });
 /**
  * POST routing. Build dynamic info
@@ -192,12 +195,10 @@ app.post('/dyn/',auth,function(req,res) {
                 used: v8.heapUsed,
             },
         },
+        ns: start,
     };
-    var diff = process.hrtime(start);
-    dynamics.ns = diff[0] * 1e9 + diff[1];
     end(res,dynamics);
     return;
-
 });
 /**
  * POST routing. Build static info
@@ -206,10 +207,9 @@ app.post('/dyn/',auth,function(req,res) {
  * @param {Object} res - response to client
  * @return
  */
-
 app.post('/sta/',auth,function(req,res) {
 
-    var statics = {
+    res.json({
         os: {
             hostname: OS.hostname(),
             platform: OS.platform(),
@@ -225,8 +225,6 @@ app.post('/sta/',auth,function(req,res) {
             env: process.env,
         },
         network: OS.networkInterfaces(),
-    };
-    res.json(statics);
+    });
     return;
-
 });

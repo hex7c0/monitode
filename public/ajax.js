@@ -1,6 +1,6 @@
 "use strict";
 /*
- * monitode 2.1.2 (c) 2014 hex7c0, https://hex7c0.github.io/monitode/
+ * monitode 2.1.4 (c) 2014 hex7c0, https://hex7c0.github.io/monitode/
  * 
  * License: GPLv3
  */
@@ -44,6 +44,7 @@ function dyna($http,$scope,$timeout) {
             url: '/dyn/'
         }).success(
                 function(data,status,headers,config) {
+
                     // avg
                     store.x.push(new Date(data.date));
                     store.one.push(data.cpu.one);
@@ -89,7 +90,7 @@ function dyna($http,$scope,$timeout) {
                         info: (Date.now() - data.date) + ' milliseconds',
                     },{
                         title: 'System lag',
-                        info: data.ns + ' nanoseconds',
+                        info: data.ns / 1000000 + ' milliseconds',
                     },{
                         title: 'System uptime',
                         info: Math.floor(data.uptimeS / 60) + ' minutes',
@@ -151,6 +152,7 @@ function dyna($http,$scope,$timeout) {
                     }
                     return dyna($http,$scope,$timeout);
                 }).error(function(data,status,headers,config) {
+
             alert('server doesn\'t respond');
         });
     }
@@ -171,6 +173,7 @@ function stat($http,$scope) {
         method: 'POST',
         url: '/sta/'
     }).success(function(data,status,headers,config) {
+
         // info
         $scope.statics = [{
             title: 'CPU architecture',
@@ -242,6 +245,7 @@ function stat($http,$scope) {
         temp['child'] = temps;
         $scope.statics.push(temp);
     }).error(function(data,status,headers,config) {
+
         // pass
     });
     return;

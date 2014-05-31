@@ -1,11 +1,13 @@
 "use strict";
 /*
- * monitode 2.1.2 (c) 2014 hex7c0, https://hex7c0.github.io/monitode/
+ * monitode 2.1.4 (c) 2014 hex7c0, https://hex7c0.github.io/monitode/
  * 
  * License: GPLv3
  */
 
-// variables
+/*
+ * variables
+ */
 /**
  * @global
  */
@@ -26,7 +28,9 @@ var store = {
     logger: [],
 };
 
-// functions
+/*
+ * functions
+ */
 /**
  * onload function
  * 
@@ -142,7 +146,6 @@ function load() {
         },
     });
     return;
-
 }
 /**
  * chart init for cpus
@@ -187,7 +190,6 @@ function proc(cpu) {
         });
     }
     return;
-
 }
 /**
  * controller of angular
@@ -205,6 +207,7 @@ function controller($scope,$http,$timeout) {
     stat($http,$scope);
     // click
     $scope.button = function(item,event) {
+
         switch (item){
             case 'dynamic':
                 dyna($http,$scope,$timeout);
@@ -237,9 +240,10 @@ function controller($scope,$http,$timeout) {
         }
     };
     return;
-
 }
 
-// init
+/*
+ * start
+ */
 load();
 app.controller('main',controller);

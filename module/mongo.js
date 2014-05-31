@@ -3,7 +3,7 @@
  * @file monitode mongo
  * @module monitode
  * @subpackage module
- * @version 2.1.2
+ * @version 2.1.4
  * @author hex7c0 <hex7c0@gmail.com>
  * @copyright hex7c0 2014
  * @license GPLv3
@@ -38,6 +38,23 @@ var timeout = null, log = null, end = without_log;
  * functions
  */
 /**
+ * callback of query
+ * 
+ * @function query_callback
+ * @param {String} error - error output
+ * @param {Object} result - result of query
+ * @return
+ */
+function query_callback(error,result) {
+
+    if (error) {
+        console.log(error);
+    } else {
+        timeout = setTimeout(query,options.db.timeout);
+    }
+    return;
+}
+/**
  * sending object with log
  * 
  * @function with_log
@@ -48,16 +65,9 @@ function with_log(json) {
 
     var options = GLOBAL._m_options;
     json.event = GLOBAL._m_event;
-    options.db.database.insert(json,function(error,result) {
-        if (error) {
-            console.log(error);
-        } else {
-            timeout = setTimeout(query,options.db.timeout);
-        }
-    });
+    options.db.database.insert(json,query_callback);
     log(options.logger.log);
     return;
-
 }
 /**
  * sending object without log
@@ -69,15 +79,8 @@ function with_log(json) {
 function without_log(json) {
 
     var options = GLOBAL._m_options.db;
-    options.database.insert(json,function(error,result) {
-        if (error) {
-            console.log(error);
-        } else {
-            timeout = setTimeout(query,options.timeout);
-        }
-    });
+    options.database.insert(json,query_callback)
     return;
-
 }
 /**
  * query loop
@@ -117,7 +120,6 @@ function query() {
     insert.ns = diff[0] * 1e9 + diff[1];
     end(insert);
     return;
-
 }
 /**
  * init for mongo module. Using global var for sharing info
@@ -133,10 +135,12 @@ function main() {
         end = with_log;
     }
     CLIENT.connect(options.db.mongo,function(error,database) {
+
         if (error) {
             console.log(error);
         } else {
             database.createCollection('monitode',function(error,collection) {
+
                 if (error) {
                     console.log(error);
                 } else {
@@ -150,7 +154,6 @@ function main() {
         }
     });
     return;
-
 }
 
 /**
