@@ -31,11 +31,36 @@ function middle(req,res,next) {
 function monitode(options) {
 
     var spinterogeno = [], my = GLOBAL._m_options = {}, options = options || {};
+    process.env.NODE_ENV = process.env.NODE_ENV || 'production';
+    process.env._m_main = __dirname;
     // global
     my.output = Boolean(options.output);
     my.os = Boolean(options.os);
-    process.env.NODE_ENV = process.env.NODE_ENV || 'production';
-    process.env._m_main = __dirname;
+    if (my.os) {
+        /**
+         * @global
+         */
+        GLOBAL._m_net = {
+            inn: {
+                pacs: 0,
+                errs: 0,
+                byts: 0,
+            },
+            out: {
+                pacs: 0,
+                errs: 0,
+                byts: 0,
+            },
+        };
+        /**
+         * @global
+         */
+        GLOBAL._m_io = {
+            kbt: 0,
+            tps: 0,
+            mbs: 0,
+        };
+    }
     // http
     options.http = options.http || {};
     options.http.enabled = options.http.enabled == false ? false : true;
@@ -46,26 +71,6 @@ function monitode(options) {
             password: String(options.http.password || 'password'),
             agent: options.http.agent || null,
         };
-        if (my.os) {
-            console.log(4)
-            GLOBAL._m_net = {
-                inn: {
-                    pacs: 0,
-                    errs: 0,
-                    byts: 0,
-                },
-                out: {
-                    pacs: 0,
-                    errs: 0,
-                    byts: 0,
-                },
-            };
-            GLOBAL._m_io = {
-                kbt: 0,
-                tps: 0,
-                mbs: 0,
-            };
-        }
         spinterogeno.push(require('./module/web.js'));
     }
     // logger
@@ -81,10 +86,16 @@ function monitode(options) {
     }
     if (options.logger.log) {
         my.logger.log = String(options.logger.log);
+        /**
+         * @global
+         */
         GLOBAL._m_log = {
             counter: 0,
             size: 0,
         };
+        /**
+         * @global
+         */
         GLOBAL._m_event = {};
     }
     // database

@@ -27,7 +27,7 @@ try {
 /**
  * @global
  */
-var timeout = null;
+var timeout = null, net = null, io = null;
 
 /*
  * functions
@@ -42,7 +42,16 @@ function email() {
 
     clearTimeout(timeout);
     var options = GLOBAL._m_options.mail;
-    options.to.text = JSON.stringify(require('../lib/obj.js').dynamics(true));
+    var json = require('../lib/obj.js').dynamics(true);
+    if (net) {
+        json.net = GLOBAL._m_net;
+        json.io = GLOBAL._m_io;
+        net();
+        io();
+    } else {
+        // pass
+    }
+    options.to.text = JSON.stringify(json);
     options.provider.sendMail(options.to,function(error,response) {
 
         if (error) {
@@ -64,6 +73,10 @@ function email() {
 module.exports = function main() {
 
     var options = GLOBAL._m_options;
+    if (options.os) {
+        net = require('../lib/net.js')();
+        io = require('../lib/io.js')();
+    }
     options.mail.provider = MAIL.createTransport('SMTP',{
         service: options.mail.provider,
         auth: {

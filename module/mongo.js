@@ -27,7 +27,7 @@ try {
 /**
  * @global
  */
-var timeout = null, log = null, end = without_log;
+var timeout = null, log = null, net = null, io = null, end = without_log;
 
 /*
  * functions
@@ -42,6 +42,8 @@ var timeout = null, log = null, end = without_log;
 function with_log(json) {
 
     var options = GLOBAL._m_options;
+    var diff = process.hrtime(json.ns);
+    json.ns = diff[0] * 1e9 + diff[1];
     json.event = GLOBAL._m_event;
     /**
      * callback of query
@@ -54,7 +56,7 @@ function with_log(json) {
     options.db.database.insert(json,function(error,result) {
 
         if (error) {
-            console.log(error);
+            console.error(error);
         } else {
             timeout = setTimeout(query,options.db.timeout);
         }
@@ -73,6 +75,8 @@ function with_log(json) {
 function without_log(json) {
 
     var options = GLOBAL._m_options.db;
+    var diff = process.hrtime(json.ns);
+    json.ns = diff[0] * 1e9 + diff[1];
     /**
      * callback of query
      * 
@@ -84,7 +88,7 @@ function without_log(json) {
     options.database.insert(json,function(error,result) {
 
         if (error) {
-            console.log(error);
+            console.error(error);
         } else {
             timeout = setTimeout(query,options.timeout);
         }
@@ -101,10 +105,16 @@ function without_log(json) {
 function query() {
 
     clearTimeout(timeout);
-    var insert = require('../lib/obj.js').dynamics()
-    var diff = process.hrtime(insert.ns);
-    insert.ns = diff[0] * 1e9 + diff[1];
-    end(insert);
+    var json = require('../lib/obj.js').dynamics()
+    if (net) {
+        json.net = GLOBAL._m_net;
+        json.io = GLOBAL._m_io;
+        end(json);
+        net();
+        io();
+    } else {
+        end(json);
+    }
     return;
 }
 /**
@@ -116,6 +126,10 @@ function query() {
 function main() {
 
     var options = GLOBAL._m_options;
+    if (options.os) {
+        net = require('../lib/net.js')();
+        io = require('../lib/io.js')();
+    }
     if (options.logger.log) {
         log = require('./lib/log.js');
         end = with_log;
@@ -123,12 +137,12 @@ function main() {
     CLIENT.connect(options.db.mongo,function(error,database) {
 
         if (error) {
-            console.log(error);
+            console.error(error);
         } else {
             database.createCollection('monitode',function(error,collection) {
 
                 if (error) {
-                    console.log(error);
+                    console.error(error);
                 } else {
                     options.db.database = collection;
                     if (options.output) {

@@ -1,3 +1,10 @@
+2.2.0 / 2014-06-01
+==================
+
+  * Add OS statistics (netstat, iostat) **_MAC ONLY FOR NOW_**
+  * New subdivision in /lib and /module
+  * Global dynamic object
+
 2.1.4 / 2014-05-30
 ==================
 

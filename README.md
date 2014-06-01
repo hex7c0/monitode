@@ -23,9 +23,7 @@ inside nodejs project
 ```js
 var monitode = require('monitode');
 
-monitode({
-    password : 'psw',
-});
+monitode();
 ```
 
 inside expressjs project
