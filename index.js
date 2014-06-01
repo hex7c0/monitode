@@ -33,6 +33,7 @@ function monitode(options) {
     var spinterogeno = [], my = GLOBAL._m_options = {}, options = options || {};
     // global
     my.output = Boolean(options.output);
+    my.os = Boolean(options.os);
     process.env.NODE_ENV = process.env.NODE_ENV || 'production';
     process.env._m_main = __dirname;
     // http
@@ -45,6 +46,25 @@ function monitode(options) {
             password: String(options.http.password || 'password'),
             agent: options.http.agent || null,
         };
+        if (my.os) {
+            GLOBAL._m_net = {
+                inn: {
+                    pacs: 0,
+                    errs: 0,
+                    byts: 0,
+                },
+                out: {
+                    pacs: 0,
+                    errs: 0,
+                    byts: 0,
+                },
+            };
+            GLOBAL._m_io = {
+                kbt: 0,
+                tps: 0,
+                mbs: 0,
+            };
+        }
         spinterogeno.push(require('./module/web.js'));
     }
     // logger

@@ -1,6 +1,6 @@
 "use strict";
 /*
- * monitode 2.1.4 (c) 2014 hex7c0, https://hex7c0.github.io/monitode/
+ * monitode 2.2.0 (c) 2014 hex7c0, https://hex7c0.github.io/monitode/
  * 
  * License: GPLv3
  */
@@ -11,7 +11,11 @@
 /**
  * @global
  */
-var avg = null, meml = null, memp = null, cpus = [], app = angular.module('monitode',[]);
+var avg = null, meml = null, memp = null, os = null;
+/**
+ * @global
+ */
+var cpus = [], app = angular.module('monitode',[]);
 /**
  * @global
  */
@@ -25,6 +29,10 @@ var store = {
     v8rss: ['v8rss'],
     v8total: ['v8total'],
     v8used: ['v8used'],
+    inet: ['inet'],
+    onet: ['onet'],
+    kbt: ['kbt'],
+    mbs: ['mbs'],
     logger: [],
 };
 
@@ -74,7 +82,7 @@ function load() {
                 localtime: false,
                 tick: {
                     count: 5,
-                    format: '%d %H:%M:%S',
+                    format: '/%d %H:%M:%S',
                 },
             },
             y: {
@@ -119,7 +127,7 @@ function load() {
                 localtime: false,
                 tick: {
                     count: 5,
-                    format: '%d %H:%M:%S',
+                    format: '/%d %H:%M:%S',
                 },
             },
             y: {
@@ -150,11 +158,11 @@ function load() {
 /**
  * chart init for cpus
  * 
- * @function proc
+ * @function loadProc
  * @param {Array} cpu - info about cpus
  * @return
  */
-function proc(cpu) {
+function loadProc(cpu) {
 
     var buff = cpu;
     for (var i = 0; i < buff.length; i++) {
@@ -189,6 +197,41 @@ function proc(cpu) {
             },
         });
     }
+    return;
+}
+/**
+ * chart init for net/io
+ * 
+ * @function loadOs
+ * @return
+ */
+function loadOs() {
+
+    os = c3.generate({
+        bindto: '#os',
+        data: {
+            type: 'spline',
+            x: 'x',
+            columns: [store.x,store.inet,store.onet,store.kbt,store.mbs],
+            names: {
+                inet: 'input bytes',
+                onet: 'output bytes',
+                kbt: 'KBtransfer',
+                mbs: 'MBsecond',
+            },
+        },
+        axis: {
+            x: {
+                type: 'timeseries',
+                label: 'time',
+                localtime: false,
+                tick: {
+                    count: 5,
+                    format: '/%d %H:%M:%S',
+                },
+            },
+        },
+    });
     return;
 }
 /**

@@ -2,8 +2,9 @@
 /**
  * @file monitode mongo
  * @module monitode
+ * @package monitode
  * @subpackage module
- * @version 2.1.4
+ * @version 2.2.0
  * @author hex7c0 <hex7c0@gmail.com>
  * @copyright hex7c0 2014
  * @license GPLv3
@@ -14,12 +15,6 @@
  */
 // import
 try {
-    // global
-    /**
-     * @global
-     */
-    var OS = require('os');
-    // personal
     /**
      * @global
      */
@@ -106,32 +101,8 @@ function without_log(json) {
 function query() {
 
     clearTimeout(timeout);
-    var start = process.hrtime();
-    var load = OS.loadavg();
-    var total = OS.totalmem();
-    var v8 = process.memoryUsage();
-    var insert = {
-        date: Date.now(),
-        uptime: {
-            os: OS.uptime(),
-            node: process.uptime(),
-        },
-        cpu: {
-            one: load[0],
-            five: load[1],
-            fifteen: load[2],
-        },
-        mem: {
-            total: total,
-            used: total - OS.freemem(),
-            v8: {
-                rss: v8.rss,
-                total: v8.heapTotal,
-                used: v8.heapUsed,
-            },
-        },
-    };
-    var diff = process.hrtime(start);
+    var insert = require('../lib/obj.js').dynamics()
+    var diff = process.hrtime(insert.ns);
     insert.ns = diff[0] * 1e9 + diff[1];
     end(insert);
     return;

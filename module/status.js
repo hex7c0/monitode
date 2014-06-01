@@ -2,8 +2,9 @@
 /**
  * @file monitode status
  * @module monitode
+ * @package monitode
  * @subpackage module
- * @version 2.1.4
+ * @version 2.2.0
  * @author hex7c0 <hex7c0@gmail.com>
  * @copyright hex7c0 2014
  * @license GPLv3
@@ -14,7 +15,6 @@
  */
 // import
 try {
-    // global
     /**
      * @global
      */
@@ -27,7 +27,6 @@ try {
      * @global
      */
     var URL = require('url');
-    // personal
     /**
      * @global
      */
@@ -113,6 +112,7 @@ function request() {
         req.on('error',function(error) {
 
             console.log(error);
+            return;
         });
         req.end();
     }
@@ -122,10 +122,11 @@ function request() {
 /**
  * init for file module. Using global var for sharing info
  * 
+ * @exports main
  * @function main
  * @return
  */
-function main() {
+module.exports = function main() {
 
     var options = GLOBAL._m_options;
     options.status.file = LOGGER({
@@ -142,10 +143,3 @@ function main() {
     timeout = setTimeout(request,0);
     return;
 }
-
-/**
- * exports function
- * 
- * @exports main
- */
-module.exports = main;

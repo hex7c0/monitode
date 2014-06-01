@@ -2,8 +2,9 @@
 /**
  * @file monitode web
  * @module monitode
+ * @package monitode
  * @subpackage module
- * @version 2.1.2
+ * @version 2.2.0
  * @author hex7c0 <hex7c0@gmail.com>
  * @copyright hex7c0 2014
  * @license GPLv3
@@ -14,12 +15,6 @@
  */
 // import
 try {
-    // global
-    /**
-     * @global
-     */
-    var OS = require('os');
-    // personal
     /**
      * @global
      */
@@ -32,7 +27,7 @@ try {
 /**
  * @global
  */
-var app = EXPRESS(), log = null, end = without_log;
+var app = EXPRESS(), log = null, net = null, io = null, end = without_log;
 
 /*
  * functions
@@ -48,7 +43,7 @@ var app = EXPRESS(), log = null, end = without_log;
  */
 function auth(req,res,next) {
 
-    var options = GLOBAL._m_options.http;
+    // auth
     var user = false, auth = null;
     if (auth = req.headers.authorization) {
         auth = auth.split(' ');
@@ -63,7 +58,8 @@ function auth(req,res,next) {
             }
         }
     }
-
+    // check
+    var options = GLOBAL._m_options.http;
     if (!user || user.name != options.user || user.password != options.password) {
         res.setHeader('WWW-Authenticate','Basic realm="monitode"');
         res.status(401).end('Unauthorized');
@@ -75,7 +71,6 @@ function auth(req,res,next) {
         res.status(403).end('Forbidden');
     }
     return;
-
 }
 /**
  * sending object with log
@@ -117,19 +112,21 @@ function without_log(res,json) {
 /**
  * init for web module. Using global var for sharing info
  * 
+ * @exports main
  * @function main
  * @return
  */
-function main() {
+module.exports = function main() {
 
     var options = GLOBAL._m_options;
+    net = require('../lib/net.js')();
+    io = require('../lib/io.js')();
     if (options.logger.log) {
-        log = require('./lib/log.js');
+        log = require('../lib/log.js');
         end = with_log;
     }
-    app.enable('case sensitive routing');
-    app.enable('strict routing');
     app.disable('x-powered-by');
+    app.disable('etag')
     app.use(EXPRESS.static(process.env._m_main + '/public/'));
     if (options.output) {
         console.log('starting monitor on port ' + options.http.port);
@@ -137,12 +134,6 @@ function main() {
     app.listen(options.http.port);
     return;
 }
-/**
- * exports function
- * 
- * @exports main
- */
-module.exports = main;
 
 /*
  * express routing
@@ -168,36 +159,17 @@ app.get('/',auth,function(req,res) {
  */
 app.post('/dyn/',auth,function(req,res) {
 
-    var start = process.hrtime();
-    var load = OS.loadavg();
-    var total = OS.totalmem();
-    var v8 = process.memoryUsage();
-    var cpus = OS.cpus();
-    for (var i = 0, il = cpus.length; i < il; i++) { // slim json
-        cpus[i].model = '';
+    var json = require('../lib/obj.js').dynamics();
+    console.log(GLOBAL._m_options.os)
+    if (GLOBAL._m_options.os) {
+        json.net = GLOBAL._m_net;
+        json.io = GLOBAL._m_io;
+        end(res,json);
+        net();
+        io();
+    } else {
+        end(res,json);
     }
-    var dynamics = {
-        date: Date.now(),
-        uptimeS: OS.uptime(),
-        uptimeN: process.uptime(),
-        cpu: {
-            one: load[0],
-            five: load[1],
-            fifteen: load[2],
-            cpus: cpus,
-        },
-        mem: {
-            total: total,
-            used: total - OS.freemem(),
-            v8: {
-                rss: v8.rss,
-                total: v8.heapTotal,
-                used: v8.heapUsed,
-            },
-        },
-        ns: start,
-    };
-    end(res,dynamics);
     return;
 });
 /**
@@ -209,22 +181,6 @@ app.post('/dyn/',auth,function(req,res) {
  */
 app.post('/sta/',auth,function(req,res) {
 
-    res.json({
-        os: {
-            hostname: OS.hostname(),
-            platform: OS.platform(),
-            arch: OS.arch(),
-            type: OS.type(),
-            release: OS.release(),
-        },
-        version: process.versions,
-        process: {
-            gid: process.getgid(),
-            uid: process.getuid(),
-            pid: process.pid,
-            env: process.env,
-        },
-        network: OS.networkInterfaces(),
-    });
+    res.json(require('../lib/obj.js').statics);
     return;
 });

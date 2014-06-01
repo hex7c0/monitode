@@ -68,10 +68,23 @@ function dyna($http,$scope,$timeout) {
                     memp.load({
                         columns: [['used',data.mem.used],['free',mfree]],
                     });
+                    if (data.net) {
+                        // os
+                        store.inet.push(data.net.inn.byts);
+                        store.onet.push(data.net.out.byts);
+                        store.kbt.push(data.io.kbt);
+                        store.mbs.push(data.io.mbs);
+                        if (!os) {
+                            loadOs();
+                        }
+                        os.load({
+                            columns: [store.x,store.inet,store.onet,store.kbt,store.mbs],
+                        });
+                    }
                     // cpu
                     if (cpus.length == 0) {
                         $scope.cpus = cpus = data.cpu.cpus;
-                        proc($scope.cpus);
+                        loadProc($scope.cpus);
                     } else {
                         for (var i = 0, il = data.cpu.cpus.length; i < il; i++) {
                             var cpu = data.cpu.cpus[i];
@@ -93,10 +106,10 @@ function dyna($http,$scope,$timeout) {
                         info: data.ns / 1000000 + ' milliseconds',
                     },{
                         title: 'System uptime',
-                        info: Math.floor(data.uptimeS / 60) + ' minutes',
+                        info: Math.floor(data.uptime.os / 60) + ' minutes',
                     },{
                         title: 'System uptime Node',
-                        info: Math.floor(data.uptimeN / 60) + ' minutes',
+                        info: Math.floor(data.uptime.node / 60) + ' minutes',
                     },];
                     /*
                      * info refresh

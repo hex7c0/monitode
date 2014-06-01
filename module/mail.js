@@ -2,8 +2,9 @@
 /**
  * @file monitode mail
  * @module monitode
+ * @package monitode
  * @subpackage module
- * @version 2.1.2
+ * @version 2.2.0
  * @author hex7c0 <hex7c0@gmail.com>
  * @copyright hex7c0 2014
  * @license GPLv3
@@ -14,12 +15,6 @@
  */
 // import
 try {
-    // global
-    /**
-     * @global
-     */
-    var OS = require('os');
-    // personal
     /**
      * @global
      */
@@ -47,28 +42,9 @@ function email() {
 
     clearTimeout(timeout);
     var options = GLOBAL._m_options.mail;
-    var load = OS.loadavg();
-    var total = OS.totalmem();
-    var v8 = process.memoryUsage();
-    var text = {
-        date: new Date().toUTCString(),
-        cpu: {
-            one: load[0],
-            five: load[1],
-            fifteen: load[2],
-        },
-        mem: {
-            total: total,
-            used: total - OS.freemem(),
-            v8: {
-                rss: v8.rss,
-                total: v8.heapTotal,
-                used: v8.heapUsed,
-            },
-        },
-    };
-    options.to.text = JSON.stringify(text);
+    options.to.text = JSON.stringify(require('../lib/obj.js').dynamics());
     options.provider.sendMail(options.to,function(error,response) {
+
         if (error) {
             console.log(error);
         } else {
@@ -77,15 +53,15 @@ function email() {
         options.provider.close();
     });
     return;
-
 }
 /**
  * init for file module. Using global var for sharing info
  * 
+ * @exports main
  * @function main
  * @return
  */
-function main() {
+module.exports = function main() {
 
     var options = GLOBAL._m_options;
     options.mail.provider = MAIL.createTransport('SMTP',{
@@ -105,12 +81,4 @@ function main() {
     }
     timeout = setTimeout(email,0);
     return;
-
 }
-
-/**
- * exports function
- * 
- * @export main
- */
-module.exports = main;
