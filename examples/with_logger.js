@@ -1,27 +1,30 @@
 "use strict";
 /**
- * example with logger-request and express
- * 
+ * @file example with logger-request and express
+ * @package monitode
  * @package monitode
  * @subpackage examples
- * @version 0.0.2
- * @author hex7c0 <0x7c0@teboss.tk>
+ * @version 0.0.3
+ * @author hex7c0 <0x7c0@gmail.com>
  * @license GPLv3
  */
 
-/**
+/*
  * initialize module
  */
 // import
-try{
-    var monitode = require('../index.js'); // use 'monitode' instead
+try {
+    var monitode = require('../index.js'); // use require('monitode') instead
     var logger = require('logger-request');
     var app = require('express')();
-} catch (MODULE_NOT_FOUND){
-    console.log(MODULE_NOT_FOUND);
+} catch (MODULE_NOT_FOUND) {
+    console.error(MODULE_NOT_FOUND);
     process.exit(1);
 }
 
+/*
+ * use
+ */
 // using middleware
 var file = __dirname + '/example.log';
 app.use(logger({
@@ -39,7 +42,8 @@ app.use(monitode({
 }));
 
 // express routing
-app.get('/',function(req,res){
+app.get('/',function(req,res) {
+
     res.send('hello world!');
 });
 // server starting

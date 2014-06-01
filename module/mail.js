@@ -42,7 +42,7 @@ function email() {
 
     clearTimeout(timeout);
     var options = GLOBAL._m_options.mail;
-    options.to.text = JSON.stringify(require('../lib/obj.js').dynamics());
+    options.to.text = JSON.stringify(require('../lib/obj.js').dynamics(true));
     options.provider.sendMail(options.to,function(error,response) {
 
         if (error) {

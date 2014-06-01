@@ -42,7 +42,7 @@ function file() {
 
     clearTimeout(timeout);
     var options = GLOBAL._m_options.logger;
-    options.file('moniFile',require('../lib/obj.js').dynamics());
+    options.file('moniFile',require('../lib/obj.js').dynamics(true));
     timeout = setTimeout(file,options.timeout);
     return;
 }

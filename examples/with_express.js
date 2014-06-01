@@ -1,31 +1,35 @@
 "use strict";
 /**
- * example with express
- * 
+ * @file example with express
+ * @package monitode
  * @package monitode
  * @subpackage examples
- * @version 0.0.2
- * @author hex7c0 <0x7c0@teboss.tk>
+ * @version 0.0.3
+ * @author hex7c0 <0x7c0@gmail.com>
  * @license GPLv3
  */
 
-/**
+/*
  * initialize module
  */
 // import
-try{
+try {
+    var monitode = require('../index.js'); // use require('monitode') instead
     var app = require('express')();
-    var monitode = require('../index.js'); // use 'monitode' instead
-} catch (MODULE_NOT_FOUND){
-    console.log(MODULE_NOT_FOUND);
+} catch (MODULE_NOT_FOUND) {
+    console.error(MODULE_NOT_FOUND);
     process.exit(1);
 }
 
+/*
+ * use
+ */
 // using middleware
 app.use(monitode());
 
 // express routing
-app.get('/',function(req,res){
+app.get('/',function(req,res) {
+
     res.send('hello world!');
 });
 // server starting

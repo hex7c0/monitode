@@ -30,8 +30,8 @@ monitode({
 
 inside expressjs project
 ```js
-var app = require('express')();
 var monitode = require('monitode');
+var app = require('express')();
 
 app.use(monitode({
     password : 'psw'
@@ -40,8 +40,8 @@ app.use(monitode({
 
 inside expressjs project with [logger-request](https://github.com/hex7c0/logger-request)
 ```js
-var app = require('express')();
 var monitode = require('monitode');
+var app = require('express')();
 var logger = require('logger-request');
 
 var file = __dirname + '/monitode.log'
@@ -58,6 +58,8 @@ app.use(monitor({
 #### options
 
  - `output` - **Boolean** If enabled, show output to shell console *(default 'false')*
+ 
+ - `os` - **Boolean** If enabled, show os statistics to web console/database/email *(default 'false')* **_MAC ONLY FOR NOW_**
  
  - `http` - **Object** Setting up a web console
   - `enabled` - **Boolean** If disabled, don't run web support *(default 'enabled')*
@@ -95,6 +97,8 @@ app.use(monitor({
 #### Examples
 
 Take a look at my [examples](https://github.com/hex7c0/monitode/tree/master/examples)
+
+Or look at working [pdf output](https://github.com/hex7c0/monitode/raw/master/examples/monitode.pdf)
 
 ## License
 Copyright (c) 2014 hex7c0

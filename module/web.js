@@ -119,8 +119,10 @@ function without_log(res,json) {
 module.exports = function main() {
 
     var options = GLOBAL._m_options;
-    net = require('../lib/net.js')();
-    io = require('../lib/io.js')();
+    if (options.os) {
+        net = require('../lib/net.js')();
+        io = require('../lib/io.js')();
+    }
     if (options.logger.log) {
         log = require('../lib/log.js');
         end = with_log;
@@ -160,7 +162,7 @@ app.get('/',auth,function(req,res) {
 app.post('/dyn/',auth,function(req,res) {
 
     var json = require('../lib/obj.js').dynamics();
-    if (GLOBAL._m_options.os) {
+    if (net) {
         json.net = GLOBAL._m_net;
         json.io = GLOBAL._m_io;
         end(res,json);

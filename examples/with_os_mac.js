@@ -1,6 +1,6 @@
 "use strict";
 /**
- * @file example with mail
+ * @file example with os stat. MAC ONLY FOR NOW
  * @package monitode
  * @package monitode
  * @subpackage examples
@@ -25,10 +25,6 @@ try {
  */
 // using standalone
 monitode({
-    mail: {
-        provider: 'gmail',
-        user: 'pippo@gmail.com',
-        password: 'myStrongPsw1',
-        to: ['pluto@gmail.com','mickey@gmail.com'],
-    }
+    output: true,
+    os: true,
 });

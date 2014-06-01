@@ -47,6 +47,7 @@ function monitode(options) {
             agent: options.http.agent || null,
         };
         if (my.os) {
+            console.log(4)
             GLOBAL._m_net = {
                 inn: {
                     pacs: 0,
@@ -114,8 +115,8 @@ function monitode(options) {
     options.status.enabled = Boolean(options.status.enabled);
     if (options.status.enabled) {
         my.status = {
-            site: Array.isArray(options.status.site) || [],
-            port: Array.isArray(options.status.port) || [],
+            site: Array.isArray(options.status.site) == true ? options.status.site : [],
+            port: Array.isArray(options.status.port) == true ? options.status.port : [],
             method: String(options.status.method || 'GET'),
             agent: String(options.status.agent || 'monitode crawl'),
             file: String(options.status.file || 'status'),
