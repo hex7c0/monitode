@@ -160,7 +160,6 @@ app.get('/',auth,function(req,res) {
 app.post('/dyn/',auth,function(req,res) {
 
     var json = require('../lib/obj.js').dynamics();
-    console.log(GLOBAL._m_options.os)
     if (GLOBAL._m_options.os) {
         json.net = GLOBAL._m_net;
         json.io = GLOBAL._m_io;
