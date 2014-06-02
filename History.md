@@ -4,7 +4,7 @@
   * Add OS statistics (netstat, iostat) **_MAC ONLY FOR NOW_**
   * New subdivision in /lib and /module
   * Global dynamic object
-  * Test with node>=0.10
+  * Test with node >= 0.10
 
 2.1.4 / 2014-05-30
 ==================
