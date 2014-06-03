@@ -1,6 +1,6 @@
 "use strict";
 /**
- * @file example with os stat. MAC ONLY FOR NOW
+ * @file example with os stat. NOT FOR WIN
  * @package monitode
  * @package monitode
  * @subpackage examples
