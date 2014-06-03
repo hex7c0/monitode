@@ -1,3 +1,10 @@
+2.2.1 / 2014-06-03
+==================
+
+  * Add OS statistics for linux & mac (netstat, iostat) **_NOT FOR WIN_**
+  * Display _input packets_ and _output packet_ for NET
+  * Display _transfers for second_ and _megabytes per second_ for IO
+
 2.2.0 / 2014-06-01
 ==================
 

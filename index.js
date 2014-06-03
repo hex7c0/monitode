@@ -29,15 +29,14 @@ function middle(req,res,next) {
 /**
  * option setting
  * 
+ * @exports monitode
  * @function monitode
  * @param {Object} options - various options. Check README.md
  * @return {function}
  */
-function monitode(options) {
+module.exports = function monitode(options) {
 
     var spinterogeno = [], my = GLOBAL._m_options = {}, options = options || {};
-    process.env.NODE_ENV = process.env.NODE_ENV || 'production';
-    process.env._m_main = __dirname;
     // global
     my.output = Boolean(options.output);
     my.os = Boolean(options.os);
@@ -49,19 +48,16 @@ function monitode(options) {
             inn: {
                 pacs: 0,
                 errs: 0,
-                byts: 0,
             },
             out: {
                 pacs: 0,
                 errs: 0,
-                byts: 0,
             },
         };
         /**
          * @global
          */
         GLOBAL._m_io = {
-            kbt: 0,
             tps: 0,
             mbs: 0,
         };
@@ -70,8 +66,9 @@ function monitode(options) {
     options.http = options.http || {};
     options.http.enabled = options.http.enabled == false ? false : true;
     if (options.http.enabled) {
+        process.env._m_main = __dirname;
         my.http = {
-            port: parseInt(options.http.port) || 30000,
+            port: Number(options.http.port) || 30000,
             user: options.http.user = String(options.http.user || 'admin'),
             password: String(options.http.password || 'password'),
             agent: options.http.agent || null,
@@ -83,7 +80,7 @@ function monitode(options) {
     if (options.logger.file) {
         my.logger = {
             file: String(options.logger.file),
-            timeout: (parseInt(options.logger.timeout) || 5) * 1000,
+            timeout: (parseFloat(options.logger.timeout) || 5) * 1000,
         };
         spinterogeno.push(require('./module/file.js'));
     } else {
@@ -109,7 +106,7 @@ function monitode(options) {
         my.db = {
             database: null,
             mongo: String(options.db.mongo),
-            timeout: (parseInt(options.db.timeout) || 20) * 1000,
+            timeout: (parseFloat(options.db.timeout) || 20) * 1000,
         };
         spinterogeno.push(require('./module/mongo.js'));
     }
@@ -120,23 +117,22 @@ function monitode(options) {
             provider: String(options.mail.provider),
             user: String(options.mail.user || 'admin'),
             password: String(options.mail.password || 'password'),
-            to: options.mail.to || [],
+            to: Array.isArray(options.mail.to) == true ? options.mail.to : [],
             subject: String(options.mail.subject || 'monitode report'),
-            timeout: (parseInt(options.mail.timeout) || 60) * 1000,
+            timeout: (parseFloat(options.mail.timeout) || 60) * 1000,
         };
         spinterogeno.push(require('./module/mail.js'));
     }
     // status
     options.status = options.status || {};
-    options.status.enabled = Boolean(options.status.enabled);
-    if (options.status.enabled) {
+    if (Boolean(options.status.enabled)) {
         my.status = {
             site: Array.isArray(options.status.site) == true ? options.status.site : [],
             port: Array.isArray(options.status.port) == true ? options.status.port : [],
             method: String(options.status.method || 'GET'),
             agent: String(options.status.agent || 'monitode crawl'),
             file: String(options.status.file || 'status'),
-            timeout: (parseInt(options.status.timeout) || 120) * 1000,
+            timeout: (parseFloat(options.status.timeout) || 120) * 1000,
         };
         spinterogeno.push(require('./module/status.js'));
     }
@@ -147,18 +143,4 @@ function monitode(options) {
     options = spinterogeno = null;
 
     return middle;
-}
-
-/**
- * exports function
- * 
- * @exports monitode
- */
-module.exports = monitode;
-
-if (!module.parent) {
-    // if standalone testing
-    monitode({
-        output: true,
-    });
 }

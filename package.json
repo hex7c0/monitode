@@ -1,6 +1,6 @@
 {
   "name": "monitode",
-  "version": "2.2.0",
+  "version": "2.2.1",
   "description": "resource monitor for nodejs",
   "main": "index.js",
   "repository": {
@@ -29,7 +29,9 @@
     "monitor",
     "average",
     "load",
-    "cpus"
+    "cpu",
+    "net",
+    "io"
   ],
   "license": "GPLv3",
   "homepage": "https://hex7c0.github.io/monitode/"
