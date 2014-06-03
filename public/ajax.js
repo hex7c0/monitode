@@ -1,6 +1,6 @@
 "use strict";
 /*
- * monitode 2.1.4 (c) 2014 hex7c0, https://hex7c0.github.io/monitode/
+ * monitode 2.2.1 (c) 2014 hex7c0, https://hex7c0.github.io/monitode/
  * 
  * License: GPLv3
  */
@@ -70,15 +70,15 @@ function dyna($http,$scope,$timeout) {
                     });
                     if (data.net) {
                         // os
-                        store.inet.push(data.net.inn.byts);
-                        store.onet.push(data.net.out.byts);
-                        store.kbt.push(data.io.kbt);
+                        store.inet.push(data.net.inn.pacs);
+                        store.onet.push(data.net.out.pacs);
+                        store.tps.push(data.io.tps);
                         store.mbs.push(data.io.mbs);
                         if (!os) {
                             loadOs();
                         }
                         os.load({
-                            columns: [store.x,store.inet,store.onet,store.kbt,store.mbs],
+                            columns: [store.x,store.inet,store.onet,store.tps,store.mbs],
                         });
                     }
                     // cpu

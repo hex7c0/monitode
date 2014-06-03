@@ -55,7 +55,7 @@ app.use(monitor({
 
  - `output` - **Boolean** If enabled, show output to shell console *(default "false")*
  
- - `os` - **Boolean** If enabled, show os (netstat, iostat) statistics to web console/database/email *(default "false")* **_MAC ONLY FOR NOW_**
+ - `os` - **Boolean** If enabled, show os (netstat, iostat) statistics to web console/database/email *(default "false")* **_NOT FOR WIN_**
  
  - `http` - **Object** Setting up a web console
   - `enabled` - **Boolean** If disabled, don't run web support *(default "enabled")*

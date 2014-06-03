@@ -1,6 +1,6 @@
 "use strict";
 /*
- * monitode 2.2.0 (c) 2014 hex7c0, https://hex7c0.github.io/monitode/
+ * monitode 2.2.1 (c) 2014 hex7c0, https://hex7c0.github.io/monitode/
  * 
  * License: GPLv3
  */
@@ -31,7 +31,7 @@ var store = {
     v8used: ['v8used'],
     inet: ['inet'],
     onet: ['onet'],
-    kbt: ['kbt'],
+    tps: ['tps'],
     mbs: ['mbs'],
     logger: [],
 };
@@ -212,12 +212,18 @@ function loadOs() {
         data: {
             type: 'spline',
             x: 'x',
-            columns: [store.x,store.inet,store.onet,store.kbt,store.mbs],
+            columns: [store.x,store.inet,store.onet,store.tps,store.mbs],
             names: {
-                inet: 'input bytes',
-                onet: 'output bytes',
-                kbt: 'KBtransfer',
-                mbs: 'MBsecond',
+                inet: 'input packets',
+                onet: 'output packets',
+                tps: 'transfers per second',
+                mbs: 'MB per second',
+            },
+            colors: {
+                inet: 'red',
+                onet: 'blue',
+                tps: 'green',
+                mbs: 'purple',
             },
         },
         axis: {
