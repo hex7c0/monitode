@@ -58,20 +58,28 @@ app.use(monitor({
  - `os` - **Boolean** If enabled, show os (netstat, iostat) statistics to web console/database/email *(default "false")* **_NOT FOR WIN_**
  
  - `http` - **Object** Setting up a web console
-  - `enabled` - **Boolean** If disabled, don't run web support *(default "enabled")*
+  - `enabled` - **Boolean** If disabled, don't run web console *(default "enabled")*
   - `port` - **Integer** Which port accept connection of web console *(default "30000")*
-  - `user` - **String** User for web authentication *(default "admin")*
-  - `password` - **String** Password for web authentication *(default "password")*
+  - `user` - **String** User for web basic access authentication *(default "admin")*
+  - `password` - **String** Password for web basic access authentication *(default "password")*
   - `agent` - **String** Browser User Agent for web authentication *(default "all accepted")*
+  
+ - `https` - **Object** Setting up a web console over TLS/SSL
+  - `key` - **String** Path to TLS/SSL key *(default "disabled")*
+  - `cert` - **String** Path to TLS/SSL certificate *(default "disabled")*
+  - `port` - **Integer** Which port accept connection of web console over TLS/SSL *(default "30003")*
+  - `user` - **String** User for web basic access authentication over TLS/SSL *(default "admin")*
+  - `password` - **String** Password for web basic access authentication over TLS/SSL *(default "password")*
+  - `agent` - **String** Browser User Agent for web authentication over TLS/SSL *(default "all accepted")*
  
  - `logger` - **Object** Setting up a permanent file which save your story
   - `log` - **String** Path to log file, using [logger-request](https://github.com/hex7c0/logger-request) *(default "disabled")* Parsing information stored inside log, and show it to web console or file/database
   - `file` - **String** Path to file *(default "disabled")* Save stats at regular intervals to file
-  - `timeout` - **Integer** Timeout (second) for file write *(default "5")*
+  - `timeout` - **Float** Timeout (second) for file write *(default "5")*
  
  - `db` - **Object** Setting up a connectiont to database which save your story
   - `mongo` - **String** URI for MongoDB connection *(default "disabled")* Save stats at regular intervals to database
-  - `timeout` - **Integer** Timeout (second) for database query *(default "20")*
+  - `timeout` - **Float** Timeout (second) for database query *(default "20")*
  
  - `mail` - **Object** Setting up SMTP
   - `provider` - **String** Check this [link](https://github.com/andris9/nodemailer#well-known-services-for-smtp) for available email provider *(default "disabled")*
@@ -79,7 +87,7 @@ app.use(monitor({
   - `password` - **String** Password for email authentication *(default "password")*
   - `to` - **Array** Write here your destination emails *(default "empty")*
   - `subject` - **String** Email subject *(default "password")*
-  - `timeout` - **Integer** Timeout (second) for email send *(default "60")*
+  - `timeout` - **Float** Timeout (second) for email send *(default "60")*
  
  - `status` - **Object** Setting up a check of status of any number of websites and save status to file
   - `enabled` - **Boolean** If disabled, don't run check status *(default "disabled")*
@@ -88,7 +96,7 @@ app.use(monitor({
   - `method` - **String** A string specifying the HTTP request method *(default "GET")*
   - `agent` - **String** User Agent for sending request *(default "monitode crawl")*
   - `file` - **String** Where save information of connection *(default "status")*
-  - `timeout` - **Integer** Timeout (second) for email send *(default "120")*
+  - `timeout` - **Float** Timeout (second) for email send *(default "120")*
 
 #### Examples
 
