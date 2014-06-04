@@ -1,2 +1,7 @@
 /_t_mail.js
 /_t_mongo.js
+/_t_https.js
+/certrequest.csr
+/monitode-cert.pem
+/monitode-key.pem
+/_t_http.js

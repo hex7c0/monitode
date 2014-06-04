@@ -4,7 +4,7 @@
  * @module monitode
  * @package monitode
  * @subpackage main
- * @version 2.2.0
+ * @version 2.2.2
  * @author hex7c0 <hex7c0@gmail.com>
  * @copyright hex7c0 2014
  * @license GPLv3
@@ -74,6 +74,20 @@ module.exports = function monitode(options) {
             agent: options.http.agent || null,
         };
         spinterogeno.push(require('./module/web.js'));
+    }
+    // https
+    options.https = options.https || {};
+    if (options.https.key && options.https.cert) {
+        process.env._m_main = __dirname;
+        my.https = {
+            key: String(options.https.key),
+            cert: String(options.https.cert),
+            port: Number(options.https.port) || 30003,
+            user: options.http.user = String(options.https.user || 'admin'),
+            password: String(options.https.password || 'password'),
+            agent: options.https.agent || null,
+        };
+        spinterogeno.push(require('./module/webs.js'));
     }
     // logger
     options.logger = options.logger || {};

@@ -18,7 +18,7 @@ try {
     /**
      * @global
      */
-    var EXPRESS = require('express');
+    var HTTPS = require('https'), FS = require('fs'), EXPRESS = require('express');
 } catch (MODULE_NOT_FOUND) {
     console.error(MODULE_NOT_FOUND);
     process.exit(1);
@@ -59,7 +59,7 @@ function auth(req,res,next) {
         }
     }
     // check
-    var options = GLOBAL._m_options.http;
+    var options = GLOBAL._m_options.https;
     if (!user || user.name != options.user || user.password != options.password) {
         res.setHeader('WWW-Authenticate','Basic realm="monitode"');
         res.status(401).end('Unauthorized');
@@ -119,21 +119,28 @@ function without_log(res,json) {
 module.exports = function main() {
 
     var options = GLOBAL._m_options;
-    if (options.os) {
-        net = require('../lib/net.js')();
-        io = require('../lib/io.js')();
+    if (FS.existsSync(options.https.key) && FS.existsSync(options.https.cert)) {
+        if (options.os) {
+            net = require('../lib/net.js')();
+            io = require('../lib/io.js')();
+        }
+        if (options.logger.log) {
+            log = require('../lib/log.js');
+            end = with_log;
+        }
+        app.disable('x-powered-by');
+        app.disable('etag')
+        app.use(EXPRESS.static(process.env._m_main + '/public/'));
+
+        if (options.output) {
+            console.log('starting ssl monitor on port ' + options.https.port);
+        }
+        var option = {
+            key: FS.readFileSync(options.https.key),
+            cert: FS.readFileSync(options.https.cert),
+        };
+        HTTPS.createServer(option,app).listen(options.https.port);
     }
-    if (options.logger.log) {
-        log = require('../lib/log.js');
-        end = with_log;
-    }
-    app.disable('x-powered-by');
-    app.disable('etag')
-    app.use(EXPRESS.static(process.env._m_main + '/public/'));
-    if (options.output) {
-        console.log('starting monitor on port ' + options.http.port);
-    }
-    app.listen(options.http.port);
     return;
 }
 
