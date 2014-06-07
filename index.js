@@ -4,7 +4,7 @@
  * @module monitode
  * @package monitode
  * @subpackage main
- * @version 2.2.2
+ * @version 2.2.3
  * @author hex7c0 <hex7c0@gmail.com>
  * @copyright hex7c0 2014
  * @license GPLv3
@@ -29,17 +29,22 @@ function middle(req,res,next) {
 /**
  * option setting
  * 
- * @exports monitode
- * @function monitode
+ * @exports main
+ * @function main
  * @param {Object} options - various options. Check README.md
- * @return {function}
+ * @return {Function}
  */
-module.exports = function monitode(options) {
+var main = module.exports = function(options) {
 
-    var spinterogeno = [], my = GLOBAL._m_options = {}, options = options || {};
+    var spinterogeno = [], options = options || {};
     // global
-    my.output = Boolean(options.output);
-    my.os = Boolean(options.os);
+    /**
+     * @global
+     */
+    var my = GLOBAL._m_options = {
+        output: Boolean(options.output),
+        os: Boolean(options.os),
+    }
     if (my.os) {
         /**
          * @global
@@ -69,7 +74,7 @@ module.exports = function monitode(options) {
         process.env._m_main = __dirname;
         my.http = {
             port: Number(options.http.port) || 30000,
-            user: options.http.user = String(options.http.user || 'admin'),
+            user: String(options.http.user || 'admin'),
             password: String(options.http.password || 'password'),
             agent: options.http.agent || null,
         };
@@ -83,7 +88,7 @@ module.exports = function monitode(options) {
             key: String(options.https.key),
             cert: String(options.https.cert),
             port: Number(options.https.port) || 30003,
-            user: options.http.user = String(options.https.user || 'admin'),
+            user: String(options.https.user || 'admin'),
             password: String(options.https.password || 'password'),
             agent: options.https.agent || null,
         };
@@ -91,14 +96,13 @@ module.exports = function monitode(options) {
     }
     // logger
     options.logger = options.logger || {};
+    my.logger = {};
     if (options.logger.file) {
         my.logger = {
             file: String(options.logger.file),
             timeout: (parseFloat(options.logger.timeout) || 5) * 1000,
         };
         spinterogeno.push(require('./module/file.js'));
-    } else {
-        my.logger = {};
     }
     if (options.logger.log) {
         my.logger.log = String(options.logger.log);
@@ -118,8 +122,8 @@ module.exports = function monitode(options) {
     options.db = options.db || {};
     if (options.db.mongo) {
         my.db = {
-            database: null,
             mongo: String(options.db.mongo),
+            database: String(options.db.database || 'monitode'),
             timeout: (parseFloat(options.db.timeout) || 20) * 1000,
         };
         spinterogeno.push(require('./module/mongo.js'));
@@ -154,7 +158,5 @@ module.exports = function monitode(options) {
     for (var i = 0, il = spinterogeno.length; i < il; i++) {
         spinterogeno[i]();
     }
-    options = spinterogeno = null;
-
     return middle;
-}
+};

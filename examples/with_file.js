@@ -5,7 +5,7 @@
  * @package monitode
  * @subpackage examples
  * @version 0.0.3
- * @author hex7c0 <0x7c0@gmail.com>
+ * @author hex7c0 <hex7c0@gmail.com>
  * @license GPLv3
  */
 

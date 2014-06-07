@@ -1,6 +1,6 @@
 "use strict";
 /*
- * monitode 2.2.2 (c) 2014 hex7c0, https://hex7c0.github.io/monitode/
+ * monitode 2.2.3 (c) 2014 hex7c0, https://hex7c0.github.io/monitode/
  * 
  * License: GPLv3
  */
@@ -8,17 +8,8 @@
 /*
  * variables
  */
-/**
- * @global
- */
 var avg = null, meml = null, memp = null, os = null;
-/**
- * @global
- */
 var cpus = [], app = angular.module('monitode',[]);
-/**
- * @global
- */
 var store = {
     x: ['x'],
     one: ['one'],
