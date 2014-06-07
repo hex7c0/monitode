@@ -1,3 +1,9 @@
+2.2.3 / 2014-06-07
+==================
+
+  * Add name of database (option)
+  * Various fixes
+
 vCairoli / 2014-06-04
 ==================
 

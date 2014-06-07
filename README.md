@@ -79,6 +79,7 @@ app.use(monitor({
  
  - `db` - **Object** Setting up a connectiont to database which save your story
   - `mongo` - **String** URI for MongoDB connection *(default "disabled")* Save stats at regular intervals to database
+  - `database` - **String** Name of your database *(default "monitode")*
   - `timeout` - **Float** Timeout (second) for database query *(default "20")*
  
  - `mail` - **Object** Setting up SMTP

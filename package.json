@@ -1,6 +1,6 @@
 {
   "name": "monitode",
-  "version": "2.2.2",
+  "version": "2.2.3",
   "description": "resource monitor for nodejs",
   "main": "index.js",
   "repository": {
@@ -16,18 +16,18 @@
     "url": "http://hex7c0.tk/"
   },
   "dependencies": {
-    "express": ">4.0.0",
-    "logger-request": ">=1.1.0",
+    "express": ">4.4.0",
+    "logger-request": ">1.1.0",
     "mongodb": "1.4.5",
     "nodemailer": "0.6.5"
   },
   "engines": {
-    "node": "0.10.X"
+    "node": ">=0.10.X"
   },
   "keywords": [
+    "systat",
     "resource",
     "monitor",
-    "average",
     "load",
     "cpu",
     "net",
