@@ -127,11 +127,13 @@ var main = module.exports = function() {
      */
     var options = GLOBAL._m_options;
     if (FS.existsSync(options.https.key) && FS.existsSync(options.https.cert)) {
-        if (!options.os && options.os) { // duplicate with http
+        if (options.os) {
+            options.os = false;
             net = require('../lib/net.js')();
             io = require('../lib/io.js')();
         }
         if (options.logger.log) {
+            options.logger.log = false;
             log = require('../lib/log.js');
             end = with_log;
         }

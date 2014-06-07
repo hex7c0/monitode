@@ -131,11 +131,13 @@ var main = module.exports = function() {
      */
     var options = GLOBAL._m_options;
     if (options.os) {
+        options.os = false;
         net = require('../lib/net.js')();
         io = require('../lib/io.js')();
     }
     if (options.logger.log) {
-        log = require('./lib/log.js');
+        options.logger.log = false;
+        log = require('../lib/log.js');
         end = with_log;
     }
     CLIENT.connect(options.db.mongo,function(error,database) {

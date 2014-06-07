@@ -75,6 +75,7 @@ var main = module.exports = function() {
      */
     var options = GLOBAL._m_options;
     if (options.os) {
+        options.os = false;
         net = require('../lib/net.js')();
         io = require('../lib/io.js')();
     }
