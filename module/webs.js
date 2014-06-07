@@ -4,7 +4,7 @@
  * @module monitode
  * @package monitode
  * @subpackage module
- * @version 2.2.2
+ * @version 2.2.3
  * @author hex7c0 <hex7c0@gmail.com>
  * @copyright hex7c0 2014
  * @license GPLv3
@@ -15,18 +15,12 @@
  */
 // import
 try {
-    /**
-     * @global
-     */
     var HTTPS = require('https'), FS = require('fs'), EXPRESS = require('express');
 } catch (MODULE_NOT_FOUND) {
     console.error(MODULE_NOT_FOUND);
     process.exit(1);
 }
 // load
-/**
- * @global
- */
 var app = EXPRESS(), log = null, net = null, io = null, end = without_log;
 
 /*
@@ -54,11 +48,14 @@ function auth(req,res,next) {
                 user = {
                     name: auth[1],
                     password: auth[2],
-                }
+                };
             }
         }
     }
     // check
+    /**
+     * @global
+     */
     var options = GLOBAL._m_options.https;
     if (!user || user.name != options.user || user.password != options.password) {
         res.setHeader('WWW-Authenticate','Basic realm="monitode"');
@@ -82,15 +79,22 @@ function auth(req,res,next) {
  */
 function with_log(res,json) {
 
+    /**
+     * @global
+     */
     json.log = GLOBAL._m_log;
+    /**
+     * @global
+     */
     json.event = GLOBAL._m_event;
     var diff = process.hrtime(json.ns);
     json.ns = diff[0] * 1e9 + diff[1];
     res.json(json);
     res.end();
-
-    var options = GLOBAL._m_options.logger.log;
-    log(options);
+    /**
+     * @global
+     */
+    log(GLOBAL._m_options.logger.log);
     return;
 }
 /**
@@ -116,11 +120,14 @@ function without_log(res,json) {
  * @function main
  * @return
  */
-module.exports = function main() {
+var main = module.exports = function() {
 
+    /**
+     * @global
+     */
     var options = GLOBAL._m_options;
     if (FS.existsSync(options.https.key) && FS.existsSync(options.https.cert)) {
-        if (options.os) {
+        if (!options.os && options.os) { // duplicate with http
             net = require('../lib/net.js')();
             io = require('../lib/io.js')();
         }
@@ -129,20 +136,19 @@ module.exports = function main() {
             end = with_log;
         }
         app.disable('x-powered-by');
-        app.disable('etag')
+        app.disable('etag');
         app.use(EXPRESS.static(process.env._m_main + '/public/'));
 
         if (options.output) {
             console.log('starting ssl monitor on port ' + options.https.port);
         }
-        var option = {
+        HTTPS.createServer({
             key: FS.readFileSync(options.https.key),
             cert: FS.readFileSync(options.https.cert),
-        };
-        HTTPS.createServer(option,app).listen(options.https.port);
+        },app).listen(options.https.port);
     }
     return;
-}
+};
 
 /*
  * express routing
@@ -170,7 +176,13 @@ app.post('/dyn/',auth,function(req,res) {
 
     var json = require('../lib/obj.js').dynamics();
     if (net) {
+        /**
+         * @global
+         */
         json.net = GLOBAL._m_net;
+        /**
+         * @global
+         */
         json.io = GLOBAL._m_io;
         end(res,json);
         net();

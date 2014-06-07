@@ -4,7 +4,7 @@
  * @module monitode
  * @package monitode
  * @subpackage module
- * @version 2.2.2
+ * @version 2.2.3
  * @author hex7c0 <hex7c0@gmail.com>
  * @copyright hex7c0 2014
  * @license GPLv3
@@ -15,18 +15,12 @@
  */
 // import
 try {
-    /**
-     * @global
-     */
     var CLIENT = require('mongodb').MongoClient;
 } catch (MODULE_NOT_FOUND) {
     console.error(MODULE_NOT_FOUND);
     process.exit(1);
 }
 // load
-/**
- * @global
- */
 var timeout = null, log = null, net = null, io = null, end = without_log;
 
 /*
@@ -41,6 +35,9 @@ var timeout = null, log = null, net = null, io = null, end = without_log;
  */
 function with_log(json) {
 
+    /**
+     * @global
+     */
     var options = GLOBAL._m_options;
     var diff = process.hrtime(json.ns);
     json.ns = diff[0] * 1e9 + diff[1];
@@ -74,6 +71,9 @@ function with_log(json) {
  */
 function without_log(json) {
 
+    /**
+     * @global
+     */
     var options = GLOBAL._m_options.db;
     var diff = process.hrtime(json.ns);
     json.ns = diff[0] * 1e9 + diff[1];
@@ -105,7 +105,7 @@ function without_log(json) {
 function query() {
 
     clearTimeout(timeout);
-    var json = require('../lib/obj.js').dynamics()
+    var json = require('../lib/obj.js').dynamics();
     if (net) {
         json.net = GLOBAL._m_net;
         json.io = GLOBAL._m_io;
@@ -120,11 +120,15 @@ function query() {
 /**
  * init for mongo module. Using global var for sharing info
  * 
+ * @exports main
  * @function main
  * @return
  */
-function main() {
+var main = module.exports = function() {
 
+    /**
+     * @global
+     */
     var options = GLOBAL._m_options;
     if (options.os) {
         net = require('../lib/net.js')();
@@ -139,7 +143,7 @@ function main() {
         if (error) {
             console.error(error);
         } else {
-            database.createCollection('monitode',function(error,collection) {
+            database.createCollection(options.db.database,function(error,collection) {
 
                 if (error) {
                     console.error(error);
@@ -150,15 +154,10 @@ function main() {
                     }
                     timeout = setTimeout(query,0);
                 }
+                return;
             });
         }
+        return;
     });
     return;
-}
-
-/**
- * exports function
- * 
- * @exports main
- */
-module.exports = main;
+};

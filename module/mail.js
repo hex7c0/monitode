@@ -4,7 +4,7 @@
  * @module monitode
  * @package monitode
  * @subpackage module
- * @version 2.2.2
+ * @version 2.2.3
  * @author hex7c0 <hex7c0@gmail.com>
  * @copyright hex7c0 2014
  * @license GPLv3
@@ -15,18 +15,12 @@
  */
 // import
 try {
-    /**
-     * @global
-     */
     var MAIL = require('nodemailer');
 } catch (MODULE_NOT_FOUND) {
     console.error(MODULE_NOT_FOUND);
     process.exit(1);
 }
 // load
-/**
- * @global
- */
 var timeout = null, net = null, io = null;
 
 /*
@@ -41,6 +35,9 @@ var timeout = null, net = null, io = null;
 function email() {
 
     clearTimeout(timeout);
+    /**
+     * @global
+     */
     var options = GLOBAL._m_options.mail;
     var json = require('../lib/obj.js').dynamics(true);
     if (net) {
@@ -55,11 +52,12 @@ function email() {
     options.provider.sendMail(options.to,function(error,response) {
 
         if (error) {
-            console.log(error);
+            console.error(error);
         } else {
             timeout = setTimeout(email,options.timeout);
         }
         options.provider.close();
+        return;
     });
     return;
 }
@@ -70,8 +68,11 @@ function email() {
  * @function main
  * @return
  */
-module.exports = function main() {
+var main = module.exports = function() {
 
+    /**
+     * @global
+     */
     var options = GLOBAL._m_options;
     if (options.os) {
         net = require('../lib/net.js')();
@@ -94,4 +95,4 @@ module.exports = function main() {
     }
     timeout = setTimeout(email,0);
     return;
-}
+};

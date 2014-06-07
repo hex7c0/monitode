@@ -4,7 +4,7 @@
  * @module monitode
  * @package monitode
  * @subpackage module
- * @version 2.2.2
+ * @version 2.2.3
  * @author hex7c0 <hex7c0@gmail.com>
  * @copyright hex7c0 2014
  * @license GPLv3
@@ -15,30 +15,15 @@
  */
 // import
 try {
-    /**
-     * @global
-     */
     var HTTP = require('http');
-    /**
-     * @global
-     */
     var HTTPS = require('https');
-    /**
-     * @global
-     */
     var URL = require('url');
-    /**
-     * @global
-     */
     var LOGGER = require('logger-request');
 } catch (MODULE_NOT_FOUND) {
     console.error(MODULE_NOT_FOUND);
     process.exit(1);
 }
 // load
-/**
- * @global
- */
 var timeout = null;
 
 /*
@@ -53,18 +38,20 @@ var timeout = null;
  */
 function complete(res) {
 
+    /**
+     * @global
+     */
     var options = GLOBAL._m_options.status;
     var status = Math.floor(res.statusCode / 100);
     if (status >= 4) {
         console.log(new Date().toUTCString() + ' ' + res.connection._host + ' ' + res.statusCode);
     }
-    var write = {
+    options.file('moniStatus',{
         host: res.connection._host,
         status: res.statusCode,
         message: res.statusMessage,
         headers: res.headers,
-    };
-    options.file('moniStatus',write);
+    });
     return;
 }
 /**
@@ -76,6 +63,9 @@ function complete(res) {
 function request() {
 
     clearTimeout(timeout);
+    /**
+     * @global
+     */
     var options = GLOBAL._m_options.status;
     for (var i = 0, il = options.site.length; i < il; i++) {
         var url = URL.parse(options.site[i]);
@@ -126,7 +116,7 @@ function request() {
  * @function main
  * @return
  */
-module.exports = function main() {
+var main = module.exports = function() {
 
     var options = GLOBAL._m_options;
     options.status.file = LOGGER({
@@ -142,4 +132,4 @@ module.exports = function main() {
     }
     timeout = setTimeout(request,0);
     return;
-}
+};
