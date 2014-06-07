@@ -110,8 +110,10 @@ function query() {
         json.net = GLOBAL._m_net;
         json.io = GLOBAL._m_io;
         end(json);
-        net();
-        io();
+        if (io) {
+            net();
+            io();
+        }
     } else {
         end(json);
     }
@@ -131,14 +133,25 @@ var main = module.exports = function() {
      */
     var options = GLOBAL._m_options;
     if (options.os) {
-        options.os = false;
-        net = require('../lib/net.js')();
-        io = require('../lib/io.js')();
+        if (options.monitor.os) {
+            options.monitor.os = false;
+            net = require('../lib/net.js')();
+            io = require('../lib/io.js')();
+        } else {
+            net = true;
+        }
     }
     if (options.logger.log) {
-        options.logger.log = false;
-        log = require('../lib/log.js');
         end = with_log;
+        if (options.monitor.log) {
+            options.monitor.log = false;
+            log = require('../lib/log.js');
+        } else {
+            log = function() {
+
+                return;
+            };
+        }
     }
     CLIENT.connect(options.db.mongo,function(error,database) {
 

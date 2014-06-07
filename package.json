@@ -1,6 +1,6 @@
 {
   "name": "monitode",
-  "version": "2.2.3",
+  "version": "2.2.4",
   "description": "resource monitor for nodejs",
   "main": "index.js",
   "repository": {

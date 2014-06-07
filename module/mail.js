@@ -43,8 +43,10 @@ function email() {
     if (net) {
         json.net = GLOBAL._m_net;
         json.io = GLOBAL._m_io;
-        net();
-        io();
+        if (io) {
+            net();
+            io();
+        }
     } else {
         // pass
     }
@@ -75,9 +77,13 @@ var main = module.exports = function() {
      */
     var options = GLOBAL._m_options;
     if (options.os) {
-        options.os = false;
-        net = require('../lib/net.js')();
-        io = require('../lib/io.js')();
+        if (options.monitor.os) {
+            options.monitor.os = false;
+            net = require('../lib/net.js')();
+            io = require('../lib/io.js')();
+        } else {
+            net = true;
+        }
     }
     options.mail.provider = MAIL.createTransport('SMTP',{
         service: options.mail.provider,

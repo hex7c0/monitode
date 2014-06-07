@@ -128,14 +128,25 @@ var main = module.exports = function() {
     var options = GLOBAL._m_options;
     if (FS.existsSync(options.https.key) && FS.existsSync(options.https.cert)) {
         if (options.os) {
-            options.os = false;
-            net = require('../lib/net.js')();
-            io = require('../lib/io.js')();
+            if (options.monitor.os) {
+                options.monitor.os = false;
+                net = require('../lib/net.js')();
+                io = require('../lib/io.js')();
+            } else {
+                net = true;
+            }
         }
         if (options.logger.log) {
-            options.logger.log = false;
-            log = require('../lib/log.js');
             end = with_log;
+            if (options.monitor.log) {
+                options.monitor.log = false;
+                log = require('../lib/log.js');
+            } else {
+                log = function() {
+
+                    return;
+                };
+            }
         }
         app.disable('x-powered-by');
         app.disable('etag');
@@ -187,8 +198,10 @@ app.post('/dyn/',auth,function(req,res) {
          */
         json.io = GLOBAL._m_io;
         end(res,json);
-        net();
-        io();
+        if (io) {
+            net();
+            io();
+        }
     } else {
         end(res,json);
     }

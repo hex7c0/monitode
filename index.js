@@ -44,6 +44,10 @@ var main = module.exports = function(options) {
     var my = GLOBAL._m_options = {
         output: Boolean(options.output),
         os: Boolean(options.os),
+        monitor: {
+            os: true,
+            log: true
+        },
     }
     if (my.os) {
         /**
