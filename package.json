@@ -1,6 +1,6 @@
 {
   "name": "monitode",
-  "version": "2.2.4",
+  "version": "2.2.5",
   "description": "resource monitor for nodejs",
   "main": "index.js",
   "repository": {
@@ -16,13 +16,13 @@
     "url": "http://hex7c0.tk/"
   },
   "dependencies": {
-    "express": ">4.4.0",
-    "logger-request": ">1.1.0",
+    "express": "4.4.X",
+    "logger-request": "1.1.X",
     "mongodb": "1.4.5",
     "nodemailer": "0.6.5"
   },
   "engines": {
-    "node": ">=0.10.X"
+    "node": ">0.10.0"
   },
   "keywords": [
     "systat",
