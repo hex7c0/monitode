@@ -1,10 +1,10 @@
 "use strict";
 /**
- * @file monitode web
+ * @file monitode web over TLS/SSL
  * @module monitode
  * @package monitode
  * @subpackage module
- * @version 2.2.3
+ * @version 2.2.5
  * @author hex7c0 <hex7c0@gmail.com>
  * @copyright hex7c0 2014
  * @license GPLv3

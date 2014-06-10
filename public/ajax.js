@@ -1,6 +1,6 @@
 "use strict";
 /*
- * monitode 2.2.3 (c) 2014 hex7c0, https://hex7c0.github.io/monitode/
+ * monitode 2.2.5 (c) 2014 hex7c0, https://hex7c0.github.io/monitode/
  * 
  * License: GPLv3
  */
