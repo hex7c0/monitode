@@ -100,6 +100,6 @@ var main = module.exports = function() {
     if (options.output) {
         console.log('starting monitor with email');
     }
-    timeout = setTimeout(email,0);
+    email();
     return;
 };

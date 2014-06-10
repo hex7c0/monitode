@@ -48,7 +48,7 @@ var main = module.exports = function(options) {
             os: true,
             log: true
         },
-    }
+    };
     if (my.os) {
         /**
          * @global
@@ -73,8 +73,7 @@ var main = module.exports = function(options) {
     }
     // http
     options.http = options.http || {};
-    options.http.enabled = options.http.enabled == false ? false : true;
-    if (options.http.enabled) {
+    if (options.http.enabled == false ? false : true) {
         process.env._m_main = __dirname;
         my.http = {
             port: Number(options.http.port) || 30000,

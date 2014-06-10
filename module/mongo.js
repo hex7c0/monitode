@@ -167,7 +167,7 @@ var main = module.exports = function() {
                     if (options.output) {
                         console.log('starting monitor on database');
                     }
-                    timeout = setTimeout(query,0);
+                    query();
                 }
                 return;
             });

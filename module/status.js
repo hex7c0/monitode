@@ -130,6 +130,6 @@ var main = module.exports = function() {
     if (options.output) {
         console.log('starting monitor with status');
     }
-    timeout = setTimeout(request,0);
+    request());
     return;
 };
