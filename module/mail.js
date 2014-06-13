@@ -78,7 +78,7 @@ var main = module.exports = function() {
     var options = GLOBAL._m_options;
     if (options.os) {
         if (options.monitor.os) {
-            // options.monitor.os = false;
+            // @fixme options.monitor.os = false;
             net = require('../lib/net.js')();
             io = require('../lib/io.js')();
         } else {

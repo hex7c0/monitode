@@ -128,7 +128,7 @@ var main = module.exports = function() {
     var options = GLOBAL._m_options;
     if (options.os) {
         if (options.monitor.os) {
-            // options.monitor.os = false;
+            // @fixme options.monitor.os = false;
             net = require('../lib/net.js')();
             io = require('../lib/io.js')();
         } else {
@@ -138,7 +138,7 @@ var main = module.exports = function() {
     if (options.logger.log) {
         end = with_log;
         if (options.monitor.log) {
-            // options.monitor.log = false;
+            // @fixme options.monitor.log = false;
             log = require('../lib/log.js');
         } else {
             log = function() {
