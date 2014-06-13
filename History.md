@@ -1,3 +1,9 @@
+2.2.6 / 2014-06-13
+==================
+
+  * Update [`mondogb`](https://github.com/mongodb/node-mongodb-native)
+  * Bug issue: duplicate spawn
+
 2.2.5 / 2014-06-10
 ==================
 
