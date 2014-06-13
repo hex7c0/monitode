@@ -4,7 +4,7 @@
  * @module monitode
  * @package monitode
  * @subpackage module
- * @version 2.2.5
+ * @version 2.2.6
  * @author hex7c0 <hex7c0@gmail.com>
  * @copyright hex7c0 2014
  * @license GPLv3
@@ -129,7 +129,7 @@ var main = module.exports = function() {
     if (FS.existsSync(options.https.key) && FS.existsSync(options.https.cert)) {
         if (options.os) {
             if (options.monitor.os) {
-                options.monitor.os = false;
+                // options.monitor.os = false;
                 net = require('../lib/net.js')();
                 io = require('../lib/io.js')();
             } else {
@@ -139,7 +139,7 @@ var main = module.exports = function() {
         if (options.logger.log) {
             end = with_log;
             if (options.monitor.log) {
-                options.monitor.log = false;
+                // options.monitor.log = false;
                 log = require('../lib/log.js');
             } else {
                 log = function() {
