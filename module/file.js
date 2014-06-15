@@ -4,7 +4,7 @@
  * @module monitode
  * @package monitode
  * @subpackage module
- * @version 2.2.5
+ * @version 2.2.7
  * @author hex7c0 <hex7c0@gmail.com>
  * @copyright hex7c0 2014
  * @license GPLv3
@@ -50,7 +50,7 @@ function file() {
  * @function main
  * @return
  */
-var main = module.exports = function() {
+module.exports = function() {
 
     /**
      * @global

@@ -4,7 +4,7 @@
  * @module monitode
  * @package monitode
  * @subpackage module
- * @version 2.2.6
+ * @version 2.2.7
  * @author hex7c0 <hex7c0@gmail.com>
  * @copyright hex7c0 2014
  * @license GPLv3
@@ -15,7 +15,7 @@
  */
 // import
 try {
-    var EXPRESS = require('express');
+    var HTTP = require('http'), EXPRESS = require('express');
 } catch (MODULE_NOT_FOUND) {
     console.error(MODULE_NOT_FOUND);
     process.exit(1);
@@ -26,49 +26,6 @@ var app = EXPRESS(), log = null, net = null, io = null, end = without_log;
 /*
  * functions
  */
-/**
- * protection middleware with basic authentication
- * 
- * @function auth
- * @param {Object} req - client request
- * @param {Object} res - response to client
- * @param {next} next - continue routes
- * @return
- */
-function auth(req,res,next) {
-
-    // auth
-    var user = false, auth = null;
-    if (auth = req.headers.authorization) {
-        auth = auth.split(' ');
-        if ('basic' == auth[0].toLowerCase() && auth[1]) {
-            auth = new Buffer(auth[1],'base64').toString();
-            auth = auth.match(/^([^:]+):(.+)$/);
-            if (auth) {
-                user = {
-                    name: auth[1],
-                    password: auth[2],
-                };
-            }
-        }
-    }
-    // check
-    /**
-     * @global
-     */
-    var options = GLOBAL._m_options.http;
-    if (!user || user.name != options.user || user.password != options.password) {
-        res.setHeader('WWW-Authenticate','Basic realm="monitode"');
-        res.status(401).end('Unauthorized');
-    } else if (options.agent && options.agent == req.headers['user-agent']) {
-        next();
-    } else if (!options.agent) {
-        next();
-    } else {
-        res.status(403).end('Forbidden');
-    }
-    return;
-}
 /**
  * sending object with log
  * 
@@ -120,7 +77,7 @@ function without_log(res,json) {
  * @function main
  * @return
  */
-var main = module.exports = function() {
+module.exports = function() {
 
     /**
      * @global
@@ -149,11 +106,18 @@ var main = module.exports = function() {
     }
     app.disable('x-powered-by');
     app.disable('etag');
+    app.use(require('basic-authentication')({
+        user: options.http.user,
+        password: options.http.password,
+        agent: options.http.agent,
+        realm: options.http.realm,
+        suppress: true,
+    }));
     app.use(EXPRESS.static(process.env._m_main + '/public/'));
     if (options.output) {
         console.log('starting monitor on port ' + options.http.port);
     }
-    app.listen(options.http.port);
+    HTTP.createServer(app).listen(options.http.port);
     return;
 };
 
@@ -167,7 +131,7 @@ var main = module.exports = function() {
  * @param {Object} res - response to client
  * @return
  */
-app.get('/',auth,function(req,res) {
+app.get('/',function(req,res) {
 
     res.sendfile(process.env._m_main + '/console/index.html');
     return;
@@ -179,7 +143,7 @@ app.get('/',auth,function(req,res) {
  * @param {Object} res - response to client
  * @return
  */
-app.post('/dyn/',auth,function(req,res) {
+app.post('/dyn/',function(req,res) {
 
     var json = require('../lib/obj.js').dynamics();
     if (net) {
@@ -208,7 +172,7 @@ app.post('/dyn/',auth,function(req,res) {
  * @param {Object} res - response to client
  * @return
  */
-app.post('/sta/',auth,function(req,res) {
+app.post('/sta/',function(req,res) {
 
     res.json(require('../lib/obj.js').statics);
     return;

@@ -4,7 +4,7 @@
  * @module monitode
  * @package monitode
  * @subpackage module
- * @version 2.2.5
+ * @version 2.2.7
  * @author hex7c0 <hex7c0@gmail.com>
  * @copyright hex7c0 2014
  * @license GPLv3
@@ -116,7 +116,7 @@ function request() {
  * @function main
  * @return
  */
-var main = module.exports = function() {
+module.exports = function() {
 
     var options = GLOBAL._m_options;
     options.status.file = LOGGER({
