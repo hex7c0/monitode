@@ -1,3 +1,8 @@
+2.2.7 / 2014-06-15
+==================
+
+  * New module [`basic-authentication`](https://github.com/hex7c0/basic-authentication)
+
 2.2.6 / 2014-06-13
 ==================
 

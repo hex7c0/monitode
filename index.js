@@ -4,7 +4,7 @@
  * @module monitode
  * @package monitode
  * @subpackage main
- * @version 2.2.6
+ * @version 2.2.7
  * @author hex7c0 <hex7c0@gmail.com>
  * @copyright hex7c0 2014
  * @license GPLv3
@@ -34,7 +34,7 @@ function middle(req,res,next) {
  * @param {Object} options - various options. Check README.md
  * @return {Function}
  */
-var main = module.exports = function(options) {
+module.exports = function(options) {
 
     var spinterogeno = [], options = options || {};
     // global
@@ -79,7 +79,8 @@ var main = module.exports = function(options) {
             port: Number(options.http.port) || 30000,
             user: String(options.http.user || 'admin'),
             password: String(options.http.password || 'password'),
-            agent: options.http.agent || null,
+            agent: String(options.http.agent || ''),
+            realm: String(options.realm || 'Monitode'),
         };
         spinterogeno.push(require('./module/web.js'));
     }
@@ -93,7 +94,8 @@ var main = module.exports = function(options) {
             port: Number(options.https.port) || 30003,
             user: String(options.https.user || 'admin'),
             password: String(options.https.password || 'password'),
-            agent: options.https.agent || null,
+            agent: String(options.https.agent || ''),
+            realm: String(options.realm || 'Monitode'),
         };
         spinterogeno.push(require('./module/webs.js'));
     }

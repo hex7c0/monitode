@@ -1,7 +1,6 @@
 [![monitode logo](https://raw.githubusercontent.com/hex7c0/monitode/master/public/monitode.png)](https://hex7c0.github.io/monitode/)
 
-**Monitode** is a resource monitor for [nodejs](http://nodejs.org) 
-using a full stack of [MEAN](http://en.wikipedia.org/wiki/MEAN)
+**Monitode** is a resource monitor for [nodejs](http://nodejs.org) using a full stack of [MEAN](http://en.wikipedia.org/wiki/MEAN)
 
 [![Build Status](https://travis-ci.org/hex7c0/monitode.svg?branch=master)](https://travis-ci.org/hex7c0/monitode) [![NPM version](https://badge.fury.io/js/monitode.svg)](http://badge.fury.io/js/monitode)
 
@@ -34,7 +33,7 @@ app.use(monitode({
 }));
 ```
 
-inside expressjs project with [logger-request](https://github.com/hex7c0/logger-request)
+inside expressjs project with [`logger-request`](https://github.com/hex7c0/logger-request)
 ```js
 var monitode = require('monitode');
 var app = require('express')();
@@ -57,25 +56,33 @@ app.use(monitor({
  
  - `os` - **Boolean** If enabled, show os (netstat, iostat) statistics to web console/database/email *(default "false")* **_NOT FOR WIN_**
  
- - `http` - **Object** Setting up a web console
+ - `http` - **Object** Setting up a web console using [`basic-authentication`](https://github.com/hex7c0/basic-authentication)
   - `enabled` - **Boolean** If disabled, don't run web console *(default "enabled")*
   - `port` - **Integer** Which port accept connection of web console *(default "30000")*
   - `user` - **String** User for web basic access authentication *(default "admin")*
   - `password` - **String** Password for web basic access authentication *(default "password")*
   - `agent` - **String** Browser User Agent for web authentication *(default "all accepted")*
-  
- - `https` - **Object** Setting up a web console over TLS/SSL
+  - `realm` - **String** Realm for web authentication *(default "Monitode")*
+ 
+  releated to https://github.com/hex7c0/basic-authentication
+ 
+ - `https` - **Object** Setting up a web console over TLS/SSL using [`basic-authentication`](https://github.com/hex7c0/basic-authentication)
   - `key` - **String** Path to TLS/SSL key *(default "disabled")*
   - `cert` - **String** Path to TLS/SSL certificate *(default "disabled")*
   - `port` - **Integer** Which port accept connection of web console over TLS/SSL *(default "30003")*
   - `user` - **String** User for web basic access authentication over TLS/SSL *(default "admin")*
   - `password` - **String** Password for web basic access authentication over TLS/SSL *(default "password")*
   - `agent` - **String** Browser User Agent for web authentication over TLS/SSL *(default "all accepted")*
+  - `realm` - **String** Realm for web authentication over TLS/SSL *(default "Monitode")*
+ 
+  releated to https://github.com/hex7c0/basic-authentication
  
  - `logger` - **Object** Setting up a permanent file which save your story
-  - `log` - **String** Path to log file, using [logger-request](https://github.com/hex7c0/logger-request) *(default "disabled")* Parsing information stored inside log, and show it to web console or file/database
+  - `log` - **String** Path to log file, using [`logger-request`](https://github.com/hex7c0/logger-request) *(default "disabled")* Parsing information stored inside log, and show it to web console or file/database
   - `file` - **String** Path to file *(default "disabled")* Save stats at regular intervals to file
   - `timeout` - **Float** Timeout (second) for file write *(default "5")*
+ 
+ releated to https://github.com/hex7c0/logger-request
  
  - `db` - **Object** Setting up a connectiont to database which save your story
   - `mongo` - **String** URI for MongoDB connection *(default "disabled")* Save stats at regular intervals to database
@@ -83,7 +90,7 @@ app.use(monitor({
   - `timeout` - **Float** Timeout (second) for database query *(default "20")*
  
  - `mail` - **Object** Setting up SMTP
-  - `provider` - **String** Check this [link](https://github.com/andris9/nodemailer#well-known-services-for-smtp) for available email provider *(default "disabled")*
+  - `provider` - **String** Check [`nodemailer`](https://github.com/andris9/nodemailer#well-known-services-for-smtp) for available email provider *(default "disabled")*
   - `user` - **String** User for email authentication *(default "admin")*
   - `password` - **String** Password for email authentication *(default "password")*
   - `to` - **Array** Write here your destination emails *(default "empty")*
