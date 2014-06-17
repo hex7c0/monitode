@@ -1,3 +1,11 @@
+2.2.8 / 2014-06-17
+==================
+
+  * Update [`nodemailer`](https://github.com/andris9/Nodemailer)
+  * Update [`angularjs`](https://code.angularjs.org/1.3.0-beta.13/)
+  * Fix return function for nodejs only
+  * Add web files directory (option)
+
 2.2.7 / 2014-06-15
 ==================
 

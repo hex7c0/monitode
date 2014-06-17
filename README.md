@@ -63,6 +63,7 @@ app.use(monitor({
   - `password` - **String** Password for web basic access authentication *(default "password")*
   - `agent` - **String** Browser User Agent for web authentication *(default "all accepted")*
   - `realm` - **String** Realm for web authentication *(default "Monitode")*
+  - `dir` - **String** Absolute path of web files directory *(default "/public")*
  
   releated to https://github.com/hex7c0/basic-authentication
  
@@ -74,6 +75,7 @@ app.use(monitor({
   - `password` - **String** Password for web basic access authentication over TLS/SSL *(default "password")*
   - `agent` - **String** Browser User Agent for web authentication over TLS/SSL *(default "all accepted")*
   - `realm` - **String** Realm for web authentication over TLS/SSL *(default "Monitode")*
+  - `dir` - **String** Absolute path of web files directory *(default "/public")*
  
   releated to https://github.com/hex7c0/basic-authentication
  
