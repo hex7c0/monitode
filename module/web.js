@@ -4,7 +4,7 @@
  * @module monitode
  * @package monitode
  * @subpackage module
- * @version 2.2.7
+ * @version 2.2.8
  * @author hex7c0 <hex7c0@gmail.com>
  * @copyright hex7c0 2014
  * @license GPLv3
@@ -113,7 +113,7 @@ module.exports = function() {
         realm: options.http.realm,
         suppress: true,
     }));
-    app.use(EXPRESS.static(process.env._m_main + '/public/'));
+    app.use(EXPRESS.static(options.http.dir));
     if (options.output) {
         console.log('starting monitor on port ' + options.http.port);
     }
@@ -133,7 +133,7 @@ module.exports = function() {
  */
 app.get('/',function(req,res) {
 
-    res.sendfile(process.env._m_main + '/console/index.html');
+    res.sendfile(GLOBAL._m_options.http.dir + 'index.html');
     return;
 });
 /**

@@ -4,7 +4,7 @@
  * @module monitode
  * @package monitode
  * @subpackage main
- * @version 2.2.7
+ * @version 2.2.8
  * @author hex7c0 <hex7c0@gmail.com>
  * @copyright hex7c0 2014
  * @license GPLv3
@@ -20,11 +20,15 @@
  * @param {Object} req - client request
  * @param {Object} res - response to client
  * @param {next} next - continue routes
- * @return
+ * @return {Function}
  */
 function middle(req,res,next) {
 
-    return next();
+    try {
+        return next();
+    } catch (TypeError) {
+        return;
+    }
 }
 /**
  * option setting
@@ -80,7 +84,8 @@ module.exports = function(options) {
             user: String(options.http.user || 'admin'),
             password: String(options.http.password || 'password'),
             agent: String(options.http.agent || ''),
-            realm: String(options.realm || 'Monitode'),
+            realm: String(options.http.realm || 'Monitode'),
+            dir: String(options.http.dir || process.env._m_main + '/public/'),
         };
         spinterogeno.push(require('./module/web.js'));
     }
@@ -95,7 +100,8 @@ module.exports = function(options) {
             user: String(options.https.user || 'admin'),
             password: String(options.https.password || 'password'),
             agent: String(options.https.agent || ''),
-            realm: String(options.realm || 'Monitode'),
+            realm: String(options.https.realm || 'Monitode'),
+            dir: String(options.https.dir || process.env._m_main + '/public/'),
         };
         spinterogeno.push(require('./module/webs.js'));
     }
