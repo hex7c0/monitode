@@ -4,7 +4,7 @@
  * @module monitode
  * @package monitode
  * @subpackage main
- * @version 2.2.8
+ * @version 2.2.9
  * @author hex7c0 <hex7c0@gmail.com>
  * @copyright hex7c0 2014
  * @license GPLv3
@@ -13,23 +13,6 @@
 /*
  * functions
  */
-/**
- * express middleware
- * 
- * @function middle
- * @param {Object} req - client request
- * @param {Object} res - response to client
- * @param {next} next - continue routes
- * @return {Function}
- */
-function middle(req,res,next) {
-
-    try {
-        return next();
-    } catch (TypeError) {
-        return;
-    }
-}
 /**
  * option setting
  * 
@@ -45,7 +28,7 @@ module.exports = function(options) {
     /**
      * @global
      */
-    var my = GLOBAL._m_options = {
+    var my = GLOBAL.monitode = {
         output: Boolean(options.output),
         os: Boolean(options.os),
         monitor: {
@@ -57,7 +40,7 @@ module.exports = function(options) {
         /**
          * @global
          */
-        GLOBAL._m_net = {
+        GLOBAL.monitode.net = {
             inn: {
                 pacs: 0,
                 errs: 0,
@@ -70,7 +53,7 @@ module.exports = function(options) {
         /**
          * @global
          */
-        GLOBAL._m_io = {
+        GLOBAL.monitode.io = {
             tps: 0,
             mbs: 0,
         };
@@ -120,14 +103,14 @@ module.exports = function(options) {
         /**
          * @global
          */
-        GLOBAL._m_log = {
+        GLOBAL.monitode.log = {
             counter: 0,
             size: 0,
         };
         /**
          * @global
          */
-        GLOBAL._m_event = {};
+        GLOBAL.monitode.event = {};
     }
     // database
     options.db = options.db || {};
@@ -169,5 +152,12 @@ module.exports = function(options) {
     for (var i = 0, il = spinterogeno.length; i < il; i++) {
         spinterogeno[i]();
     }
-    return middle;
+    return function(req,res,next) {
+
+        try {
+            return next();
+        } catch (TypeError) {
+            return;
+        }
+    };
 };

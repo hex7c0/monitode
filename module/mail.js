@@ -4,7 +4,7 @@
  * @module monitode
  * @package monitode
  * @subpackage module
- * @version 2.2.7
+ * @version 2.2.9
  * @author hex7c0 <hex7c0@gmail.com>
  * @copyright hex7c0 2014
  * @license GPLv3
@@ -38,11 +38,12 @@ function email() {
     /**
      * @global
      */
-    var options = GLOBAL._m_options.mail;
+    var global = GLOBAL.monitode;
+    var options = global.mail;
     var json = require('../lib/obj.js').dynamics(true);
     if (net) {
-        json.net = GLOBAL._m_net;
-        json.io = GLOBAL._m_io;
+        json.net = global.net;
+        json.io = global.io;
         if (io) {
             net();
             io();
@@ -75,10 +76,10 @@ module.exports = function() {
     /**
      * @global
      */
-    var options = GLOBAL._m_options;
+    var options = GLOBAL.monitode;
     if (options.os) {
         if (options.monitor.os) {
-            // @fixme options.monitor.os = false;
+            options.monitor.os = false;
             net = require('../lib/net.js')();
             io = require('../lib/io.js')();
         } else {

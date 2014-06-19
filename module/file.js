@@ -4,7 +4,7 @@
  * @module monitode
  * @package monitode
  * @subpackage module
- * @version 2.2.7
+ * @version 2.2.9
  * @author hex7c0 <hex7c0@gmail.com>
  * @copyright hex7c0 2014
  * @license GPLv3
@@ -38,7 +38,7 @@ function file() {
     /**
      * @global
      */
-    var options = GLOBAL._m_options.logger;
+    var options = GLOBAL.monitode.logger;
     options.file('moniFile',require('../lib/obj.js').dynamics(true));
     timeout = setTimeout(file,options.timeout);
     return;
@@ -55,7 +55,7 @@ module.exports = function() {
     /**
      * @global
      */
-    var options = GLOBAL._m_options;
+    var options = GLOBAL.monitode;
     if (options.output) {
         console.log('starting monitor on file ' + options.logger.file);
     }

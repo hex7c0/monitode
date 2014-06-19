@@ -4,7 +4,7 @@
  * @module monitode
  * @package monitode
  * @subpackage module
- * @version 2.2.7
+ * @version 2.2.9
  * @author hex7c0 <hex7c0@gmail.com>
  * @copyright hex7c0 2014
  * @license GPLv3
@@ -38,10 +38,10 @@ function with_log(json) {
     /**
      * @global
      */
-    var options = GLOBAL._m_options;
+    var options = GLOBAL.monitode;
     var diff = process.hrtime(json.ns);
     json.ns = diff[0] * 1e9 + diff[1];
-    json.event = GLOBAL._m_event;
+    json.event = options.event;
     /**
      * callback of query
      * 
@@ -74,7 +74,7 @@ function without_log(json) {
     /**
      * @global
      */
-    var options = GLOBAL._m_options.db;
+    var options = GLOBAL.monitode.db;
     var diff = process.hrtime(json.ns);
     json.ns = diff[0] * 1e9 + diff[1];
     /**
@@ -107,8 +107,8 @@ function query() {
     clearTimeout(timeout);
     var json = require('../lib/obj.js').dynamics();
     if (net) {
-        json.net = GLOBAL._m_net;
-        json.io = GLOBAL._m_io;
+        json.net = GLOBAL.monitode.net;
+        json.io = GLOBAL.monitode.io;
         end(json);
         if (io) {
             net();
@@ -131,10 +131,10 @@ module.exports = function() {
     /**
      * @global
      */
-    var options = GLOBAL._m_options;
+    var options = GLOBAL.monitode;
     if (options.os) {
         if (options.monitor.os) {
-            // @fixme options.monitor.os = false;
+            options.monitor.os = false;
             net = require('../lib/net.js')();
             io = require('../lib/io.js')();
         } else {
@@ -144,7 +144,7 @@ module.exports = function() {
     if (options.logger.log) {
         end = with_log;
         if (options.monitor.log) {
-            // @fixme options.monitor.log = false;
+            options.monitor.log = false;
             log = require('../lib/log.js');
         } else {
             log = function() {
@@ -167,6 +167,7 @@ module.exports = function() {
                     if (options.output) {
                         console.log('starting monitor on database');
                     }
+                    GLOBAL.monitode.db.mongo = null;
                     query();
                 }
                 return;

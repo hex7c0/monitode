@@ -4,7 +4,7 @@
  * @module monitode
  * @package monitode
  * @subpackage module
- * @version 2.2.8
+ * @version 2.2.9
  * @author hex7c0 <hex7c0@gmail.com>
  * @copyright hex7c0 2014
  * @license GPLv3
@@ -39,19 +39,14 @@ function with_log(res,json) {
     /**
      * @global
      */
-    json.log = GLOBAL._m_log;
-    /**
-     * @global
-     */
-    json.event = GLOBAL._m_event;
     var diff = process.hrtime(json.ns);
+    var global = GLOBAL.monitode;
+    json.log = global.log;
+    json.event = global.event;
     json.ns = diff[0] * 1e9 + diff[1];
     res.json(json);
     res.end();
-    /**
-     * @global
-     */
-    log(GLOBAL._m_options.logger.log);
+    log(global.logger.log);
     return;
 }
 /**
@@ -82,10 +77,10 @@ module.exports = function() {
     /**
      * @global
      */
-    var options = GLOBAL._m_options;
+    var options = GLOBAL.monitode;
     if (options.os) {
         if (options.monitor.os) {
-            // @fixme options.monitor.os = false;
+            options.monitor.os = false;
             net = require('../lib/net.js')();
             io = require('../lib/io.js')();
         } else {
@@ -95,7 +90,7 @@ module.exports = function() {
     if (options.logger.log) {
         end = with_log;
         if (options.monitor.log) {
-            // @fixme options.monitor.log = false;
+            options.monitor.log = false;
             log = require('../lib/log.js');
         } else {
             log = function() {
@@ -118,6 +113,9 @@ module.exports = function() {
         console.log('starting monitor on port ' + options.http.port);
     }
     HTTP.createServer(app).listen(options.http.port);
+    GLOBAL.monitode.http = {
+        dir: options.http.dir,
+    };
     return;
 };
 
@@ -133,7 +131,7 @@ module.exports = function() {
  */
 app.get('/',function(req,res) {
 
-    res.sendfile(GLOBAL._m_options.http.dir + 'index.html');
+    res.sendfile(GLOBAL.monitode.http.dir + 'index.html');
     return;
 });
 /**
@@ -150,11 +148,9 @@ app.post('/dyn/',function(req,res) {
         /**
          * @global
          */
-        json.net = GLOBAL._m_net;
-        /**
-         * @global
-         */
-        json.io = GLOBAL._m_io;
+        var global = GLOBAL.monitode;
+        json.net = global.net;
+        json.io = global.io;
         end(res,json);
         if (io) {
             net();

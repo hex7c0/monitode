@@ -4,7 +4,7 @@
  * @module monitode
  * @package monitode
  * @subpackage module
- * @version 2.2.7
+ * @version 2.2.9
  * @author hex7c0 <hex7c0@gmail.com>
  * @copyright hex7c0 2014
  * @license GPLv3
@@ -41,7 +41,7 @@ function complete(res) {
     /**
      * @global
      */
-    var options = GLOBAL._m_options.status;
+    var options = GLOBAL.monitode.status;
     var status = Math.floor(res.statusCode / 100);
     if (status >= 4) {
         console.log(new Date().toUTCString() + ' ' + res.connection._host + ' ' + res.statusCode);
@@ -66,7 +66,7 @@ function request() {
     /**
      * @global
      */
-    var options = GLOBAL._m_options.status;
+    var options = GLOBAL.monitode.status;
     for (var i = 0, il = options.site.length; i < il; i++) {
         var url = URL.parse(options.site[i]);
         var module = HTTP;
@@ -118,7 +118,7 @@ function request() {
  */
 module.exports = function() {
 
-    var options = GLOBAL._m_options;
+    var options = GLOBAL.monitode;
     options.status.file = LOGGER({
         logger: '_m_status',
         level: 'debug',
