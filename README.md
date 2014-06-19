@@ -48,6 +48,11 @@ app.use(monitor({
 }));
 ```
 
+all motidote informations are stored inside global **Object**
+```js
+console.log(GLOBAL.monitode);
+```
+
 ### monitode(options)
 
 #### options
