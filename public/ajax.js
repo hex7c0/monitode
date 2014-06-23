@@ -112,6 +112,20 @@ function dyna($http,$scope,$timeout) {
                         title: 'System uptime Node',
                         info: Math.floor(data.uptime.node / 60) + ' minutes',
                     },];
+                    if (data.tickle) {
+                        var temp = {
+                            title: 'Request counter',
+                        };
+                        var temps = [];
+                        for ( var property in data.tickle) {
+                            temps.push({
+                                title: property,
+                                info: data.tickle[property],
+                            });
+                        }
+                        temp['child'] = temps;
+                        $scope.dynamics.push(temp);
+                    }
                     /*
                      * info refresh
                      */
@@ -171,7 +185,6 @@ function dyna($http,$scope,$timeout) {
         });
     }
     return;
-
 }
 /**
  * ajax post 'static'
@@ -191,28 +204,31 @@ function stat($http,$scope) {
         // info
         $scope.statics = [{
             title: 'CPU architecture',
-            info: data.os.arch
+            info: data.os.arch,
         },{
             title: 'OS hostname',
-            info: data.os.hostname
+            info: data.os.hostname,
         },{
             title: 'OS platform',
-            info: data.os.platform
+            info: data.os.platform,
         },{
             title: 'OS type',
-            info: data.os.type
+            info: data.os.type,
         },{
             title: 'OS release',
-            info: data.os.release
+            info: data.os.release,
+        },{
+            title: 'OS endianness',
+            info: data.endianness,
         },{
             title: 'Process gid',
-            info: data.process.gid
+            info: data.process.gid,
         },{
             title: 'Process uid',
-            info: data.process.uid
+            info: data.process.uid,
         },{
             title: 'Process pid',
-            info: data.process.pid
+            info: data.process.pid,
         },];
         // 0 environment
         var temp = {
@@ -258,6 +274,22 @@ function stat($http,$scope) {
         }
         temp['child'] = temps;
         $scope.statics.push(temp);
+        // 3 route
+        if (data.route) {
+            var temp = {
+                title: 'Sitemap',
+            };
+            var temps = [];
+            for ( var property in data.route) {
+                temps.push({
+                    title: property,
+                    info: data.route[property],
+                });
+            }
+            temp['child'] = temps;
+            $scope.statics.push(temp);
+        }
+        return;
     }).error(function(data,status,headers,config) {
 
         // pass

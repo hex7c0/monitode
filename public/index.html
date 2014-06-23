@@ -21,6 +21,14 @@
             <div id="memory_pie"></div>
             <div>
                 <ul style="overflow-x:auto;">
+                    <li ng-repeat="element in dynamics">
+                        <span class="bold">{{element.title}}:</span> {{element.info}}
+                        <ul ng-show="element.child && element.child.length">
+                            <li ng-repeat="child in element.child">
+                                <span class="bold italic">{{child.title}}:</span> {{child.info}}
+                            </li>
+                        </ul>
+                    </li>
                     <li ng-repeat="element in refresh">
                         <span class="bold">{{element.title}}:</span> {{element.info}}
                         <ul ng-show="element.child && element.child.length">
@@ -44,9 +52,6 @@
                         <label class="bold">Frequency</label>
                         <input ng-model="clock" type="number" min="-1" max="3600" ngMinlength="-1" ngMaxlength="3600" ng-pattern="/^[0-9]{1,4}$/">
                         <label>seconds</label>
-                    </li>
-                    <li ng-repeat="element in dynamics">
-                        <span class="bold">{{element.title}}:</span> {{element.info}}
                     </li>
                     <li ng-repeat="element in statics">
                         <span class="bold">{{element.title}}:</span> {{element.info}}

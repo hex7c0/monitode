@@ -1,7 +1,7 @@
 "use strict";
 /**
  * @file example with logger-request and express
- * @package monitode
+ * @module monitode
  * @package monitode
  * @subpackage examples
  * @version 0.0.3
@@ -16,6 +16,7 @@
 try {
     var monitode = require('../index.js'); // use require('monitode') instead
     var logger = require('logger-request');
+    var tickle = require('tickle');
     var app = require('express')();
 } catch (MODULE_NOT_FOUND) {
     console.error(MODULE_NOT_FOUND);
@@ -41,6 +42,7 @@ app.use(monitode({
     },
 }));
 
+app.use(tickle);
 // express routing
 app.get('/',function(req,res) {
 
