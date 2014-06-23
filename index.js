@@ -30,12 +30,21 @@ module.exports = function(options) {
      */
     var my = GLOBAL.monitode = {
         output: Boolean(options.output),
+        tickle: Boolean(options.tickle),
+        app: false,
         os: Boolean(options.os),
         monitor: {
             os: true,
             log: true
         },
     };
+    if (options.app) {
+        my.app = {
+            _router: {
+                stack: options.app._router.stack,
+            }
+        };
+    }
     if (my.os) {
         /**
          * @global

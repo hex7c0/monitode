@@ -175,6 +175,6 @@ app.post('/dyn/',function(req,res) {
  */
 app.post('/sta/',function(req,res) {
 
-    res.json(require('../lib/obj.js').statics);
+    res.json(require('../lib/obj.js').statics(GLOBAL.monitode.app));
     return;
 });
