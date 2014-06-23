@@ -1,3 +1,9 @@
+2.2.10 / 2014-06-23
+==================
+
+  * New module [`tickle`](https://github.com/hex7c0/tickle)
+  * New module [`express-sitemap`](https://github.com/hex7c0/express-sitemap)
+
 2.2.9 / 2014-06-19
 ==================
 

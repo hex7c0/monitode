@@ -58,8 +58,9 @@ console.log(GLOBAL.monitode);
 #### options
 
  - `output` - **Boolean** If enabled, show output to shell console *(default "false")*
- 
  - `os` - **Boolean** If enabled, show os (netstat, iostat) statistics to web console/database/email *(default "false")* **_NOT FOR WIN_**
+ - `tickle` - **Boolean** If enabled, using [`tickle`](https://github.com/hex7c0/tickle) inside dynamic datas *(default "disabled")*
+ - `app` - **Object** If enabled, using Express object for [`express-sitemap`](https://github.com/hex7c0/express-sitemap) inside static datas *(default "disabled")*
  
  - `http` - **Object** Setting up a web console using [`basic-authentication`](https://github.com/hex7c0/basic-authentication)
   - `enabled` - **Boolean** If disabled, don't run web console *(default "enabled")*
@@ -89,7 +90,7 @@ console.log(GLOBAL.monitode);
   - `file` - **String** Path to file *(default "disabled")* Save stats at regular intervals to file
   - `timeout` - **Float** Timeout (second) for file write *(default "5")*
  
- releated to https://github.com/hex7c0/logger-request
+  releated to https://github.com/hex7c0/logger-request
  
  - `db` - **Object** Setting up a connectiont to database which save your story
   - `mongo` - **String** URI for MongoDB connection *(default "disabled")* Save stats at regular intervals to database
