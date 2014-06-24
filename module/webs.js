@@ -4,7 +4,7 @@
  * @module monitode
  * @package monitode
  * @subpackage module
- * @version 2.2.8
+ * @version 2.2.11
  * @author hex7c0 <hex7c0@gmail.com>
  * @copyright hex7c0 2014
  * @license GPLv3
@@ -62,7 +62,6 @@ function without_log(res,json) {
     var diff = process.hrtime(json.ns);
     json.ns = diff[0] * 1e9 + diff[1];
     res.json(json);
-    res.end();
     return;
 }
 /**

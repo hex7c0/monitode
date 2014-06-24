@@ -4,7 +4,7 @@
  * @module monitode
  * @package monitode
  * @subpackage main
- * @version 2.2.9
+ * @version 2.2.11
  * @author hex7c0 <hex7c0@gmail.com>
  * @copyright hex7c0 2014
  * @license GPLv3
@@ -148,8 +148,10 @@ module.exports = function(options) {
     options.status = options.status || {};
     if (Boolean(options.status.enabled)) {
         my.status = {
-            site: Array.isArray(options.status.site) == true ? options.status.site : [],
-            port: Array.isArray(options.status.port) == true ? options.status.port : [],
+            site: Array.isArray(options.status.site) == true ? options.status.site
+                    : [],
+            port: Array.isArray(options.status.port) == true ? options.status.port
+                    : [],
             method: String(options.status.method || 'GET'),
             agent: String(options.status.agent || 'monitode crawl'),
             file: String(options.status.file || 'status'),
