@@ -4,7 +4,7 @@
  * @module monitode
  * @package monitode
  * @subpackage main
- * @version 2.2.11
+ * @version 2.2.12
  * @author hex7c0 <hex7c0@gmail.com>
  * @copyright hex7c0 2014
  * @license GPLv3
@@ -16,12 +16,12 @@
 /**
  * option setting
  * 
- * @exports main
- * @function main
+ * @exports monitode
+ * @function monitode
  * @param {Object} options - various options. Check README.md
  * @return {Function}
  */
-module.exports = function(options) {
+module.exports = function monitode(options) {
 
     var spinterogeno = [], options = options || {};
     // global
