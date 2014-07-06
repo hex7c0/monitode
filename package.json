@@ -1,6 +1,6 @@
 {
   "name": "monitode",
-  "version": "2.2.13",
+  "version": "2.2.14",
   "description": "resource monitor for nodejs",
   "main": "index.js",
   "repository": {
@@ -17,7 +17,7 @@
   },
   "dependencies": {
     "basic-authentication": "1.1.X",
-    "express": "4.4.X",
+    "express": "4.5.X",
     "express-sitemap": "1.2.X",
     "logger-request": "1.1.X",
     "mongodb": "1.4.X",
