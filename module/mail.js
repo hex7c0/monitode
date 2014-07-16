@@ -4,7 +4,7 @@
  * @module monitode
  * @package monitode
  * @subpackage module
- * @version 2.2.9
+ * @version 2.2.18
  * @author hex7c0 <hex7c0@gmail.com>
  * @copyright hex7c0 2014
  * @license GPLv3
@@ -86,7 +86,7 @@ module.exports = function() {
             net = true;
         }
     }
-    options.mail.provider = MAIL.createTransport('SMTP',{
+    options.mail.provider = MAIL.createTransport({
         service: options.mail.provider,
         auth: {
             user: options.mail.user,
