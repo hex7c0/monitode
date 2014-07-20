@@ -1,3 +1,10 @@
+2.2.20 / 2014-07-20
+==================
+
+  * Update `logger-request`@1.3.0
+  * Update `basic-authentication`@1.2.1
+  * Update `startline`@1.2.1
+
 2.2.19 / 2014-07-17
 ==================
 

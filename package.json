@@ -1,6 +1,6 @@
 {
   "name": "monitode",
-  "version": "2.2.19",
+  "version": "2.2.20",
   "description": "resource monitor for nodejs",
   "main": "index.js",
   "repository": {
@@ -16,13 +16,13 @@
     "url": "http://hex7c0.tk/"
   },
   "dependencies": {
-    "basic-authentication": "1.2.X",
+    "basic-authentication": "1.2.1",
     "express": "4.6.X",
-    "express-sitemap": "1.2.X",
-    "logger-request": "1.2.X",
+    "express-sitemap": "1.2.2",
+    "logger-request": "1.3.0",
     "mongodb": "1.4.X",
     "nodemailer": "1.0.X",
-    "startline": "1.2.X",
+    "startline": "1.2.1",
     "tickle": "1.0.X"
   },
   "engines": {
