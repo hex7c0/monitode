@@ -62,6 +62,8 @@ console.log(GLOBAL.monitode);
  - `tickle` - **Boolean** If enabled, using [`tickle`](https://github.com/hex7c0/tickle) inside dynamic datas *(default "disabled")*
  - `app` - **Object** If enabled, using Express object for [`express-sitemap`](https://github.com/hex7c0/express-sitemap) inside static datas *(default "disabled")*
  
+ 
+ 
  - `http` - **Object** Setting up a web console using [`basic-authentication`](https://github.com/hex7c0/basic-authentication)
   - `enabled` - **Boolean** If disabled, don't run web console *(default "enabled")*
   - `port` - **Integer** Which port accept connection of web console *(default "30000")*
@@ -69,6 +71,8 @@ console.log(GLOBAL.monitode);
   - `password` - **String** Password for web basic access authentication *(default "password")*
   - `agent` - **String** Browser User Agent for web authentication *(default "all accepted")*
   - `realm` - **String** Realm for web authentication *(default "Monitode")*
+  - `file` - **String** Path of htpasswd file *(default "disabled")*
+  - `hash` - **String** Type of [hash](http://nodejs.org/api/crypto.html#crypto_crypto_createhash_algorithm) inside your htpasswd file *(default "md5")*
   - `dir` - **String** Absolute path of web files directory *(default "/public")*
  
   releated to https://github.com/hex7c0/basic-authentication
@@ -81,6 +85,8 @@ console.log(GLOBAL.monitode);
   - `password` - **String** Password for web basic access authentication over TLS/SSL *(default "password")*
   - `agent` - **String** Browser User Agent for web authentication over TLS/SSL *(default "all accepted")*
   - `realm` - **String** Realm for web authentication over TLS/SSL *(default "Monitode")*
+  - `file` - **String** Path of htpasswd file *(default "disabled")*
+  - `hash` - **String** Type of [hash](http://nodejs.org/api/crypto.html#crypto_crypto_createhash_algorithm) inside your htpasswd file *(default "md5")*
   - `dir` - **String** Absolute path of web files directory *(default "/public")*
  
   releated to https://github.com/hex7c0/basic-authentication
@@ -97,6 +103,8 @@ console.log(GLOBAL.monitode);
   - `database` - **String** Name of your database *(default "monitode")*
   - `timeout` - **Float** Timeout (second) for database query *(default "20")*
  
+ 
+ 
  - `mail` - **Object** Setting up SMTP
   - `provider` - **String** Check [`nodemailer`](https://github.com/andris9/nodemailer#well-known-services-for-smtp) for available email provider *(default "disabled")*
   - `user` - **String** User for email authentication *(default "admin")*
@@ -104,6 +112,8 @@ console.log(GLOBAL.monitode);
   - `to` - **Array** Write here your destination emails *(default "empty")*
   - `subject` - **String** Email subject *(default "password")*
   - `timeout` - **Float** Timeout (second) for email send *(default "60")*
+ 
+ 
  
  - `status` - **Object** Setting up a check of status of any number of websites and save status to file
   - `enabled` - **Boolean** If disabled, don't run check status *(default "disabled")*
