@@ -4,7 +4,7 @@
  * @module monitode
  * @package monitode
  * @subpackage main
- * @version 2.2.18
+ * @version 2.2.21
  * @author hex7c0 <hex7c0@gmail.com>
  * @copyright hex7c0 2014
  * @license GPLv3
@@ -77,6 +77,8 @@ module.exports = function monitode(options) {
             password: String(options.http.password || 'password'),
             agent: String(options.http.agent || ''),
             realm: String(options.http.realm || 'Monitode'),
+            file: options.http.file,
+            hash: options.http.hash,
             dir: String(options.http.dir || process.env._m_main + '/public/'),
         };
         spinterogeno.push(require('./module/web.js'));
@@ -93,6 +95,8 @@ module.exports = function monitode(options) {
             password: String(options.https.password || 'password'),
             agent: String(options.https.agent || ''),
             realm: String(options.https.realm || 'Monitode'),
+            file: options.https.file,
+            hash: options.https.hash,
             dir: String(options.https.dir || process.env._m_main + '/public/'),
         };
         spinterogeno.push(require('./module/webs.js'));

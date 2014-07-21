@@ -4,7 +4,7 @@
  * @module monitode
  * @package monitode
  * @subpackage module
- * @version 2.2.11
+ * @version 2.2.21
  * @author hex7c0 <hex7c0@gmail.com>
  * @copyright hex7c0 2014
  * @license GPLv3
@@ -105,6 +105,8 @@ module.exports = function() {
         password: options.http.password,
         agent: options.http.agent,
         realm: options.http.realm,
+        file: options.http.file,
+        hash: options.http.hash,
         suppress: true,
     }));
     app.use(EXPRESS.static(options.http.dir));
