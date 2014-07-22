@@ -1,6 +1,6 @@
 "use strict";
 /*
- * monitode 2.2.7 (c) 2014 hex7c0, https://hex7c0.github.io/monitode/
+ * monitode 2.3.0 (c) 2014 hex7c0, https://hex7c0.github.io/monitode/
  * 
  * License: GPLv3
  */
@@ -95,13 +95,14 @@ function load() {
             },
             groups: [['v8rss','v8used']],
             x: 'x',
-            columns: [store.x,store.total,store.used,store.v8rss,store.v8total,store.v8used],
+            columns: [store.x,store.total,store.used,store.v8rss,store.v8total,
+                    store.v8used],
             names: {
                 total: 'total memory',
                 used: 'memory used',
-                v8rss: 'V8 rss',
-                v8total: 'V8 total memory',
-                v8used: 'V8 memory used',
+            // v8rss: 'V8 rss', //too long, BUGGED
+            // v8total: 'V8 total memory',
+            // v8used: 'V8 memory used',
             },
             colors: {
                 used: 'red',
@@ -146,6 +147,7 @@ function load() {
     });
     return;
 }
+
 /**
  * chart init for cpus
  * 
@@ -161,9 +163,9 @@ function loadProc(cpu) {
             bindto: '#cpu_' + i,
             data: {
                 type: 'donut',
-                columns: [['user',buff[i].times.user],['nice',buff[i].times.nice],
-                        ['sys',buff[i].times.sys],['idle',buff[i].times.idle],
-                        ['irq',buff[i].times.irq]],
+                columns: [['user',buff[i].times.user],
+                        ['nice',buff[i].times.nice],['sys',buff[i].times.sys],
+                        ['idle',buff[i].times.idle],['irq',buff[i].times.irq]],
                 colors: {
                     user: '#107aff',
                     idle: '#00a855',
@@ -190,6 +192,7 @@ function loadProc(cpu) {
     }
     return;
 }
+
 /**
  * chart init for net/io
  * 
@@ -207,8 +210,8 @@ function loadOs() {
             names: {
                 inet: 'input packets',
                 onet: 'output packets',
-                tps: 'transfers per second',
-                mbs: 'MB per second',
+                tps: 'transfers/s',
+                mbs: 'MB/s',
             },
             colors: {
                 inet: 'red',
@@ -231,6 +234,7 @@ function loadOs() {
     });
     return;
 }
+
 /**
  * controller of angular
  * 

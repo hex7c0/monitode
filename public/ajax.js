@@ -1,6 +1,6 @@
 "use strict";
 /*
- * monitode 2.2.11 (c) 2014 hex7c0, https://hex7c0.github.io/monitode/
+ * monitode 2.3.0 (c) 2014 hex7c0, https://hex7c0.github.io/monitode/
  * 
  * License: GPLv3
  */
@@ -52,6 +52,7 @@ function dyna($http,$scope,$timeout) {
                             store.one.push(data.cpu.one);
                             store.five.push(data.cpu.five);
                             store.fifteen.push(data.cpu.fifteen);
+
                             // mem
                             store.total.push(data.mem.total / 1024);
                             store.used.push(data.mem.used / 1024);
@@ -59,17 +60,18 @@ function dyna($http,$scope,$timeout) {
                             store.v8rss.push(data.mem.v8.rss / 1024);
                             store.v8total.push(data.mem.v8.total / 1024);
                             store.v8used.push(data.mem.v8.used / 1024);
+
                             // chart
-                            avg.load({
-                                columns: [store.x,store.one,store.five,
-                                        store.fifteen],
-                            });
-                            meml
+                            var X = store.x;
+                            avg
                                     .load({
-                                        columns: [store.x,store.total,
-                                                store.used,store.v8rss,
-                                                store.v8total,store.v8used,],
+                                        columns: [X,store.one,store.five,
+                                                store.fifteen],
                                     });
+                            meml.load({
+                                columns: [X,store.total,store.used,store.v8rss,
+                                        store.v8total,store.v8used],
+                            });
                             memp
                                     .load({
                                         columns: [['used',data.mem.used],
@@ -85,7 +87,7 @@ function dyna($http,$scope,$timeout) {
                                     loadOs();
                                 }
                                 os.load({
-                                    columns: [store.x,store.inet,store.onet,
+                                    columns: [X,store.inet,store.onet,
                                             store.tps,store.mbs],
                                 });
                             }
@@ -94,7 +96,7 @@ function dyna($http,$scope,$timeout) {
                                 $scope.cpus = cpus = data.cpu.cpus;
                                 loadProc($scope.cpus);
                             } else {
-                                for (var i = 0, il = data.cpu.cpus.length; i < il; i++) {
+                                for (var i = 0, ii = data.cpu.cpus.length; i < ii; i++) {
                                     var cpu = data.cpu.cpus[i];
                                     cpus[i].load({
                                         columns: [['user',cpu.times.user],
@@ -105,6 +107,7 @@ function dyna($http,$scope,$timeout) {
                                     });
                                 }
                             }
+
                             /*
                              * info dynamics
                              */
@@ -143,6 +146,7 @@ function dyna($http,$scope,$timeout) {
                                 temp['child'] = temps;
                                 $scope.dynamics.push(temp);
                             }
+
                             /*
                              * info refresh
                              */
@@ -205,6 +209,7 @@ function dyna($http,$scope,$timeout) {
     }
     return;
 }
+
 /**
  * ajax post 'static'
  * 
