@@ -4,7 +4,7 @@
  * @module monitode
  * @package monitode
  * @subpackage module
- * @version 2.2.9
+ * @version 2.3.0
  * @author hex7c0 <hex7c0@gmail.com>
  * @copyright hex7c0 2014
  * @license GPLv3
@@ -44,7 +44,8 @@ function complete(res) {
     var options = GLOBAL.monitode.status;
     var status = Math.floor(res.statusCode / 100);
     if (status >= 4) {
-        console.log(new Date().toUTCString() + ' ' + res.connection._host + ' ' + res.statusCode);
+        console.log(new Date().toUTCString() + ' ' + res.connection._host + ' '
+                + res.statusCode);
     }
     options.file('moniStatus',{
         host: res.connection._host,
@@ -54,6 +55,7 @@ function complete(res) {
     });
     return;
 }
+
 /**
  * request loop
  * 
@@ -109,6 +111,7 @@ function request() {
     timeout = setTimeout(request,options.timeout);
     return;
 }
+
 /**
  * init for file module. Using global var for sharing info
  * 
@@ -119,17 +122,20 @@ function request() {
 module.exports = function() {
 
     var options = GLOBAL.monitode;
+
     options.status.file = LOGGER({
-        logger: '_m_status',
-        level: 'debug',
-        filename: options.status.file,
-        maxsize: null,
-        json: false,
         standalone: true,
+        filename: options.status.file,
+        winston: {
+            logger: 'moniStatus',
+            level: 'debug',
+            maxsize: null,
+            json: false,
+        },
     });
     if (options.output) {
         console.log('starting monitor with status');
     }
-    request());
+    request();
     return;
 };

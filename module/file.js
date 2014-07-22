@@ -4,7 +4,7 @@
  * @module monitode
  * @package monitode
  * @subpackage module
- * @version 2.2.9
+ * @version 2.3.0
  * @author hex7c0 <hex7c0@gmail.com>
  * @copyright hex7c0 2014
  * @license GPLv3
@@ -43,6 +43,7 @@ function file() {
     timeout = setTimeout(file,options.timeout);
     return;
 }
+
 /**
  * init for file module. Using global var for sharing info
  * 
@@ -60,12 +61,14 @@ module.exports = function() {
         console.log('starting monitor on file ' + options.logger.file);
     }
     options.logger.file = LOGGER({
-        logger: '_m_file',
-        level: 'debug',
-        filename: options.logger.file,
-        maxsize: null,
-        json: false,
         standalone: true,
+        filename: options.logger.file,
+        winston: {
+            logger: 'moniFile',
+            level: 'debug',
+            maxsize: null,
+            json: false,
+        },
     });
     timeout = setTimeout(file,0);
     return;

@@ -4,7 +4,7 @@
  * @module monitode
  * @package monitode
  * @subpackage module
- * @version 2.2.9
+ * @version 2.3.0
  * @author hex7c0 <hex7c0@gmail.com>
  * @copyright hex7c0 2014
  * @license GPLv3
@@ -62,6 +62,7 @@ function with_log(json) {
     log(options.logger.log);
     return;
 }
+
 /**
  * sending object without log
  * 
@@ -96,6 +97,7 @@ function without_log(json) {
     });
     return;
 }
+
 /**
  * query loop
  * 
@@ -119,6 +121,7 @@ function query() {
     }
     return;
 }
+
 /**
  * init for mongo module. Using global var for sharing info
  * 
@@ -158,7 +161,8 @@ module.exports = function() {
         if (error) {
             console.error(error);
         } else {
-            database.createCollection(options.db.database,function(error,collection) {
+            database.createCollection(options.db.database,function(error,
+                                                                   collection) {
 
                 if (error) {
                     console.error(error);

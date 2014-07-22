@@ -4,7 +4,7 @@
  * @module monitode
  * @package monitode
  * @subpackage module
- * @version 2.2.18
+ * @version 2.3.0
  * @author hex7c0 <hex7c0@gmail.com>
  * @copyright hex7c0 2014
  * @license GPLv3
@@ -48,8 +48,6 @@ function email() {
             net();
             io();
         }
-    } else {
-        // pass
     }
     options.to.text = JSON.stringify(json);
     options.provider.sendMail(options.to,function(error,response) {
@@ -64,6 +62,7 @@ function email() {
     });
     return;
 }
+
 /**
  * init for file module. Using global var for sharing info
  * 

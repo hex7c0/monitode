@@ -4,7 +4,7 @@
  * @module monitode
  * @package monitode
  * @subpackage module
- * @version 2.2.21
+ * @version 2.3.0
  * @author hex7c0 <hex7c0@gmail.com>
  * @copyright hex7c0 2014
  * @license GPLv3
@@ -49,6 +49,7 @@ function with_log(res,json) {
     log(global.logger.log);
     return;
 }
+
 /**
  * sending object without log
  * 
@@ -64,6 +65,7 @@ function without_log(res,json) {
     res.json(json);
     return;
 }
+
 /**
  * init for web module. Using global var for sharing info
  * 
