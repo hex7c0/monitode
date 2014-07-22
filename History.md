@@ -1,3 +1,15 @@
+2.3.0 / 2014-07-23
+==================
+
+  * _node_
+   * Update `basic-authentication`@1.3.3
+   * Update `logger-request`@2.0.1
+   * Update `startline`@1.2.2
+  * _web_
+   * Update `angular`@1.3.0-b16
+   * Update `c3`@0.2.4
+   * Update `d3`@3.4.11
+
 2.2.22 / 2014-07-21
 ==================
 

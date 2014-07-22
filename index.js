@@ -4,7 +4,7 @@
  * @module monitode
  * @package monitode
  * @subpackage main
- * @version 2.2.21
+ * @version 2.3.0
  * @author hex7c0 <hex7c0@gmail.com>
  * @copyright hex7c0 2014
  * @license GPLv3
@@ -23,7 +23,7 @@
  */
 module.exports = function monitode(options) {
 
-    var spinterogeno = [], options = options || {};
+    var spinterogeno = [], options = options || Object.create(null);
     // global
     /**
      * @global
@@ -67,10 +67,10 @@ module.exports = function monitode(options) {
             mbs: 0,
         };
     }
+
     // http
-    options.http = options.http || {};
+    options.http = options.http || Object.create(null);
     if (options.http.enabled == false ? false : true) {
-        process.env._m_main = __dirname;
         my.http = {
             port: Number(options.http.port) || 30000,
             user: String(options.http.user || 'admin'),
@@ -79,14 +79,13 @@ module.exports = function monitode(options) {
             realm: String(options.http.realm || 'Monitode'),
             file: options.http.file,
             hash: options.http.hash,
-            dir: String(options.http.dir || process.env._m_main + '/public/'),
+            dir: String(options.http.dir || __dirname + '/public/'),
         };
         spinterogeno.push(require('./module/web.js'));
     }
     // https
-    options.https = options.https || {};
+    options.https = options.https || Object.create(null);
     if (options.https.key && options.https.cert) {
-        process.env._m_main = __dirname;
         my.https = {
             key: String(options.https.key),
             cert: String(options.https.cert),
@@ -97,13 +96,14 @@ module.exports = function monitode(options) {
             realm: String(options.https.realm || 'Monitode'),
             file: options.https.file,
             hash: options.https.hash,
-            dir: String(options.https.dir || process.env._m_main + '/public/'),
+            dir: String(options.https.dir || __dirname + '/public/'),
         };
         spinterogeno.push(require('./module/webs.js'));
     }
+
     // logger
-    options.logger = options.logger || {};
-    my.logger = {};
+    options.logger = options.logger || Object.create(null);
+    my.logger = Object.create(null);
     if (options.logger.file) {
         my.logger = {
             file: String(options.logger.file),
@@ -123,10 +123,11 @@ module.exports = function monitode(options) {
         /**
          * @global
          */
-        GLOBAL.monitode.event = {};
+        GLOBAL.monitode.event = Object.create(null);
     }
+
     // database
-    options.db = options.db || {};
+    options.db = options.db || Object.create(null);
     if (options.db.mongo) {
         my.db = {
             mongo: String(options.db.mongo),
@@ -135,8 +136,9 @@ module.exports = function monitode(options) {
         };
         spinterogeno.push(require('./module/mongo.js'));
     }
+
     // mail
-    options.mail = options.mail || {};
+    options.mail = options.mail || Object.create(null);
     if (options.mail.provider) {
         my.mail = {
             provider: String(options.mail.provider),
@@ -148,8 +150,9 @@ module.exports = function monitode(options) {
         };
         spinterogeno.push(require('./module/mail.js'));
     }
+
     // status
-    options.status = options.status || {};
+    options.status = options.status || Object.create(null);
     if (Boolean(options.status.enabled)) {
         my.status = {
             site: Array.isArray(options.status.site) == true ? options.status.site
@@ -163,6 +166,7 @@ module.exports = function monitode(options) {
         };
         spinterogeno.push(require('./module/status.js'));
     }
+
     // start
     for (var i = 0, il = spinterogeno.length; i < il; i++) {
         spinterogeno[i]();
