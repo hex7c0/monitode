@@ -1,3 +1,11 @@
+2.3.2 / 2014-07-25
+==================
+
+  * Update `basic-authentication`@1.4.0
+  * Update `express-sitemap`@1.2.3
+  * Update `logger-request`@2.1.1
+  * Update `tickle`@1.0.4
+
 2.3.1 / 2014-07-24
 ==================
 
