@@ -4,7 +4,7 @@
  * @module monitode
  * @package monitode
  * @subpackage module
- * @version 2.3.0
+ * @version 2.3.3
  * @author hex7c0 <hex7c0@gmail.com>
  * @copyright hex7c0 2014
  * @license GPLv3
@@ -16,6 +16,7 @@
 // import
 try {
     var HTTPS = require('https'), FS = require('fs'), EXPRESS = require('express');
+    var timeout = require('timeout-request');
 } catch (MODULE_NOT_FOUND) {
     console.error(MODULE_NOT_FOUND);
     process.exit(1);
@@ -103,6 +104,10 @@ module.exports = function() {
         }
         app.disable('x-powered-by');
         app.disable('etag');
+        app.use(timeout({
+            milliseconds: 4000,
+            header: true,
+        }));
         app.use(require('basic-authentication')({
             user: options.https.user,
             password: options.https.password,
