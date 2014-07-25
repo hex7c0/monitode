@@ -1,6 +1,6 @@
 {
   "name": "monitode",
-  "version": "2.3.2",
+  "version": "2.3.3",
   "description": "resource monitor for nodejs",
   "main": "index.js",
   "repository": {
@@ -23,7 +23,8 @@
     "mongodb": "1.4.X",
     "nodemailer": "1.0.X",
     "startline": "1.2.2",
-    "tickle": "1.0.4"
+    "tickle": "1.0.4",
+    "timeout-request": "1.0.1"
   },
   "engines": {
     "node": ">0.10.0"
