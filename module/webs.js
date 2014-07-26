@@ -16,7 +16,6 @@
 // import
 try {
     var HTTPS = require('https'), FS = require('fs'), EXPRESS = require('express');
-    var timeout = require('timeout-request');
 } catch (MODULE_NOT_FOUND) {
     console.error(MODULE_NOT_FOUND);
     process.exit(1);
@@ -104,7 +103,7 @@ module.exports = function() {
         }
         app.disable('x-powered-by');
         app.disable('etag');
-        app.use(timeout({
+        app.use(require('timeout-request')({
             milliseconds: 4000,
             header: true,
         }));
