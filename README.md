@@ -1,8 +1,10 @@
+# [monitode](https://github.com/hex7c0/monitode)
+[![NPM version](https://badge.fury.io/js/monitode.svg)](http://badge.fury.io/js/monitode)
+[![Build Status](https://travis-ci.org/hex7c0/monitode.svg?branch=master)](https://travis-ci.org/hex7c0/monitode)
+[![devDependency Status](https://david-dm.org/hex7c0/monitode/dev-status.svg)](https://david-dm.org/hex7c0/monitode#info=devDependencies)
+
 [![monitode logo](https://raw.githubusercontent.com/hex7c0/monitode/master/public/monitode.png)](https://hex7c0.github.io/monitode/)
-
-**Monitode** is a resource monitor for [nodejs](http://nodejs.org) using a full stack of [MEAN](http://en.wikipedia.org/wiki/MEAN)
-
-[![Build Status](https://travis-ci.org/hex7c0/monitode.svg?branch=master)](https://travis-ci.org/hex7c0/monitode) [![NPM version](https://badge.fury.io/js/monitode.svg)](http://badge.fury.io/js/monitode)
+Is a resource monitor for [nodejs](http://nodejs.org) using a full stack of [MEAN](http://en.wikipedia.org/wiki/MEAN).
 
 ## Installation
 
@@ -22,7 +24,6 @@ inside nodejs project
 ```js
 var monitode = require('monitode')();
 ```
-
 inside expressjs project
 ```js
 var monitode = require('monitode');
@@ -47,7 +48,6 @@ app.use(monitor({
     log : file,
 }));
 ```
-
 all motidote informations are stored inside global **Object**
 ```js
 console.log(GLOBAL.monitode);
