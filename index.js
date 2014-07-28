@@ -36,7 +36,7 @@ module.exports = function monitode(options) {
         monitor: {
             os: true,
             log: true
-        },
+        }
     };
     if (options.app) {
         my.app = {
