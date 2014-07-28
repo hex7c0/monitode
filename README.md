@@ -4,7 +4,8 @@
 [![devDependency Status](https://david-dm.org/hex7c0/monitode/dev-status.svg)](https://david-dm.org/hex7c0/monitode#info=devDependencies)
 
 [![monitode logo](https://raw.githubusercontent.com/hex7c0/monitode/master/public/monitode.png)](https://hex7c0.github.io/monitode/)
-Is a resource monitor for [nodejs](http://nodejs.org) using a full stack of [MEAN](http://en.wikipedia.org/wiki/MEAN).
+
+Resource monitor for [nodejs](http://nodejs.org) using a full stack of [MEAN](http://en.wikipedia.org/wiki/MEAN).
 
 ## Installation
 
