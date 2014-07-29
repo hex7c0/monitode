@@ -4,7 +4,7 @@
  * @module monitode
  * @package monitode
  * @subpackage module
- * @version 2.3.0
+ * @version 2.4.0
  * @author hex7c0 <hex7c0@gmail.com>
  * @copyright hex7c0 2014
  * @license GPLv3
@@ -20,49 +20,47 @@ try {
     console.error(MODULE_NOT_FOUND);
     process.exit(1);
 }
-// load
-var timeout = null;
-
-/*
- * functions
- */
-/**
- * file loop
- * 
- * @function file
- * @return
- */
-function file() {
-
-    clearTimeout(timeout);
-    /**
-     * @global
-     */
-    var options = GLOBAL.monitode.logger;
-    options.file('moniFile',require('../lib/obj.js').dynamics(true));
-    timeout = setTimeout(file,options.timeout);
-    return;
-}
 
 /**
  * init for file module. Using global var for sharing info
  * 
- * @exports main
- * @function main
- * @return
+ * @exports file
+ * @function file
  */
-module.exports = function() {
+module.exports = function file() {
 
     /**
      * @global
      */
     var options = GLOBAL.monitode;
-    if (options.output) {
-        console.log('starting monitor on file ' + options.logger.file);
+    var f = options.logger;
+    var timeout;
+
+    /*
+     * functions
+     */
+    /**
+     * file loop
+     * 
+     * @function write
+     */
+    function write() {
+
+        clearTimeout(timeout);
+        /**
+         * @global
+         */
+        f.file('moniFile',require(options.min + 'lib/obj.js').dynamics(true));
+        timeout = setTimeout(write,f.timeout);
+        return;
     }
-    options.logger.file = LOGGER({
+
+    if (options.output) {
+        console.log('starting monitor on file ' + f.file);
+    }
+    f.file = LOGGER({
         standalone: true,
-        filename: options.logger.file,
+        filename: f.file,
         winston: {
             logger: 'moniFile',
             level: 'debug',
@@ -70,6 +68,5 @@ module.exports = function() {
             json: false,
         },
     });
-    timeout = setTimeout(file,0);
-    return;
+    return write();
 };

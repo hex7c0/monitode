@@ -4,7 +4,7 @@
  * @module monitode
  * @package monitode
  * @subpackage module
- * @version 2.3.0
+ * @version 2.4.0
  * @author hex7c0 <hex7c0@gmail.com>
  * @copyright hex7c0 2014
  * @license GPLv3
@@ -20,126 +20,113 @@ try {
     console.error(MODULE_NOT_FOUND);
     process.exit(1);
 }
-// load
-var timeout = null, log = null, net = null, io = null, end = without_log;
-
-/*
- * functions
- */
-/**
- * sending object with log
- * 
- * @function with_log
- * @param {Object} json - builded object
- * @return
- */
-function with_log(json) {
-
-    /**
-     * @global
-     */
-    var options = GLOBAL.monitode;
-    var diff = process.hrtime(json.ns);
-    json.ns = diff[0] * 1e9 + diff[1];
-    json.event = options.event;
-    /**
-     * callback of query
-     * 
-     * @function
-     * @param {String} error - error output
-     * @param {Object} result - result of query
-     * @return
-     */
-    options.db.database.insert(json,function(error,result) {
-
-        if (error) {
-            console.error(error);
-        } else {
-            timeout = setTimeout(query,options.db.timeout);
-        }
-        return;
-    });
-    log(options.logger.log);
-    return;
-}
-
-/**
- * sending object without log
- * 
- * @function without_log
- * @param {Object} json - builded object
- * @return
- */
-function without_log(json) {
-
-    /**
-     * @global
-     */
-    var options = GLOBAL.monitode.db;
-    var diff = process.hrtime(json.ns);
-    json.ns = diff[0] * 1e9 + diff[1];
-    /**
-     * callback of query
-     * 
-     * @function
-     * @param {String} error - error output
-     * @param {Object} result - result of query
-     * @return
-     */
-    options.database.insert(json,function(error,result) {
-
-        if (error) {
-            console.error(error);
-        } else {
-            timeout = setTimeout(query,options.timeout);
-        }
-        return;
-    });
-    return;
-}
-
-/**
- * query loop
- * 
- * @function file
- * @return
- */
-function query() {
-
-    clearTimeout(timeout);
-    var json = require('../lib/obj.js').dynamics();
-    if (net) {
-        json.net = GLOBAL.monitode.net;
-        json.io = GLOBAL.monitode.io;
-        end(json);
-        if (io) {
-            net();
-            io();
-        }
-    } else {
-        end(json);
-    }
-    return;
-}
 
 /**
  * init for mongo module. Using global var for sharing info
  * 
- * @exports main
- * @function main
- * @return
+ * @exports mongo
+ * @function mongo
  */
-module.exports = function() {
+module.exports = function mongo() {
 
     /**
      * @global
      */
     var options = GLOBAL.monitode;
+    var d = options.db;
+    var timeout, log, net, io, end = without_log;
+
+    /*
+     * functions
+     */
+    /**
+     * sending object with log
+     * 
+     * @function with_log
+     * @param {Object} json - builded object
+     */
+    function with_log(json) {
+
+        var diff = process.hrtime(json.ns);
+        json.ns = diff[0] * 1e9 + diff[1];
+        json.event = options.event;
+        /**
+         * callback of query
+         * 
+         * @function
+         * @param {String} error - error output
+         * @param {Object} result - result of query
+         */
+        d.database.insert(json,function(error,result) {
+
+            if (error) {
+                console.error(error);
+            } else {
+                timeout = setTimeout(query,d.timeout);
+            }
+            return;
+        });
+        log(options.logger.log);
+        return;
+    }
+
+    /**
+     * sending object without log
+     * 
+     * @function without_log
+     * @param {Object} json - builded object
+     */
+    function without_log(json) {
+
+        var diff = process.hrtime(json.ns);
+        json.ns = diff[0] * 1e9 + diff[1];
+        /**
+         * callback of query
+         * 
+         * @function
+         * @param {String} error - error output
+         * @param {Object} result - result of query
+         */
+        d.database.insert(json,function(error,result) {
+
+            if (error) {
+                console.error(error);
+            } else {
+                timeout = setTimeout(query,d.timeout);
+            }
+            return;
+        });
+        return;
+    }
+
+    /**
+     * query loop
+     * 
+     * @function file
+     */
+    function query() {
+
+        clearTimeout(timeout);
+        var json = require(options.min + 'lib/obj.js').dynamics();
+        if (net) {
+            json.net = options.net;
+            json.io = options.io;
+            end(json);
+            if (io) {
+                net();
+                io();
+            }
+        } else {
+            end(json);
+        }
+        return;
+    }
+
     if (options.os) {
         if (options.monitor.os) {
             options.monitor.os = false;
-            net = require('../lib/net.js')();
-            io = require('../lib/io.js')();
+            net = require(options.min + 'lib/net.js')();
+            io = require(options.min + 'lib/io.js')();
         } else {
             net = true;
         }
@@ -148,7 +135,7 @@ module.exports = function() {
         end = with_log;
         if (options.monitor.log) {
             options.monitor.log = false;
-            log = require('../lib/log.js');
+            log = require(options.min + 'lib/log.js');
         } else {
             log = function() {
 
@@ -156,22 +143,21 @@ module.exports = function() {
             };
         }
     }
-    CLIENT.connect(options.db.mongo,function(error,database) {
+    CLIENT.connect(d.mongo,function(error,database) {
 
         if (error) {
             console.error(error);
         } else {
-            database.createCollection(options.db.database,function(error,
-                                                                   collection) {
+            database.createCollection(d.database,function(error,collection) {
 
                 if (error) {
                     console.error(error);
                 } else {
-                    options.db.database = collection;
+                    d.database = collection;
                     if (options.output) {
                         console.log('starting monitor on database');
                     }
-                    GLOBAL.monitode.db.mongo = null;
+                    GLOBAL.monitode.mongo = true;
                     query();
                 }
                 return;
