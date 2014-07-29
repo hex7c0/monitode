@@ -1,9 +1,9 @@
-# [monitode](https://github.com/hex7c0/monitode)
+# [monitode](https://hex7c0.github.io/monitode/)
 [![NPM version](https://badge.fury.io/js/monitode.svg)](http://badge.fury.io/js/monitode)
 [![Build Status](https://travis-ci.org/hex7c0/monitode.svg?branch=master)](https://travis-ci.org/hex7c0/monitode)
 [![devDependency Status](https://david-dm.org/hex7c0/monitode/dev-status.svg)](https://david-dm.org/hex7c0/monitode#info=devDependencies)
 
-[![monitode logo](https://raw.githubusercontent.com/hex7c0/monitode/master/public/monitode.png)](https://hex7c0.github.io/monitode/)
+[![monitode logo](https://raw.githubusercontent.com/hex7c0/monitode/master/public/logo.png)](https://hex7c0.github.io/monitode/)
 
 Resource monitor for [nodejs](http://nodejs.org) using a full stack of [MEAN](http://en.wikipedia.org/wiki/MEAN).
 
@@ -49,7 +49,8 @@ app.use(monitor({
     log : file,
 }));
 ```
-all motidote informations are stored inside global **Object**
+all motidote informations are stored inside global **Object**.
+one istance for environment
 ```js
 console.log(GLOBAL.monitode);
 ```
