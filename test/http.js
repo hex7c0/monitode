@@ -55,48 +55,52 @@ describe('http',function() {
             });
         });
 
-        it('sta',function(done) {
+        it('sta',
+                function(done) {
 
-            var OS = require('os')
-            var data = {
-                os: {
-                    hostname: OS.hostname(),
-                    platform: OS.platform(),
-                    arch: OS.arch(),
-                    type: OS.type(),
-                    release: OS.release(),
-                },
-                version: process.versions,
-                process: {
-                    gid: process.getgid(),
-                    uid: process.getuid(),
-                    pid: process.pid,
-                    env: process.env,
-                },
-                network: OS.networkInterfaces(),
-                endianness: OS.endianness(),
-            };
-            var p = 'Basic ' + new Buffer('pippo:ciao').toString('base64');
-            request.post('http://127.0.0.1:3001/sta/').set('Authorization',p)
-                    .set('Accept','application/json').end(
-                            function(err,res) {
+                    var OS = require('os')
+                    var d = {
+                        os: {
+                            hostname: OS.hostname(),
+                            platform: OS.platform(),
+                            arch: OS.arch(),
+                            type: OS.type(),
+                            release: OS.release(),
+                        },
+                        version: process.versions,
+                        process: {
+                            gid: process.getgid(),
+                            uid: process.getuid(),
+                            pid: process.pid,
+                            env: process.env,
+                        },
+                        network: OS.networkInterfaces(),
+                        endianness: OS.endianness(),
+                    };
+                    var p = 'Basic '
+                            + new Buffer('pippo:ciao').toString('base64');
+                    request.post('http://127.0.0.1:3001/sta/').set(
+                            'Authorization',p).set('Accept','application/json')
+                            .end(
+                                    function(err,res) {
 
-                                if (err)
-                                    throw err;
-                                var j = JSON.parse(res.text);
-                                assert.deepEqual(res.statusCode,200,'200');
-                                assert.deepEqual(j.os,data.os,'os');
-                                assert.deepEqual(j.version,data.version,
-                                        'version');
-                                assert.deepEqual(j.process,data.process,
-                                        'process');
-                                assert.deepEqual(j.process,data.process,
-                                        'process');
-                                assert.deepEqual(j.endianness,data.endianness,
-                                        'endianness');
-                                done()
-                            });
-        });
+                                        if (err)
+                                            throw err;
+                                        var j = JSON.parse(res.text);
+                                        assert.deepEqual(res.statusCode,200,
+                                                '200');
+                                        assert.deepEqual(j.os,d.os,'os');
+                                        assert.deepEqual(j.version,d.version,
+                                                'version');
+                                        assert.deepEqual(j.process,d.process,
+                                                'process');
+                                        assert.deepEqual(j.process,d.process,
+                                                'process');
+                                        assert.deepEqual(j.endianness,
+                                                d.endianness,'endianness');
+                                        done()
+                                    });
+                });
     });
 
     describe('error - should return error',function() {

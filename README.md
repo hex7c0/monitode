@@ -50,9 +50,9 @@ app.use(monitor({
 }));
 ```
 all motidote informations are stored inside global **Object**.
-one istance for environment
+One istance for environment.
 ```js
-console.log(GLOBAL.monitode);
+GLOBAL.monitode;
 ```
 
 ### monitode(options)
