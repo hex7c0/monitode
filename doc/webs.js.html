@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: module/webs.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: module/webs.js</h1>
+
+    
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>"use strict";
+/**
+ * @file monitode web over TLS/SSL
+ * @module monitode
+ * @package monitode
+ * @subpackage module
+ * @version 2.4.0
+ * @author hex7c0 &lt;hex7c0@gmail.com>
+ * @copyright hex7c0 2014
+ * @license GPLv3
+ */
+
+/*
+ * initialize module
+ */
+// import
+try {
+    var HTTPS = require('https'), FS = require('fs'), EXPRESS = require('express');
+} catch (MODULE_NOT_FOUND) {
+    console.error(MODULE_NOT_FOUND);
+    process.exit(1);
+}
+
+/**
+ * init for web module. Using global var for sharing info
+ * 
+ * @exports web
+ * @function web
+ */
+module.exports = function web() {
+
+    /**
+     * @global
+     */
+    var options = GLOBAL.monitode;
+    var h = options.https;
+    var app = EXPRESS(), log, net, io, end = without_log;
+
+    /*
+     * functions
+     */
+    /**
+     * sending object with log
+     * 
+     * @function with_log
+     * @param {Object} res - response
+     * @param {Object} json - builded object
+     */
+    function with_log(res,json) {
+
+        var diff = process.hrtime(json.ns);
+        json.log = options.log;
+        json.event = options.event;
+        json.ns = diff[0] * 1e9 + diff[1];
+        res.json(json);
+        res.end();
+        log(options.logger.log);
+        return;
+    }
+
+    /**
+     * sending object without log
+     * 
+     * @function with_log
+     * @param {Object} res - response
+     * @param {Object} json - builded object
+     */
+    function without_log(res,json) {
+
+        var diff = process.hrtime(json.ns);
+        json.ns = diff[0] * 1e9 + diff[1];
+        res.json(json);
+        return;
+    }
+
+    if (options.os) {
+        if (options.monitor.os) {
+            options.monitor.os = false;
+            net = require(options.min + 'lib/net.js')();
+            io = require(options.min + 'lib/io.js')();
+        } else {
+            net = true;
+        }
+    }
+    if (options.logger.log) {
+        end = with_log;
+        if (options.monitor.log) {
+            options.monitor.log = false;
+            log = require(options.min + 'lib/log.js');
+        } else {
+            log = function() {
+
+                return;
+            };
+        }
+    }
+    app.disable('x-powered-by');
+    app.disable('etag');
+    app.use(require('timeout-request')({
+        milliseconds: 4000,
+        header: true,
+    }));
+    app.use(require('basic-authentication')({
+        user: h.user,
+        password: h.password,
+        agent: h.agent,
+        realm: h.realm,
+        file: h.file,
+        hash: h.hash,
+        suppress: true,
+    }));
+    var dir = h.dir;
+    if (FS.existsSync(h.key) &amp;&amp; FS.existsSync(h.cert)) {
+        app.use(EXPRESS.static(h.dir));
+        if (options.output) {
+            console.log('starting monitor on port ' + h.port);
+        }
+        HTTPS.createServer({
+            key: FS.readFileSync(h.key),
+            cert: FS.readFileSync(h.cert),
+        },app).listen(h.port);
+    }
+    h = Object.create(null);
+
+    /*
+     * express routing
+     */
+    /**
+     * GET routing. Send html file
+     * 
+     * @param {Object} req - client request
+     * @param {Object} res - response to client
+     */
+    app.get('/',function(req,res) {
+
+        res.sendfile(dir + 'monitode.html');
+        return;
+    });
+    /**
+     * POST routing. Build dynamic info
+     * 
+     * @param {Object} req - client request
+     * @param {Object} res - response to client
+     */
+    app.post('/dyn/',function(req,res) {
+
+        var json = require(options.min + 'lib/obj.js').dynamics();
+        if (net) {
+            /**
+             * @global
+             */
+            json.net = options.net;
+            json.io = options.io;
+            end(res,json);
+            if (io) {
+                net();
+                io();
+            }
+        } else {
+            end(res,json);
+        }
+        return;
+    });
+    /**
+     * POST routing. Build static info
+     * 
+     * @param {Object} req - client request
+     * @param {Object} res - response to client
+     */
+    app.post('/sta/',function(req,res) {
+
+        res.json(require(options.min + 'lib/obj.js').statics(options.app));
+        return;
+    });
+};
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Index</a></h2><h3>Modules</h3><ul><li><a href="module-monitode.html">monitode</a></li></ul><h3>Global</h3><ul><li><a href="global.html#event">event</a></li><li><a href="global.html#io">io</a></li><li><a href="global.html#json">json</a></li><li><a href="global.html#log">log</a></li><li><a href="global.html#my">my</a></li><li><a href="global.html#net">net</a></li><li><a href="global.html#options">options</a></li></ul>
+</nav>
+
+<br clear="both">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.3.0-alpha9</a> on Tue Jul 29 2014 10:20:58 GMT+0200 (CEST)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

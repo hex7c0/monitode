@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: lib/net.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: lib/net.js</h1>
+
+    
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>"use strict";
+/**
+ * @file monitode net stats
+ * @module monitode
+ * @package monitode
+ * @subpackage lib
+ * @version 2.4.0
+ * @author hex7c0 &lt;hex7c0@gmail.com>
+ * @copyright hex7c0 2014
+ * @license GPLv3
+ */
+
+/*
+ * initialize module
+ */
+// import
+try {
+    var OS = require('os').platform(), spawn = require('child_process').spawn;
+} catch (MODULE_NOT_FOUND) {
+    console.error(MODULE_NOT_FOUND);
+    process.exit(1);
+}
+
+/**
+ * net bootstrap
+ * 
+ * @exports main
+ * @function main
+ * @return {Function}
+ */
+module.exports = function net() {
+
+    var op, timer = 0;
+    var stat = [0,0,0,0];
+    var story = 0;
+
+    /*
+     * functions
+     */
+    /**
+     * mac spawn
+     * 
+     * @function spawnMac
+     */
+    function spawnMac() {
+
+        op = spawn('netstat',['-w 2'],{
+            stdio: ['ignore','pipe']
+        });
+        op.stdout
+                .on(
+                        'data',
+                        function(data) {
+
+                            var lines = String(data).split(/\r?\n/);
+                            for (var i = 0, il = lines.length; i &lt; il; i++) {
+                                var cap = lines[i]
+                                        .match(/^\s+(\d+)\s+(\d+)\s+(\d+)\s+(\d+)\s+(\d+)\s+(\d+)\s*/);
+                                if (cap) {
+                                    stat = [parseInt(cap[1]) + stat[0],
+                                            parseInt(cap[2]) + stat[1],
+                                            parseInt(cap[4]) + stat[2],
+                                            parseInt(cap[5]) + stat[3]];
+                                }
+                            }
+                            timer++;
+                            return;
+                        });
+        op.stderr.on('data',function(data) {
+
+            console.error(String(data));
+            op.kill('SIGKILL');
+            return;
+        });
+        return;
+    }
+
+    /**
+     * linux spawn
+     * 
+     * @function spawnLinux
+     */
+    function spawnLinux() {
+
+        op = spawn('netstat',['-i','-c','2'],{
+            stdio: ['ignore','pipe']
+        });
+        op.stdout
+                .on(
+                        'data',
+                        function(data) {
+
+                            var lines = String(data).split(/\r?\n/);
+                            for (var i = 0, il = lines.length; i &lt; il; i++) {
+                                var cap = lines[i]
+                                        .match(/^([a-zA-z]+[0-9]+)\s+(\d+)\s+(\d+)\s+(\d+)\s+(\d+)\s+(\d+)\s+(\d+)\s+(\d+)\s+(\d+)*/);
+                                if (cap) {
+                                    if (story == 0) {
+                                        story = [parseInt(cap[4]),
+                                                parseInt(cap[5]),
+                                                parseInt(cap[8]),
+                                                parseInt(cap[9])];
+                                    }
+                                    stat = [
+                                            parseInt(cap[4]) + stat[0]
+                                                    - story[0],
+                                            parseInt(cap[5]) + stat[1]
+                                                    - story[1],
+                                            parseInt(cap[8]) + stat[2]
+                                                    - story[2],
+                                            parseInt(cap[9]) + stat[3]
+                                                    - story[3]];
+                                }
+                            }
+                            timer++;
+                            return;
+                        });
+        op.stderr.on('data',function(data) {
+
+            console.error(String(data));
+            op.kill('SIGKILL');
+            return;
+        });
+        return;
+    }
+
+    /**
+     * mac refresh spawn
+     * 
+     * @function macRefresh
+     */
+    function refreshMac() {
+
+        /**
+         * @global
+         */
+        GLOBAL.monitode.net = {
+            inn: {
+                pacs: stat[0],
+                errs: stat[1],
+            },
+            out: {
+                pacs: stat[2],
+                errs: stat[3],
+            },
+        };
+        stat = [0,0,0,0];
+        if (timer >= 600) { // refresh spawn
+            timer = 0;
+            op.kill('SIGTERM');
+            op = null;
+            main();
+        }
+        return;
+    }
+
+    /**
+     * linux refresh spawn
+     * 
+     * @function refreshLinux
+     */
+    function refreshLinux() {
+
+        /**
+         * @global
+         */
+        GLOBAL.monitode.net = {
+            inn: {
+                pacs: stat[0],
+                errs: stat[1],
+            },
+            out: {
+                pacs: stat[2],
+                errs: stat[3],
+            },
+        };
+        stat = [0,0,0,0];
+        if (timer >= 600) { // refresh spawn
+            timer = 0;
+            op.kill('SIGTERM');
+            op = null;
+            main();
+        }
+        return;
+    }
+
+    /**
+     * os starting point
+     * 
+     * @function main
+     * @return {Function}
+     */
+    function main() {
+
+        if (OS == 'darwin') {
+            spawnMac();
+            return refreshMac;
+        } else if (OS == 'linux') {
+            spawnLinux();
+            return refreshLinux;
+        }
+        /**
+         * @global
+         */
+        GLOBAL.monitode.net = null;
+        return function() {
+
+            // not implemented
+            return;
+        };
+    }
+    return main();
+};
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Index</a></h2><h3>Modules</h3><ul><li><a href="module-monitode.html">monitode</a></li></ul><h3>Global</h3><ul><li><a href="global.html#event">event</a></li><li><a href="global.html#io">io</a></li><li><a href="global.html#json">json</a></li><li><a href="global.html#log">log</a></li><li><a href="global.html#my">my</a></li><li><a href="global.html#net">net</a></li><li><a href="global.html#options">options</a></li></ul>
+</nav>
+
+<br clear="both">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.3.0-alpha9</a> on Tue Jul 29 2014 10:20:58 GMT+0200 (CEST)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>
