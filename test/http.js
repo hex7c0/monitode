@@ -85,6 +85,10 @@ describe('http',function() {
                         var j = JSON.parse(res.text);
                         assert.deepEqual(res.statusCode,200);
                         assert.deepEqual(j,data);
+                        console.log(j)
+                        console.log()
+                        console.log(data)
+                        console.log()
                         done()
                     });
         });
