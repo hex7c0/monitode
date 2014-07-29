@@ -78,20 +78,24 @@ describe('http',function() {
             };
             var p = 'Basic ' + new Buffer('pippo:ciao').toString('base64');
             request.post('http://127.0.0.1:3001/sta/').set('Authorization',p)
-                    .set('Accept','application/json').end(function(err,res) {
+                    .set('Accept','application/json').end(
+                            function(err,res) {
 
-                        if (err)
-                            throw err;
-                        var j = JSON.parse(res.text);
-                        assert.deepEqual(res.statusCode,200);
-
-                        console.log(j)
-                        console.log()
-                        console.log(data)
-                        console.log()
-                        assert.deepEqual(j,data);
-                        done()
-                    });
+                                if (err)
+                                    throw err;
+                                var j = JSON.parse(res.text);
+                                assert.deepEqual(res.statusCode,200,'200');
+                                assert.deepEqual(j.os,data.os,'os');
+                                assert.deepEqual(j.version,data.version,
+                                        'version');
+                                assert.deepEqual(j.process,data.process,
+                                        'process');
+                                assert.deepEqual(j.process,data.process,
+                                        'process');
+                                assert.deepEqual(j.endianness,data.endianness,
+                                        'endianness');
+                                done()
+                            });
         });
     });
 
