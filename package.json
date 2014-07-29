@@ -57,7 +57,7 @@
   },
   "scripts": {
     "prepublish": "npm prune",
-    "test": "mocha --bail --check-leaks test/"
+    "test": "mocha --bail --globals monitode --check-leaks test/"
   },
   "license": "GPLv3"
 }
