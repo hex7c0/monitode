@@ -8,7 +8,7 @@
 /*
  * variables
  */
-var avg = null, meml = null, memp = null, os = null;
+var avg, meml, memp, os;
 var cpus = [], app = angular.module('monitode',[]);
 var store = {
     x: ['x'],

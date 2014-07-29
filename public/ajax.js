@@ -8,7 +8,7 @@
 /*
  * variables
  */
-var promise = null, flag = false;
+var promise, flag = false;
 
 /*
  * functions
