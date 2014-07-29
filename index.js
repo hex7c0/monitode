@@ -4,7 +4,7 @@
  * @module monitode
  * @package monitode
  * @subpackage main
- * @version 2.3.0
+ * @version 2.4.0
  * @author hex7c0 <hex7c0@gmail.com>
  * @copyright hex7c0 2014
  * @license GPLv3
@@ -23,12 +23,15 @@
  */
 module.exports = function monitode(options) {
 
-    var spinterogeno = [], options = options || Object.create(null);
+    var min = __dirname + '/min/';
+    var spinterogeno = [];
+    options = options || Object.create(null);
     // global
     /**
      * @global
      */
     var my = GLOBAL.monitode = {
+        min: min,
         output: Boolean(options.output),
         tickle: Boolean(options.tickle),
         app: false,
@@ -81,8 +84,9 @@ module.exports = function monitode(options) {
             hash: options.http.hash,
             dir: String(options.http.dir || __dirname + '/public/'),
         };
-        spinterogeno.push(require('./module/web.js'));
+        spinterogeno.push(require(min + 'module/web.js'));
     }
+
     // https
     options.https = options.https || Object.create(null);
     if (options.https.key && options.https.cert) {
@@ -98,7 +102,7 @@ module.exports = function monitode(options) {
             hash: options.https.hash,
             dir: String(options.https.dir || __dirname + '/public/'),
         };
-        spinterogeno.push(require('./module/webs.js'));
+        spinterogeno.push(require(min + 'module/webs.js'));
     }
 
     // logger
@@ -109,7 +113,7 @@ module.exports = function monitode(options) {
             file: String(options.logger.file),
             timeout: (parseFloat(options.logger.timeout) || 5) * 1000,
         };
-        spinterogeno.push(require('./module/file.js'));
+        spinterogeno.push(require(min + 'module/file.js'));
     }
     if (options.logger.log) {
         my.logger.log = String(options.logger.log);
@@ -134,7 +138,7 @@ module.exports = function monitode(options) {
             database: String(options.db.database || 'monitode'),
             timeout: (parseFloat(options.db.timeout) || 20) * 1000,
         };
-        spinterogeno.push(require('./module/mongo.js'));
+        spinterogeno.push(require(min + 'module/mongo.js'));
     }
 
     // mail
@@ -148,7 +152,7 @@ module.exports = function monitode(options) {
             subject: String(options.mail.subject || 'monitode report'),
             timeout: (parseFloat(options.mail.timeout) || 60) * 1000,
         };
-        spinterogeno.push(require('./module/mail.js'));
+        spinterogeno.push(require(min + 'module/mail.js'));
     }
 
     // status
@@ -164,13 +168,14 @@ module.exports = function monitode(options) {
             file: String(options.status.file || 'status'),
             timeout: (parseFloat(options.status.timeout) || 120) * 1000,
         };
-        spinterogeno.push(require('./module/status.js'));
+        spinterogeno.push(require(min + 'module/status.js'));
     }
 
     // start
     for (var i = 0, il = spinterogeno.length; i < il; i++) {
         spinterogeno[i]();
     }
+
     return function(req,res,next) {
 
         try {

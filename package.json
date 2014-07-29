@@ -1,5 +1,5 @@
 {
-  "version": "2.3.5",
+  "version": "2.4.0",
   "name": "monitode",
   "description": "resource monitor for nodejs",
   "keywords": [
@@ -12,7 +12,7 @@
     "io"
   ],
   "preferGlobal": false,
-  "homepage": "https://github.com/hex7c0/monitode/",
+  "homepage": "https://hex7c0.github.io/monitode/",
   "author": {
     "name": "hex7c0",
     "email": "hex7c0@gmail.com",
@@ -45,9 +45,12 @@
   "devDependencies": {
     "mocha": "~1.21.3",
     "grunt-contrib-clean": "0.5.0",
+    "grunt-contrib-concat": "0.5.0",
+    "grunt-contrib-cssmin": "0.10.0",
+    "grunt-contrib-htmlmin": "0.3.0",
     "grunt-contrib-uglify": "0.5.0",
     "grunt-shell": "~0.7.0",
-    "supertest": "~0.13.0"
+    "superagent": "~0.18.2"
   },
   "engines": {
     "node": ">=0.10"
