@@ -37,6 +37,17 @@ function dyna($http,$scope,$timeout) {
         memp.load({
             columns: [['used',testing / 4],['free',testing - (testing / 4)]],
         });
+        // os
+        store.inet.push(Math.random());
+        store.onet.push(Math.random());
+        store.tps.push(Math.random());
+        store.mbs.push(Math.random());
+        if (!os) {
+            loadOs();
+        }
+        os.load({
+            columns: [X,store.inet,store.onet,store.tps,store.mbs],
+        });
 
         // cpu
         if (cpus.length == 0) {
