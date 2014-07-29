@@ -14,7 +14,7 @@
  */
 // import
 try {
-    var monitode = require('../index.js'); // use require('monitode') instead
+    var monitode = require('../index.min.js'); // use require('monitode') instead
     var logger = require('logger-request');
     var tickle = require('tickle');
     var app = require('express')();

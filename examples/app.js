@@ -1,7 +1,7 @@
 "use strict";
 /**
  * @file standalone example
- * @package monitode
+ * @module monitode
  * @package monitode
  * @subpackage examples
  * @version 0.0.3
@@ -14,7 +14,7 @@
  */
 // import
 try {
-    var monitode = require('../index.js'); // use require('monitode') instead
+    var monitode = require('../index.min.js'); // use require('monitode') instead
 } catch (MODULE_NOT_FOUND) {
     console.error(MODULE_NOT_FOUND);
     process.exit(1);
