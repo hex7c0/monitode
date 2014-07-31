@@ -2,8 +2,8 @@
 <html lang="en">
 
     <head>
-        <meta charset="utf-8">
         <title>monitode</title>
+        <meta charset="utf-8">
         <script type="text/javascript" src="monitode_lib.js"></script>
         <link rel="stylesheet" type="text/css" href="monitode.css">
         <link rel="icon" href="favicon.ico">
@@ -14,6 +14,7 @@
         <div id="average"></div>
         <div id="memory_lin"></div>
         <div id="os"></div>
+
         <div id="refresh_data" class="sub">
             <div id="memory_pie"></div>
             <div>
@@ -37,6 +38,7 @@
                 </ul>
             </div>
         </div>
+
         <div id="extra_data" class="sub">
             <div>
                 <button ng-click="button('stop', $event)">Stop refresh</button>
@@ -61,6 +63,7 @@
                 </ul>
             </div>
         </div>
+
         <div id="cpus">
             <ul>
                 <li id="cpu_0"></li>
@@ -74,7 +77,9 @@
                 <!-- @todo: ng-repeat="cpu in cpus" -->
             </ul>
         </div>
-        <script type="text/javascript" src="monitode_script.js"></script>
+
+        <script type="text/javascript" src="monitode_min.js"></script>
+
     </body>
 
 </html>

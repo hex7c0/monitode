@@ -63,7 +63,7 @@ v2.4.0 / 2014-07-29
 ==================
 
   * Update `basic-authentication`@1.3.0
-  * Add web 'file' and 'hash' (options)
+  * Add web "file" and "hash" (options)
 
 2.2.20 / 2014-07-20
 ==================

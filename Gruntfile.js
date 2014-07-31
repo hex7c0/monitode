@@ -32,8 +32,8 @@ module.exports = function(grunt) {
 
         uglify: {
             options: {
-                preserveComments: 'false',
                 banner: '<%= banner %>',
+                footer: '\n'
             },
             target: {
                 files: [{
@@ -47,13 +47,25 @@ module.exports = function(grunt) {
                 },{
                     'index.min.js': 'index.js'
                 }]
+            },
+            script: {
+                options: {
+                    mangle: false,
+                    wrap: 'cl',
+                    banner: '<%= banner %>',
+                    footer: '\n'
+                },
+                files: {
+                    'public/monitode_min.js': 'public/monitode_script.js'
+                }
             }
         },
 
         cssmin: {
             css: {
                 options: {
-                    banner: '<%= banner %>'
+                    banner: '<%= banner %>',
+                    footer: '\n'
                 },
                 files: {
                     'public/monitode.css': 'public/console.css'
