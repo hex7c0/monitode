@@ -157,7 +157,7 @@ module.exports = function mongo() {
                     if (options.output) {
                         console.log('starting monitor on database');
                     }
-                    GLOBAL.monitode.mongo = true;
+                    GLOBAL.monitode.db.mongo = true;
                     query();
                 }
                 return;

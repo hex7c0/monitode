@@ -95,7 +95,7 @@ module.exports = function mail() {
         to: m.to.toString(),
         subject: m.subject
     };
-    GLOBAL.mail.user = GLOBAL.mail.password = true;
+    GLOBAL.monitode.mail.user = GLOBAL.monitode.mail.password = true;
     if (options.output) {
         console.log('starting monitor with email');
     }
