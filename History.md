@@ -1,3 +1,10 @@
+v2.4.4 / 2014-07-31
+==================
+
+  * Fix clean GLOBAL var
+  * Update `logger-request`@2.2.2
+  * Update `nodemailer`@1.1.1
+
 v2.4.3 / 2014-07-31
 ==================
 
