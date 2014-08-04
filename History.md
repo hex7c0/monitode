@@ -2,6 +2,7 @@ v2.4.6 / 2014-08-04
 ==================
 
   * Add "couch" (options)
+  * Resolve path
   * Update `mongodb`@1.4.8
   * Update `basic-authentication`@1.5.1
   * Update `express-sitemap`@1.3.1
