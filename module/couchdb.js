@@ -1,6 +1,6 @@
 "use strict";
 /**
- * @file monitode mongo
+ * @file monitode couchdb
  * @module monitode
  * @package monitode
  * @subpackage module
@@ -15,19 +15,19 @@
  */
 // import
 try {
-    var CLIENT = require('mongodb').MongoClient;
+    var CLIENT = require('nano');
 } catch (MODULE_NOT_FOUND) {
     console.error(MODULE_NOT_FOUND);
     process.exit(1);
 }
 
 /**
- * init for mongo module. Using global var for sharing info
+ * init for couch module. Using global var for sharing info
  * 
- * @exports mongo
- * @function mongo
+ * @exports couch
+ * @function couch
  */
-module.exports = function mongo() {
+module.exports = function couch() {
 
     /**
      * @global
@@ -57,7 +57,7 @@ module.exports = function mongo() {
          * @param {String} error - error output
          * @param {Object} result - result of query
          */
-        d.database.insert(json,function(error,result) {
+        d.couch.insert(json,function(error,result) {
 
             if (error) {
                 console.error(error);
@@ -87,7 +87,7 @@ module.exports = function mongo() {
          * @param {String} error - error output
          * @param {Object} result - result of query
          */
-        d.database.insert(json,function(error,result) {
+        d.couch.insert(json,function(error,result) {
 
             if (error) {
                 console.error(error);
@@ -143,27 +143,11 @@ module.exports = function mongo() {
             };
         }
     }
-    CLIENT.connect(d.mongo,function(error,database) {
 
-        if (error) {
-            console.error(error);
-        } else {
-            database.createCollection(d.database,function(error,collection) {
-
-                if (error) {
-                    console.error(error);
-                } else {
-                    d.database = collection;
-                    if (options.output) {
-                        console.log('starting monitor on database');
-                    }
-                    GLOBAL.monitode.db.mongo = true;
-                    query();
-                }
-                return;
-            });
-        }
-        return;
-    });
-    return;
+    // starter
+    d.couch = CLIENT(d.couch);
+    if (options.output) {
+        console.log('starting monitor on CouchDb database');
+    }
+    query();
 };

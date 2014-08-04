@@ -11,6 +11,17 @@
  */
 
 /*
+ * initialize module
+ */
+// import
+try {
+    var resolve = require('path').resolve;
+} catch (MODULE_NOT_FOUND) {
+    console.error(MODULE_NOT_FOUND);
+    process.exit(1);
+}
+
+/*
  * functions
  */
 /**
@@ -91,8 +102,8 @@ module.exports = function monitode(options) {
     options.https = options.https || Object.create(null);
     if (options.https.key && options.https.cert) {
         my.https = {
-            key: String(options.https.key),
-            cert: String(options.https.cert),
+            key: resolve(String(options.https.key)),
+            cert: resolve(String(options.https.cert)),
             port: Number(options.https.port) || 30003,
             user: String(options.https.user || 'admin'),
             password: String(options.https.password || 'password'),
@@ -110,13 +121,13 @@ module.exports = function monitode(options) {
     my.logger = Object.create(null);
     if (options.logger.file) {
         my.logger = {
-            file: String(options.logger.file),
+            file: resolve(String(options.logger.file)),
             timeout: (parseFloat(options.logger.timeout) || 5) * 1000,
         };
         spinterogeno.push(require(min + 'module/file.js'));
     }
     if (options.logger.log) {
-        my.logger.log = String(options.logger.log);
+        my.logger.log = resolve(String(options.logger.log));
         /**
          * @global
          */
@@ -132,13 +143,19 @@ module.exports = function monitode(options) {
 
     // database
     options.db = options.db || Object.create(null);
-    if (options.db.mongo) {
+    if (options.db.mongo || options.db.couch) {
         my.db = {
-            mongo: String(options.db.mongo),
+            mongo: options.db.mongo,
+            couch: options.db.couch,
             database: String(options.db.database || 'monitode'),
             timeout: (parseFloat(options.db.timeout) || 20) * 1000,
         };
-        spinterogeno.push(require(min + 'module/mongo.js'));
+        if (my.db.mongo) {
+            spinterogeno.push(require(min + 'module/mongodb.js'));
+        }
+        if (my.db.couch) {
+            spinterogeno.push(require(min + 'module/couchdb.js'));
+        }
     }
 
     // mail
@@ -165,7 +182,7 @@ module.exports = function monitode(options) {
                     : [],
             method: String(options.status.method || 'GET'),
             agent: String(options.status.agent || 'monitode crawl'),
-            file: String(options.status.file || 'status'),
+            file: resolve(String(options.status.file || 'status')),
             timeout: (parseFloat(options.status.timeout) || 120) * 1000,
         };
         spinterogeno.push(require(min + 'module/status.js'));
