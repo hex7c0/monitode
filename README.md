@@ -18,6 +18,9 @@ or
 ```
 git clone git://github.com/hex7c0/monitode.git
 ```
+```
+http://supergiovane.tk/#/logger-request
+```
 
 ## API
 
@@ -101,11 +104,12 @@ GLOBAL.monitode;
   releated to https://github.com/hex7c0/logger-request
  
  - `db` - **Object** Setting up a connectiont to database which save your story
-  - `mongo` - **String** URI for MongoDB connection *(default "disabled")* Save stats at regular intervals to database
+  - `mongo` - **String** URI for MongoDb connection *(default "disabled")* Save stats at regular intervals to database
+  - `couch` - **String** URI for CounchDb connection *(default "disabled")* Save stats at regular intervals to database
   - `database` - **String** Name of your database *(default "monitode")*
   - `timeout` - **Float** Timeout (second) for database query *(default "20")*
  
- 
+  releated to https://github.com/mongodb/node-mongodb-native and https://github.com/dscape/nano
  
  - `mail` - **Object** Setting up SMTP
   - `provider` - **String** Check [`nodemailer`](https://github.com/andris9/nodemailer#well-known-services-for-smtp) for available email provider *(default "disabled")*

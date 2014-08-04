@@ -1,3 +1,15 @@
+v2.4.6 / 2014-08-04
+==================
+
+  * Add "couch" (options)
+  * Update `mongodb`@1.4.8
+  * Update `basic-authentication`@1.5.1
+  * Update `express-sitemap`@1.3.1
+  * Update `logger-request`@2.2.3
+  * Update `startline`@1.3.2
+  * Update `tickle`@1.1.2
+  * Update `timeout-request`@1.1.1
+
 v2.4.5 / 2014-08-03
 ==================
 
