@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Source: module/webs.js</title>
+    <title>JSDoc: Source: module/couchdb.js</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,7 +17,7 @@
 
 <div id="main">
 
-    <h1 class="page-title">Source: module/webs.js</h1>
+    <h1 class="page-title">Source: module/couchdb.js</h1>
 
     
 
@@ -27,7 +27,7 @@
         <article>
             <pre class="prettyprint source linenums"><code>"use strict";
 /**
- * @file monitode web over TLS/SSL
+ * @file monitode couchdb
  * @module monitode
  * @package monitode
  * @subpackage module
@@ -42,26 +42,26 @@
  */
 // import
 try {
-    var HTTPS = require('https'), FS = require('fs'), EXPRESS = require('express');
+    var CLIENT = require('nano');
 } catch (MODULE_NOT_FOUND) {
     console.error(MODULE_NOT_FOUND);
     process.exit(1);
 }
 
 /**
- * init for web module. Using global var for sharing info
+ * init for couch module. Using global var for sharing info
  * 
- * @exports web
- * @function web
+ * @exports couch
+ * @function couch
  */
-module.exports = function web() {
+module.exports = function couch() {
 
     /**
      * @global
      */
     var options = GLOBAL.monitode;
-    var h = options.https;
-    var app = EXPRESS(), log, net, io, end = without_log;
+    var d = options.db;
+    var timeout, log, net, io, end = without_log;
 
     /*
      * functions
@@ -70,17 +70,29 @@ module.exports = function web() {
      * sending object with log
      * 
      * @function with_log
-     * @param {Object} res - response
      * @param {Object} json - builded object
      */
-    function with_log(res,json) {
+    function with_log(json) {
 
         var diff = process.hrtime(json.ns);
-        json.log = options.log;
-        json.event = options.event;
         json.ns = diff[0] * 1e9 + diff[1];
-        res.json(json);
-        res.end();
+        json.event = options.event;
+        /**
+         * callback of query
+         * 
+         * @function
+         * @param {String} error - error output
+         * @param {Object} result - result of query
+         */
+        d.couch.insert(json,function(error,result) {
+
+            if (error) {
+                console.error(error);
+            } else {
+                timeout = setTimeout(query,d.timeout);
+            }
+            return;
+        });
         log(options.logger.log);
         return;
     }
@@ -88,15 +100,52 @@ module.exports = function web() {
     /**
      * sending object without log
      * 
-     * @function with_log
-     * @param {Object} res - response
+     * @function without_log
      * @param {Object} json - builded object
      */
-    function without_log(res,json) {
+    function without_log(json) {
 
         var diff = process.hrtime(json.ns);
         json.ns = diff[0] * 1e9 + diff[1];
-        res.json(json);
+        /**
+         * callback of query
+         * 
+         * @function
+         * @param {String} error - error output
+         * @param {Object} result - result of query
+         */
+        d.couch.insert(json,function(error,result) {
+
+            if (error) {
+                console.error(error);
+            } else {
+                timeout = setTimeout(query,d.timeout);
+            }
+            return;
+        });
+        return;
+    }
+
+    /**
+     * query loop
+     * 
+     * @function file
+     */
+    function query() {
+
+        clearTimeout(timeout);
+        var json = require(options.min + 'lib/obj.js').dynamics();
+        if (net) {
+            json.net = options.net;
+            json.io = options.io;
+            end(json);
+            if (io) {
+                net();
+                io();
+            }
+        } else {
+            end(json);
+        }
         return;
     }
 
@@ -121,84 +170,13 @@ module.exports = function web() {
             };
         }
     }
-    app.disable('x-powered-by');
-    app.disable('etag');
-    app.use(require('timeout-request')({
-        milliseconds: 4000,
-        header: true,
-    }));
-    app.use(require('basic-authentication')({
-        user: h.user,
-        password: h.password,
-        agent: h.agent,
-        realm: h.realm,
-        file: h.file,
-        hash: h.hash,
-        suppress: true,
-    }));
-    var dir = h.dir;
-    if (FS.existsSync(h.key) &amp;&amp; FS.existsSync(h.cert)) {
-        app.use(EXPRESS.static(h.dir));
-        if (options.output) {
-            console.log('starting monitor on port ' + h.port);
-        }
-        HTTPS.createServer({
-            key: FS.readFileSync(h.key),
-            cert: FS.readFileSync(h.cert),
-        },app).listen(h.port);
+
+    // starter
+    d.couch = CLIENT(d.couch);
+    if (options.output) {
+        console.log('starting monitor on CouchDb database');
     }
-    GLOBAL.monitode.https = true;
-
-    /*
-     * express routing
-     */
-    /**
-     * GET routing. Send html file
-     * 
-     * @param {Object} req - client request
-     * @param {Object} res - response to client
-     */
-    app.get('/',function(req,res) {
-
-        res.sendfile(dir + 'monitode.html');
-        return;
-    });
-    /**
-     * POST routing. Build dynamic info
-     * 
-     * @param {Object} req - client request
-     * @param {Object} res - response to client
-     */
-    app.post('/dyn/',function(req,res) {
-
-        var json = require(options.min + 'lib/obj.js').dynamics();
-        if (net) {
-            /**
-             * @global
-             */
-            json.net = options.net;
-            json.io = options.io;
-            end(res,json);
-            if (io) {
-                net();
-                io();
-            }
-        } else {
-            end(res,json);
-        }
-        return;
-    });
-    /**
-     * POST routing. Build static info
-     * 
-     * @param {Object} req - client request
-     * @param {Object} res - response to client
-     */
-    app.post('/sta/',function(req,res) {
-
-        res.json(require(options.min + 'lib/obj.js').statics(options.app));
-        return;
-    });
+    query();
 };
 </code></pre>
         </article>
