@@ -1,4 +1,4 @@
-"use strict";
+'use strict';
 /**
  * @file gruntfile
  * @subpackage main
@@ -77,7 +77,10 @@ module.exports = function(grunt) {
             html: {
                 options: {
                     removeComments: true,
-                    collapseWhitespace: true
+                    collapseWhitespace: true,
+                    minifyJS: true,
+                    minifyCSS: true,
+                    footer: '\n'
                 },
                 files: {
                     'public/monitode.html': 'public/index.html'
@@ -90,7 +93,7 @@ module.exports = function(grunt) {
                 failOnError: false
             },
             docs: {
-                command: "jsdoc ./lib/*.js ./module/*.js -c .jsdoc.json"
+                command: 'jsdoc ./lib/*.js ./module/*.js -c .jsdoc.json'
             }
         }
     });
@@ -107,4 +110,5 @@ module.exports = function(grunt) {
     grunt.registerTask('doc',['shell']);
     grunt.registerTask('default',['min','doc']);
 
+    return;
 };
