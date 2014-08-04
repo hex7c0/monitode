@@ -105,7 +105,7 @@ GLOBAL.monitode;
  
  - `db` - **Object** Setting up a connectiont to database which save your story
   - `mongo` - **String** URI for MongoDb connection *(default "disabled")* Save stats at regular intervals to database
-  - `couch` - **String** URI for CounchDb connection *(default "disabled")* Save stats at regular intervals to database
+  - `couch` - **String** URI for CouchDb connection *(default "disabled")* Save stats at regular intervals to database
   - `database` - **String** Name of your database *(default "monitode")*
   - `timeout` - **Float** Timeout (second) for database query *(default "20")*
  
