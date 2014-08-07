@@ -128,7 +128,7 @@ module.exports = function web() {
      */
     app.get('/',function(req,res) {
 
-        res.sendfile(dir + 'monitode.html');
+        res.sendFile(dir + 'monitode.html');
         return;
     });
     /**
