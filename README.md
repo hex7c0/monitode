@@ -2,6 +2,7 @@
 [![NPM version](https://badge.fury.io/js/monitode.svg)](http://badge.fury.io/js/monitode)
 [![Build Status](https://travis-ci.org/hex7c0/monitode.svg?branch=master)](https://travis-ci.org/hex7c0/monitode)
 [![devDependency Status](https://david-dm.org/hex7c0/monitode/dev-status.svg)](https://david-dm.org/hex7c0/monitode#info=devDependencies)
+[![Coverage Status](https://coveralls.io/repos/hex7c0/monitode/badge.png)](https://coveralls.io/r/hex7c0/monitode)
 
 [![monitode logo](https://raw.githubusercontent.com/hex7c0/monitode/master/public/logo.png)](https://hex7c0.github.io/monitode/)
 
