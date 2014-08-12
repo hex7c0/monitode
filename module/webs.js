@@ -46,7 +46,7 @@ module.exports = function web() {
      * @param {Object} res - response
      * @param {Object} json - builded object
      */
-    function with_log(res,json) {
+    function with_log(res, json) {
 
         var diff = process.hrtime(json.ns);
         json.log = options.log;
@@ -65,7 +65,7 @@ module.exports = function web() {
      * @param {Object} res - response
      * @param {Object} json - builded object
      */
-    function without_log(res,json) {
+    function without_log(res, json) {
 
         var diff = process.hrtime(json.ns);
         json.ns = diff[0] * 1e9 + diff[1];
@@ -110,15 +110,16 @@ module.exports = function web() {
         suppress: true,
     }));
     var dir = h.dir;
+    var html = dir + 'monitode.html';
     if (FS.existsSync(h.key) && FS.existsSync(h.cert)) {
-        app.use(EXPRESS.static(h.dir));
+        app.use(EXPRESS.static(dir));
         if (options.output) {
             console.log('starting monitor on port ' + h.port);
         }
         HTTPS.createServer({
             key: FS.readFileSync(h.key),
             cert: FS.readFileSync(h.cert),
-        },app).listen(h.port);
+        }, app).listen(h.port);
     }
     GLOBAL.monitode.https = true;
 
@@ -131,9 +132,13 @@ module.exports = function web() {
      * @param {Object} req - client request
      * @param {Object} res - response to client
      */
-    app.get('/',function(req,res) {
+    app.get('/', function(req, res) {
 
-        res.sendFile(dir + 'monitode.html');
+        // https://github.com/strongloop/express/issues/2290
+        // res.sendFile(dir + 'monitode.html');
+        res.sendFile(html, {
+            etag: false
+        });
         return;
     });
     /**
@@ -142,7 +147,7 @@ module.exports = function web() {
      * @param {Object} req - client request
      * @param {Object} res - response to client
      */
-    app.post('/dyn/',function(req,res) {
+    app.post('/dyn/', function(req, res) {
 
         var json = require(options.min + 'lib/obj.js').dynamics();
         if (net) {
@@ -151,13 +156,13 @@ module.exports = function web() {
              */
             json.net = options.net;
             json.io = options.io;
-            end(res,json);
+            end(res, json);
             if (io) {
                 net();
                 io();
             }
         } else {
-            end(res,json);
+            end(res, json);
         }
         return;
     });
@@ -167,7 +172,7 @@ module.exports = function web() {
      * @param {Object} req - client request
      * @param {Object} res - response to client
      */
-    app.post('/sta/',function(req,res) {
+    app.post('/sta/', function(req, res) {
 
         res.json(require(options.min + 'lib/obj.js').statics(options.app));
         return;
