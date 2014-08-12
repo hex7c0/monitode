@@ -1,4 +1,5 @@
 # [monitode](http://supergiovane.tk/#/monitode)
+
 [![NPM version](https://badge.fury.io/js/monitode.svg)](http://badge.fury.io/js/monitode)
 [![Build Status](https://travis-ci.org/hex7c0/monitode.svg?branch=master)](https://travis-ci.org/hex7c0/monitode)
 [![devDependency Status](https://david-dm.org/hex7c0/monitode/dev-status.svg)](https://david-dm.org/hex7c0/monitode#info=devDependencies)
@@ -11,15 +12,12 @@ Resource monitor for [nodejs](http://nodejs.org) using a full stack of [MEAN](ht
 
 Install through NPM
 
-```
+```bash
 npm install monitode
 ```
 or
-```
+```bash
 git clone git://github.com/hex7c0/monitode.git
-```
-```
-http://supergiovane.tk/#/monitode
 ```
 
 ## API
@@ -28,6 +26,7 @@ inside nodejs project
 ```js
 var monitode = require('monitode')();
 ```
+
 inside expressjs project
 ```js
 var monitode = require('monitode');
@@ -52,7 +51,8 @@ app.use(monitor({
     log : file,
 }));
 ```
-all motidote informations are stored inside global **Object**.
+
+Monidote informations are stored inside _GLOBAL_ **Object**.
 One istance for environment.
 ```js
 GLOBAL.monitode;
@@ -80,7 +80,7 @@ GLOBAL.monitode;
   - `hash` - **String** Type of [hash](http://nodejs.org/api/crypto.html#crypto_crypto_createhash_algorithm) inside your htpasswd file *(default "md5")*
   - `dir` - **String** Absolute path of web files directory *(default "/public")*
  
-  releated to https://github.com/hex7c0/basic-authentication
+  related to https://github.com/hex7c0/basic-authentication
  
  - `https` - **Object** Setting up a web console over TLS/SSL using [`basic-authentication`](https://github.com/hex7c0/basic-authentication)
   - `key` - **String** Path to TLS/SSL key *(default "disabled")*
@@ -94,14 +94,14 @@ GLOBAL.monitode;
   - `hash` - **String** Type of [hash](http://nodejs.org/api/crypto.html#crypto_crypto_createhash_algorithm) inside your htpasswd file *(default "md5")*
   - `dir` - **String** Absolute path of web files directory *(default "/public")*
  
-  releated to https://github.com/hex7c0/basic-authentication
+  related to https://github.com/hex7c0/basic-authentication
  
  - `logger` - **Object** Setting up a permanent file which save your story
   - `log` - **String** Path to log file, using [`logger-request`](https://github.com/hex7c0/logger-request) *(default "disabled")* Parsing information stored inside log, and show it to web console or file/database
   - `file` - **String** Path to file *(default "disabled")* Save stats at regular intervals to file
   - `timeout` - **Float** Timeout (second) for file write *(default "5")*
  
-  releated to https://github.com/hex7c0/logger-request
+  related to https://github.com/hex7c0/logger-request
  
  - `db` - **Object** Setting up a connectiont to database which save your story
   - `mongo` - **String** URI for MongoDb connection *(default "disabled")* Save stats at regular intervals to database
@@ -109,7 +109,7 @@ GLOBAL.monitode;
   - `database` - **String** Name of your database *(default "monitode")*
   - `timeout` - **Float** Timeout (second) for database query *(default "20")*
  
-  releated to https://github.com/mongodb/node-mongodb-native and https://github.com/dscape/nano
+  related to https://github.com/mongodb/node-mongodb-native and https://github.com/dscape/nano
  
  - `mail` - **Object** Setting up SMTP
   - `provider` - **String** Check [`nodemailer`](https://github.com/andris9/nodemailer#well-known-services-for-smtp) for available email provider *(default "disabled")*
@@ -130,13 +130,10 @@ GLOBAL.monitode;
   - `file` - **String** Where save information of connection *(default "status")*
   - `timeout` - **Float** Timeout (second) for email send *(default "120")*
 
-#### Examples
+## Examples
 
 Take a look at my [examples](https://github.com/hex7c0/monitode/tree/master/examples)
 
 Or look at [pdf](https://github.com/hex7c0/monitode/raw/master/examples/monitode.pdf) file
 
-## License
-Copyright (c) 2014 hex7c0
-
-Licensed under the GPLv3 license.
+### [License GPLv3](http://opensource.org/licenses/GPL-3.0)

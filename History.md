@@ -1,3 +1,9 @@
+v2.4.9 / 2014-08-11
+==================
+
+  * Update README.md
+  * https://github.com/strongloop/express/issues/2290
+
 v2.4.8 / 2014-08-08
 ==================
 
