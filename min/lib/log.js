@@ -1,5 +1,5 @@
 /*
- * monitode v2.4.8
+ * monitode v2.4.9
  * (c) hex7c0 https://hex7c0.github.io/monitode/
  * Licensed under GPLv3
  */
