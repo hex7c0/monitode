@@ -4,7 +4,7 @@
  * @module monitode
  * @package monitode
  * @subpackage main
- * @version 2.4.0
+ * @version 2.4.13
  * @author hex7c0 <hex7c0@gmail.com>
  * @copyright hex7c0 2014
  * @license GPLv3
@@ -193,7 +193,7 @@ module.exports = function monitode(options) {
         spinterogeno[i]();
     }
 
-    return function(req,res,next) {
+    return function(req, res, next) {
 
         try {
             return next();
