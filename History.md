@@ -1,3 +1,20 @@
+v2.4.15 / 2014-08-23
+==================
+
+  * Performance tips
+  * _Deps_:
+    * Update `basic-authentication`@1.5.4
+    * Update `express`@4.8.5
+    * Update `express-sitemap`@1.3.4
+    * Update `logger-request`@3.0.3
+    * Update `nodemailer`@1.2.1
+    * Update `startline`@1.3.5
+    * Update `tickle`@1.1.4
+    * Update `timeout-request`@1.1.3
+  * _Web_:
+    * Update `angular`@1.3.0-beta.19
+    * Update `c3`@0.3.0
+
 v2.4.14 / 2014-08-17
 ==================
 
