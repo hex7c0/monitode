@@ -4,7 +4,7 @@
  * @module monitode
  * @package monitode
  * @subpackage module
- * @version 2.4.0
+ * @version 2.4.15
  * @author hex7c0 <hex7c0@gmail.com>
  * @copyright hex7c0 2014
  * @license GPLv3
@@ -55,7 +55,7 @@ module.exports = function() {
             console.log(new Date().toUTCString() + ' ' + res.connection._host
                     + ' ' + res.statusCode);
         }
-        s.file('moniStatus',{
+        s.file('moniStatus', {
             host: res.connection._host,
             status: res.statusCode,
             message: res.statusMessage,
@@ -76,7 +76,7 @@ module.exports = function() {
             var url = URL.parse(s.site[i]);
             var module = HTTP;
             try {
-                if (url.protocol.substr(0,5) == 'https') {
+                if (url.protocol.substr(0, 5) === 'https') {
                     module = HTTPS;
                 }
             } catch (TypeError) {
@@ -92,7 +92,7 @@ module.exports = function() {
                     },
                     method: s.method,
                     agent: false,
-                },complete);
+                }, complete);
             } else {
                 req = module.request({
                     port: s.port[i],
@@ -102,16 +102,16 @@ module.exports = function() {
                     },
                     method: s.method,
                     agent: false,
-                },complete);
+                }, complete);
             }
-            req.on('error',function(error) {
+            req.on('error', function(error) {
 
                 console.error(error);
                 return;
             });
             req.end();
         }
-        timeout = setTimeout(request,s.timeout);
+        timeout = setTimeout(request, s.timeout);
         return;
     }
 
