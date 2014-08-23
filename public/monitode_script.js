@@ -1,6 +1,6 @@
 "use strict";
 /*
- * monitode 2.3.0 (c) 2014 hex7c0, https://hex7c0.github.io/monitode/
+ * monitode 2.4.15 (c) 2014 hex7c0, https://hex7c0.github.io/monitode/
  * 
  * License: GPLv3
  */
@@ -22,12 +22,12 @@ var promise, flag = false;
  * @param {Object} timeout - angular timeout object
  * @return
  */
-function dyna($http,$scope,$timeout) {
+function dyna($http, $scope, $timeout) {
 
     $timeout.cancel(promise);
     if ($scope.clock > 0) {
-        promise = $timeout(loop,$scope.clock * 1000);
-    } else if ($scope.clock == 0) {
+        promise = $timeout(loop, $scope.clock * 1000);
+    } else if ($scope.clock === 0) {
         $scope.clock = 5;
         loop();
     }
@@ -45,7 +45,7 @@ function dyna($http,$scope,$timeout) {
             url: '/dyn/'
         })
                 .success(
-                        function(data,status,headers,config) {
+                        function(data, status, headers, config) {
 
                             // avg
                             store.x.push(new Date(data.date));
@@ -63,20 +63,19 @@ function dyna($http,$scope,$timeout) {
 
                             // chart
                             var X = store.x;
-                            avg
-                                    .load({
-                                        columns: [X,store.one,store.five,
-                                                store.fifteen],
-                                    });
-                            meml.load({
-                                columns: [X,store.total,store.used,store.v8rss,
-                                        store.v8total,store.v8used],
+                            avg.load({
+                                columns: [ X, store.one, store.five,
+                                        store.fifteen ],
                             });
-                            memp
-                                    .load({
-                                        columns: [['used',data.mem.used],
-                                                ['free',mfree]],
-                                    });
+                            meml.load({
+                                columns: [ X, store.total, store.used,
+                                        store.v8rss, store.v8total,
+                                        store.v8used ],
+                            });
+                            memp.load({
+                                columns: [ [ 'used', data.mem.used ],
+                                        [ 'free', mfree ] ],
+                            });
                             if (data.net) {
                                 // os
                                 store.inet.push(data.net.inn.pacs);
@@ -87,23 +86,23 @@ function dyna($http,$scope,$timeout) {
                                     loadOs();
                                 }
                                 os.load({
-                                    columns: [X,store.inet,store.onet,
-                                            store.tps,store.mbs],
+                                    columns: [ X, store.inet, store.onet,
+                                            store.tps, store.mbs ],
                                 });
                             }
                             // cpu
-                            if (cpus.length == 0) {
+                            if (cpus.length === 0) {
                                 $scope.cpus = cpus = data.cpu.cpus;
                                 loadProc($scope.cpus);
                             } else {
                                 for (var i = 0, ii = data.cpu.cpus.length; i < ii; i++) {
                                     var cpu = data.cpu.cpus[i];
                                     cpus[i].load({
-                                        columns: [['user',cpu.times.user],
-                                                ['nice',cpu.times.nice],
-                                                ['sys',cpu.times.sys],
-                                                ['idle',cpu.times.idle],
-                                                ['irq',cpu.times.irq]],
+                                        columns: [ [ 'user', cpu.times.user ],
+                                                [ 'nice', cpu.times.nice ],
+                                                [ 'sys', cpu.times.sys ],
+                                                [ 'idle', cpu.times.idle ],
+                                                [ 'irq', cpu.times.irq ] ],
                                     });
                                 }
                             }
@@ -131,7 +130,7 @@ function dyna($http,$scope,$timeout) {
                                         title: 'System uptime Node',
                                         info: Math.floor(data.uptime.node / 60)
                                                 + ' minutes',
-                                    },];
+                                    }, ];
                             if (data.tickle) {
                                 var temp = {
                                     title: 'Request counter',
@@ -201,8 +200,8 @@ function dyna($http,$scope,$timeout) {
                                     $scope.refresh[1] = temp;
                                 }
                             }
-                            return dyna($http,$scope,$timeout);
-                        }).error(function(data,status,headers,config) {
+                            return dyna($http, $scope, $timeout);
+                        }).error(function(data, status, headers, config) {
 
                     alert('server doesn\'t respond');
                 });
@@ -218,42 +217,42 @@ function dyna($http,$scope,$timeout) {
  * @param {Object} scope - angular scope object
  * @return
  */
-function stat($http,$scope) {
+function stat($http, $scope) {
 
     $http({
         method: 'POST',
         url: '/sta/'
-    }).success(function(data,status,headers,config) {
+    }).success(function(data, status, headers, config) {
 
         // info
-        $scope.statics = [{
+        $scope.statics = [ {
             title: 'CPU architecture',
             info: data.os.arch,
-        },{
+        }, {
             title: 'OS hostname',
             info: data.os.hostname,
-        },{
+        }, {
             title: 'OS platform',
             info: data.os.platform,
-        },{
+        }, {
             title: 'OS type',
             info: data.os.type,
-        },{
+        }, {
             title: 'OS release',
             info: data.os.release,
-        },{
+        }, {
             title: 'OS endianness',
             info: data.endianness,
-        },{
+        }, {
             title: 'Process gid',
             info: data.process.gid,
-        },{
+        }, {
             title: 'Process uid',
             info: data.process.uid,
-        },{
+        }, {
             title: 'Process pid',
             info: data.process.pid,
-        },];
+        }, ];
         // 0 environment
         var temp = {
             title: 'Process environment',
@@ -314,7 +313,7 @@ function stat($http,$scope) {
             $scope.statics.push(temp);
         }
         return;
-    }).error(function(data,status,headers,config) {
+    }).error(function(data, status, headers, config) {
 
         // pass
     });
@@ -324,7 +323,7 @@ function stat($http,$scope) {
 
 "use strict";
 /*
- * monitode 2.3.0 (c) 2014 hex7c0, https://hex7c0.github.io/monitode/
+ * monitode 2.4.15 (c) 2014 hex7c0, https://hex7c0.github.io/monitode/
  * 
  * License: GPLv3
  */
@@ -333,21 +332,21 @@ function stat($http,$scope) {
  * variables
  */
 var avg, meml, memp, os;
-var cpus = [], app = angular.module('monitode',[]);
+var cpus = [], app = angular.module('monitode', []);
 var store = {
-    x: ['x'],
-    one: ['one'],
-    five: ['five'],
-    fifteen: ['fifteen'],
-    total: ['total'],
-    used: ['used'],
-    v8rss: ['v8rss'],
-    v8total: ['v8total'],
-    v8used: ['v8used'],
-    inet: ['inet'],
-    onet: ['onet'],
-    tps: ['tps'],
-    mbs: ['mbs'],
+    x: [ 'x' ],
+    one: [ 'one' ],
+    five: [ 'five' ],
+    fifteen: [ 'fifteen' ],
+    total: [ 'total' ],
+    used: [ 'used' ],
+    v8rss: [ 'v8rss' ],
+    v8total: [ 'v8total' ],
+    v8used: [ 'v8used' ],
+    inet: [ 'inet' ],
+    onet: [ 'onet' ],
+    tps: [ 'tps' ],
+    mbs: [ 'mbs' ],
     logger: [],
 };
 
@@ -367,7 +366,7 @@ function load() {
         data: {
             type: 'line',
             x: 'x',
-            columns: [store.x,store.one,store.five,store.fifteen],
+            columns: [ store.x, store.one, store.five, store.fifteen ],
             names: {
                 one: 'average in 1 min',
                 five: 'average in 5 min',
@@ -384,10 +383,10 @@ function load() {
         },
         grid: {
             y: {
-                lines: [{
+                lines: [ {
                     value: 1,
                     text: 'overload',
-                },],
+                }, ],
             },
         },
         axis: {
@@ -417,10 +416,10 @@ function load() {
                 used: 'spline',
                 v8total: 'line',
             },
-            groups: [['v8rss','v8used']],
+            groups: [ [ 'v8rss', 'v8used' ] ],
             x: 'x',
-            columns: [store.x,store.total,store.used,store.v8rss,store.v8total,
-                    store.v8used],
+            columns: [ store.x, store.total, store.used, store.v8rss,
+                    store.v8total, store.v8used ],
             names: {
                 total: 'total memory',
                 used: 'memory used',
@@ -455,7 +454,7 @@ function load() {
         bindto: '#memory_pie',
         data: {
             type: 'pie',
-            columns: [['used',0],['free',100]],
+            columns: [ [ 'used', 0 ], [ 'free', 100 ] ],
             names: {
                 used: 'memory used',
                 free: 'memory free',
@@ -487,9 +486,11 @@ function loadProc(cpu) {
             bindto: '#cpu_' + i,
             data: {
                 type: 'donut',
-                columns: [['user',buff[i].times.user],
-                        ['nice',buff[i].times.nice],['sys',buff[i].times.sys],
-                        ['idle',buff[i].times.idle],['irq',buff[i].times.irq]],
+                columns: [ [ 'user', buff[i].times.user ],
+                        [ 'nice', buff[i].times.nice ],
+                        [ 'sys', buff[i].times.sys ],
+                        [ 'idle', buff[i].times.idle ],
+                        [ 'irq', buff[i].times.irq ] ],
                 colors: {
                     user: '#107aff',
                     idle: '#00a855',
@@ -530,7 +531,7 @@ function loadOs() {
         data: {
             type: 'spline',
             x: 'x',
-            columns: [store.x,store.inet,store.onet,store.tps,store.mbs],
+            columns: [ store.x, store.inet, store.onet, store.tps, store.mbs ],
             names: {
                 inet: 'input packets',
                 onet: 'output packets',
@@ -568,24 +569,24 @@ function loadOs() {
  * @param {Object} timeout - angular timeout object
  * @return
  */
-function controller($scope,$http,$timeout) {
+function controller($scope, $http, $timeout) {
 
     $scope.clock = 0;
-    dyna($http,$scope,$timeout);
-    stat($http,$scope);
+    dyna($http, $scope, $timeout);
+    stat($http, $scope);
     // click
-    $scope.button = function(item,event) {
+    $scope.button = function(item, event) {
 
-        switch (item){
+        switch (item) {
             case 'dynamic':
-                dyna($http,$scope,$timeout);
-            break;
+                dyna($http, $scope, $timeout);
+                break;
             case 'static':
-                stat($http,$scope);
-            break;
+                stat($http, $scope);
+                break;
             case 'stop':
                 $timeout.cancel(promise);
-            break;
+                break;
             case 'csv':
                 var content = ('data:text/csv;charset=utf-8,');
                 content += 'date,average 1 min,average 5 min,average 15 min,memory used\n';
@@ -597,14 +598,14 @@ function controller($scope,$http,$timeout) {
                     content += store.used[i] + '\n';
                 }
                 window.open(encodeURI(content));
-            break;
+                break;
             case 'clear':
                 var len = store.x.length;
                 for ( var property in store) {
-                    store[property].splice(1,len);
+                    store[property].splice(1, len);
                 }
                 store.logger = [];
-            break;
+                break;
         }
     };
     return;
@@ -614,4 +615,4 @@ function controller($scope,$http,$timeout) {
  * start
  */
 load();
-app.controller('main',controller);
+app.controller('main', controller);

@@ -1,6 +1,6 @@
 "use strict";
 /*
- * monitode 2.3.0 (c) 2014 hex7c0, https://hex7c0.github.io/monitode/
+ * monitode 2.4.15 (c) 2014 hex7c0, https://hex7c0.github.io/monitode/
  * 
  * License: GPLv3
  */
@@ -9,21 +9,21 @@
  * variables
  */
 var avg, meml, memp, os;
-var cpus = [], app = angular.module('monitode',[]);
+var cpus = [], app = angular.module('monitode', []);
 var store = {
-    x: ['x'],
-    one: ['one'],
-    five: ['five'],
-    fifteen: ['fifteen'],
-    total: ['total'],
-    used: ['used'],
-    v8rss: ['v8rss'],
-    v8total: ['v8total'],
-    v8used: ['v8used'],
-    inet: ['inet'],
-    onet: ['onet'],
-    tps: ['tps'],
-    mbs: ['mbs'],
+    x: [ 'x' ],
+    one: [ 'one' ],
+    five: [ 'five' ],
+    fifteen: [ 'fifteen' ],
+    total: [ 'total' ],
+    used: [ 'used' ],
+    v8rss: [ 'v8rss' ],
+    v8total: [ 'v8total' ],
+    v8used: [ 'v8used' ],
+    inet: [ 'inet' ],
+    onet: [ 'onet' ],
+    tps: [ 'tps' ],
+    mbs: [ 'mbs' ],
     logger: [],
 };
 
@@ -43,7 +43,7 @@ function load() {
         data: {
             type: 'line',
             x: 'x',
-            columns: [store.x,store.one,store.five,store.fifteen],
+            columns: [ store.x, store.one, store.five, store.fifteen ],
             names: {
                 one: 'average in 1 min',
                 five: 'average in 5 min',
@@ -60,10 +60,10 @@ function load() {
         },
         grid: {
             y: {
-                lines: [{
+                lines: [ {
                     value: 1,
                     text: 'overload',
-                },],
+                }, ],
             },
         },
         axis: {
@@ -93,10 +93,10 @@ function load() {
                 used: 'spline',
                 v8total: 'line',
             },
-            groups: [['v8rss','v8used']],
+            groups: [ [ 'v8rss', 'v8used' ] ],
             x: 'x',
-            columns: [store.x,store.total,store.used,store.v8rss,store.v8total,
-                    store.v8used],
+            columns: [ store.x, store.total, store.used, store.v8rss,
+                    store.v8total, store.v8used ],
             names: {
                 total: 'total memory',
                 used: 'memory used',
@@ -131,7 +131,7 @@ function load() {
         bindto: '#memory_pie',
         data: {
             type: 'pie',
-            columns: [['used',0],['free',100]],
+            columns: [ [ 'used', 0 ], [ 'free', 100 ] ],
             names: {
                 used: 'memory used',
                 free: 'memory free',
@@ -163,9 +163,11 @@ function loadProc(cpu) {
             bindto: '#cpu_' + i,
             data: {
                 type: 'donut',
-                columns: [['user',buff[i].times.user],
-                        ['nice',buff[i].times.nice],['sys',buff[i].times.sys],
-                        ['idle',buff[i].times.idle],['irq',buff[i].times.irq]],
+                columns: [ [ 'user', buff[i].times.user ],
+                        [ 'nice', buff[i].times.nice ],
+                        [ 'sys', buff[i].times.sys ],
+                        [ 'idle', buff[i].times.idle ],
+                        [ 'irq', buff[i].times.irq ] ],
                 colors: {
                     user: '#107aff',
                     idle: '#00a855',
@@ -206,7 +208,7 @@ function loadOs() {
         data: {
             type: 'spline',
             x: 'x',
-            columns: [store.x,store.inet,store.onet,store.tps,store.mbs],
+            columns: [ store.x, store.inet, store.onet, store.tps, store.mbs ],
             names: {
                 inet: 'input packets',
                 onet: 'output packets',
@@ -244,24 +246,24 @@ function loadOs() {
  * @param {Object} timeout - angular timeout object
  * @return
  */
-function controller($scope,$http,$timeout) {
+function controller($scope, $http, $timeout) {
 
     $scope.clock = 0;
-    dyna($http,$scope,$timeout);
-    stat($http,$scope);
+    dyna($http, $scope, $timeout);
+    stat($http, $scope);
     // click
-    $scope.button = function(item,event) {
+    $scope.button = function(item, event) {
 
-        switch (item){
+        switch (item) {
             case 'dynamic':
-                dyna($http,$scope,$timeout);
-            break;
+                dyna($http, $scope, $timeout);
+                break;
             case 'static':
-                stat($http,$scope);
-            break;
+                stat($http, $scope);
+                break;
             case 'stop':
                 $timeout.cancel(promise);
-            break;
+                break;
             case 'csv':
                 var content = ('data:text/csv;charset=utf-8,');
                 content += 'date,average 1 min,average 5 min,average 15 min,memory used\n';
@@ -273,14 +275,14 @@ function controller($scope,$http,$timeout) {
                     content += store.used[i] + '\n';
                 }
                 window.open(encodeURI(content));
-            break;
+                break;
             case 'clear':
                 var len = store.x.length;
                 for ( var property in store) {
-                    store[property].splice(1,len);
+                    store[property].splice(1, len);
                 }
                 store.logger = [];
-            break;
+                break;
         }
     };
     return;
@@ -290,4 +292,4 @@ function controller($scope,$http,$timeout) {
  * start
  */
 load();
-app.controller('main',controller);
+app.controller('main', controller);

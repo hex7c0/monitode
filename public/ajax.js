@@ -1,6 +1,6 @@
 "use strict";
 /*
- * monitode 2.3.0 (c) 2014 hex7c0, https://hex7c0.github.io/monitode/
+ * monitode 2.4.15 (c) 2014 hex7c0, https://hex7c0.github.io/monitode/
  * 
  * License: GPLv3
  */
@@ -22,12 +22,12 @@ var promise, flag = false;
  * @param {Object} timeout - angular timeout object
  * @return
  */
-function dyna($http,$scope,$timeout) {
+function dyna($http, $scope, $timeout) {
 
     $timeout.cancel(promise);
     if ($scope.clock > 0) {
-        promise = $timeout(loop,$scope.clock * 1000);
-    } else if ($scope.clock == 0) {
+        promise = $timeout(loop, $scope.clock * 1000);
+    } else if ($scope.clock === 0) {
         $scope.clock = 5;
         loop();
     }
@@ -45,7 +45,7 @@ function dyna($http,$scope,$timeout) {
             url: '/dyn/'
         })
                 .success(
-                        function(data,status,headers,config) {
+                        function(data, status, headers, config) {
 
                             // avg
                             store.x.push(new Date(data.date));
@@ -63,20 +63,19 @@ function dyna($http,$scope,$timeout) {
 
                             // chart
                             var X = store.x;
-                            avg
-                                    .load({
-                                        columns: [X,store.one,store.five,
-                                                store.fifteen],
-                                    });
-                            meml.load({
-                                columns: [X,store.total,store.used,store.v8rss,
-                                        store.v8total,store.v8used],
+                            avg.load({
+                                columns: [ X, store.one, store.five,
+                                        store.fifteen ],
                             });
-                            memp
-                                    .load({
-                                        columns: [['used',data.mem.used],
-                                                ['free',mfree]],
-                                    });
+                            meml.load({
+                                columns: [ X, store.total, store.used,
+                                        store.v8rss, store.v8total,
+                                        store.v8used ],
+                            });
+                            memp.load({
+                                columns: [ [ 'used', data.mem.used ],
+                                        [ 'free', mfree ] ],
+                            });
                             if (data.net) {
                                 // os
                                 store.inet.push(data.net.inn.pacs);
@@ -87,23 +86,23 @@ function dyna($http,$scope,$timeout) {
                                     loadOs();
                                 }
                                 os.load({
-                                    columns: [X,store.inet,store.onet,
-                                            store.tps,store.mbs],
+                                    columns: [ X, store.inet, store.onet,
+                                            store.tps, store.mbs ],
                                 });
                             }
                             // cpu
-                            if (cpus.length == 0) {
+                            if (cpus.length === 0) {
                                 $scope.cpus = cpus = data.cpu.cpus;
                                 loadProc($scope.cpus);
                             } else {
                                 for (var i = 0, ii = data.cpu.cpus.length; i < ii; i++) {
                                     var cpu = data.cpu.cpus[i];
                                     cpus[i].load({
-                                        columns: [['user',cpu.times.user],
-                                                ['nice',cpu.times.nice],
-                                                ['sys',cpu.times.sys],
-                                                ['idle',cpu.times.idle],
-                                                ['irq',cpu.times.irq]],
+                                        columns: [ [ 'user', cpu.times.user ],
+                                                [ 'nice', cpu.times.nice ],
+                                                [ 'sys', cpu.times.sys ],
+                                                [ 'idle', cpu.times.idle ],
+                                                [ 'irq', cpu.times.irq ] ],
                                     });
                                 }
                             }
@@ -131,7 +130,7 @@ function dyna($http,$scope,$timeout) {
                                         title: 'System uptime Node',
                                         info: Math.floor(data.uptime.node / 60)
                                                 + ' minutes',
-                                    },];
+                                    }, ];
                             if (data.tickle) {
                                 var temp = {
                                     title: 'Request counter',
@@ -201,8 +200,8 @@ function dyna($http,$scope,$timeout) {
                                     $scope.refresh[1] = temp;
                                 }
                             }
-                            return dyna($http,$scope,$timeout);
-                        }).error(function(data,status,headers,config) {
+                            return dyna($http, $scope, $timeout);
+                        }).error(function(data, status, headers, config) {
 
                     alert('server doesn\'t respond');
                 });
@@ -218,42 +217,42 @@ function dyna($http,$scope,$timeout) {
  * @param {Object} scope - angular scope object
  * @return
  */
-function stat($http,$scope) {
+function stat($http, $scope) {
 
     $http({
         method: 'POST',
         url: '/sta/'
-    }).success(function(data,status,headers,config) {
+    }).success(function(data, status, headers, config) {
 
         // info
-        $scope.statics = [{
+        $scope.statics = [ {
             title: 'CPU architecture',
             info: data.os.arch,
-        },{
+        }, {
             title: 'OS hostname',
             info: data.os.hostname,
-        },{
+        }, {
             title: 'OS platform',
             info: data.os.platform,
-        },{
+        }, {
             title: 'OS type',
             info: data.os.type,
-        },{
+        }, {
             title: 'OS release',
             info: data.os.release,
-        },{
+        }, {
             title: 'OS endianness',
             info: data.endianness,
-        },{
+        }, {
             title: 'Process gid',
             info: data.process.gid,
-        },{
+        }, {
             title: 'Process uid',
             info: data.process.uid,
-        },{
+        }, {
             title: 'Process pid',
             info: data.process.pid,
-        },];
+        }, ];
         // 0 environment
         var temp = {
             title: 'Process environment',
@@ -314,7 +313,7 @@ function stat($http,$scope) {
             $scope.statics.push(temp);
         }
         return;
-    }).error(function(data,status,headers,config) {
+    }).error(function(data, status, headers, config) {
 
         // pass
     });
