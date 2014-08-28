@@ -45,7 +45,7 @@ describe('http',function() {
         it('dyn',function(done) {
 
             var p = 'Basic ' + new Buffer('pippo:ciao').toString('base64');
-            request.post('127.0.0.1:3001/dyn/').set('Authorization',p).set(
+            request.post('127.0.0.1.3.11/dyn/').set('Authorization',p).set(
                     'Accept','application/json').end(function(err,res) {
 
                 if (err)
@@ -79,7 +79,7 @@ describe('http',function() {
                     };
                     var p = 'Basic '
                             + new Buffer('pippo:ciao').toString('base64');
-                    request.post('http://127.0.0.1:3001/sta/').set(
+                    request.post('http://127.0.0.1.3.11/sta/').set(
                             'Authorization',p).set('Accept','application/json')
                             .end(
                                     function(err,res) {
@@ -108,7 +108,7 @@ describe('http',function() {
         it('401',function(done) {
 
             var p = 'Basic ' + new Buffer('pip2po:ciao').toString('base64');
-            request.post('http://127.0.0.1:3001/dyn/').set('Authorization',p)
+            request.post('http://127.0.0.1.3.11/dyn/').set('Authorization',p)
                     .set('Accept','application/json').end(function(err,res) {
 
                         if (err)
@@ -121,7 +121,7 @@ describe('http',function() {
         it('404',function(done) {
 
             var p = 'Basic ' + new Buffer('pippo:ciao').toString('base64');
-            request.post('http://127.0.0.1:3001/ssta/').set('Authorization',p)
+            request.post('http://127.0.0.1.3.11/ssta/').set('Authorization',p)
                     .set('Accept','application/json').end(function(err,res) {
 
                         if (err)
@@ -134,7 +134,7 @@ describe('http',function() {
         it('404',function(done) {
 
             var p = 'Basic ' + new Buffer('pippo:ciao').toString('base64');
-            request.get('http://127.0.0.1:3001/dyn/').set('Authorization',p)
+            request.get('http://127.0.0.1.3.11/dyn/').set('Authorization',p)
                     .set('Accept','application/json').end(function(err,res) {
 
                         if (err)
@@ -147,7 +147,7 @@ describe('http',function() {
         it('404',function(done) {
 
             var p = 'Basic ' + new Buffer('pippo:ciao').toString('base64');
-            request.get('http://127.0.0.1:3001/sta/').set('Authorization',p)
+            request.get('http://127.0.0.1.3.11/sta/').set('Authorization',p)
                     .set('Accept','application/json').end(function(err,res) {
 
                         if (err)
