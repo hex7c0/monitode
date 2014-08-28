@@ -3,7 +3,7 @@ v2.4.16 / 2014-08-28
 
   * Update `express`@4.8.6
   * Update `mongodb`@1.4.9
-  * Update `nano`@5.11.1
+  * Update `nano`@5.11.0
 
 v2.4.15 / 2014-08-23
 ==================
