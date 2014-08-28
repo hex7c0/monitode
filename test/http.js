@@ -25,7 +25,7 @@ try {
 /*
  * test module
  */
-describe('http',function() {
+describe('http', function() {
 
     before(function(done) {
 
@@ -40,121 +40,112 @@ describe('http',function() {
         done();
     });
 
-    describe('200 - should return 200 status code',function() {
+    describe('200 - should return 200 status code', function() {
 
-        it('dyn',function(done) {
+        it('dyn', function(done) {
 
             var p = 'Basic ' + new Buffer('pippo:ciao').toString('base64');
-            request.post('127.0.0.1.3.11/dyn/').set('Authorization',p).set(
-                    'Accept','application/json').end(function(err,res) {
+            request.post('127.0.0.1:3001/dyn/').set('Authorization', p).set('Accept',
+                    'application/json').end(function(err, res) {
 
                 if (err)
                     throw err;
-                assert.deepEqual(res.statusCode,200);
-                done()
+                assert.deepEqual(res.statusCode, 200);
+                done();
             });
         });
 
-        it('sta',
-                function(done) {
+        it('sta', function(done) {
 
-                    var OS = require('os')
-                    var d = {
-                        os: {
-                            hostname: OS.hostname(),
-                            platform: OS.platform(),
-                            arch: OS.arch(),
-                            type: OS.type(),
-                            release: OS.release(),
-                        },
-                        version: process.versions,
-                        process: {
-                            gid: process.getgid(),
-                            uid: process.getuid(),
-                            pid: process.pid,
-                            env: process.env,
-                        },
-                        network: OS.networkInterfaces(),
-                        endianness: OS.endianness(),
-                    };
-                    var p = 'Basic '
-                            + new Buffer('pippo:ciao').toString('base64');
-                    request.post('http://127.0.0.1.3.11/sta/').set(
-                            'Authorization',p).set('Accept','application/json')
-                            .end(
-                                    function(err,res) {
+            var OS = require('os');
+            var d = {
+                os: {
+                    hostname: OS.hostname(),
+                    platform: OS.platform(),
+                    arch: OS.arch(),
+                    type: OS.type(),
+                    release: OS.release(),
+                },
+                version: process.versions,
+                process: {
+                    gid: process.getgid(),
+                    uid: process.getuid(),
+                    pid: process.pid,
+                    env: process.env,
+                },
+                network: OS.networkInterfaces(),
+                endianness: OS.endianness(),
+            };
+            var p = 'Basic ' + new Buffer('pippo:ciao').toString('base64');
+            request.post('http://127.0.0.1:3001/sta/').set('Authorization', p).set(
+                    'Accept', 'application/json').end(function(err, res) {
 
-                                        if (err)
-                                            throw err;
-                                        var j = JSON.parse(res.text);
-                                        assert.deepEqual(res.statusCode,200,
-                                                '200');
-                                        assert.deepEqual(j.os,d.os,'os');
-                                        assert.deepEqual(j.version,d.version,
-                                                'version');
-                                        assert.deepEqual(j.process,d.process,
-                                                'process');
-                                        assert.deepEqual(j.process,d.process,
-                                                'process');
-                                        assert.deepEqual(j.endianness,
-                                                d.endianness,'endianness');
-                                        done()
-                                    });
-                });
+                if (err)
+                    throw err;
+                var j = JSON.parse(res.text);
+                assert.deepEqual(res.statusCode, 200, '200');
+                assert.deepEqual(j.os, d.os, 'os');
+                assert.deepEqual(j.version, d.version, 'version');
+                assert.deepEqual(j.process, d.process, 'process');
+                assert.deepEqual(j.process, d.process, 'process');
+                assert.deepEqual(j.endianness, d.endianness, 'endianness');
+                done();
+            });
+        });
     });
 
-    describe('error - should return error',function() {
+    describe('error - should return error', function() {
 
-        it('401',function(done) {
+        it('401', function(done) {
 
             var p = 'Basic ' + new Buffer('pip2po:ciao').toString('base64');
-            request.post('http://127.0.0.1.3.11/dyn/').set('Authorization',p)
-                    .set('Accept','application/json').end(function(err,res) {
+            request.post('http://127.0.0.1:3001/dyn/').set('Authorization', p).set(
+                    'Accept', 'application/json').end(function(err, res) {
 
-                        if (err)
-                            throw err;
-                        assert.deepEqual(res.statusCode,401);
-                        done()
-                    });
+                if (err)
+                    throw err;
+                assert.deepEqual(res.statusCode, 401);
+                done();
+            });
         });
 
-        it('404',function(done) {
+        it('404', function(done) {
 
             var p = 'Basic ' + new Buffer('pippo:ciao').toString('base64');
-            request.post('http://127.0.0.1.3.11/ssta/').set('Authorization',p)
-                    .set('Accept','application/json').end(function(err,res) {
+            request.post('http://127.0.0.1:3001/ssta/').set('Authorization', p).set(
+                    'Accept', 'application/json').end(function(err, res) {
 
-                        if (err)
-                            throw err;
-                        assert.deepEqual(res.statusCode,404);
-                        done()
-                    });
+                if (err)
+                    throw err;
+                assert.deepEqual(res.statusCode, 404);
+                done();
+            });
         });
 
-        it('404',function(done) {
+        it('404', function(done) {
 
             var p = 'Basic ' + new Buffer('pippo:ciao').toString('base64');
-            request.get('http://127.0.0.1.3.11/dyn/').set('Authorization',p)
-                    .set('Accept','application/json').end(function(err,res) {
+            request.get('http://127.0.0.1:3001/dyn/').set('Authorization', p).set(
+                    'Accept', 'application/json').end(function(err, res) {
 
-                        if (err)
-                            throw err;
-                        assert.deepEqual(res.statusCode,404);
-                        done()
-                    });
+                if (err)
+                    throw err;
+                assert.deepEqual(res.statusCode, 404);
+                done();
+            });
         });
 
-        it('404',function(done) {
+        it('404', function(done) {
 
             var p = 'Basic ' + new Buffer('pippo:ciao').toString('base64');
-            request.get('http://127.0.0.1.3.11/sta/').set('Authorization',p)
-                    .set('Accept','application/json').end(function(err,res) {
+            request.get('http://127.0.0.1:3001/sta/').set('Authorization', p).set(
+                    'Accept', 'application/json').end(function(err, res) {
 
-                        if (err)
-                            throw err;
-                        assert.deepEqual(res.statusCode,404);
-                        done()
-                    });
+                if (err)
+                    throw err;
+                assert.deepEqual(res.statusCode, 404);
+                done();
+            });
         });
     });
 });
