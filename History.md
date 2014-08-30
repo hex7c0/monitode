@@ -1,3 +1,11 @@
+v2.5.0 / 2014-08-30
+==================
+
+  * Bower package
+  * Update `express`@4.8.7
+  * Update `angular`@1.3.0-rc.0
+  * Web Structure in /public
+
 v2.4.16 / 2014-08-28
 ==================
 

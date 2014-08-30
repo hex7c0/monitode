@@ -4,7 +4,7 @@
 [![Build Status](https://travis-ci.org/hex7c0/monitode.svg?branch=master)](https://travis-ci.org/hex7c0/monitode)
 [![Dependency Status](https://david-dm.org/hex7c0/monitode/status.svg)](https://david-dm.org/hex7c0/monitode)
 
-[![monitode logo](https://raw.githubusercontent.com/hex7c0/monitode/master/public/logo.png)](https://hex7c0.github.io/monitode/)
+[![monitode logo](https://raw.githubusercontent.com/hex7c0/monitode/master/public/img/logo.png)](https://hex7c0.github.io/monitode/)
 
 Resource monitor for [nodejs](http://nodejs.org) using a full stack of [MEAN](http://en.wikipedia.org/wiki/MEAN).
 
