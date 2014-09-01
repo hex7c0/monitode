@@ -1,3 +1,10 @@
+v2.5.1 / 2014-09-01
+==================
+
+  * Avoid try-catch
+  * Update `basic-authentication`@1.5.5
+  * Update `logger-request`@3.0.4
+
 v2.5.0 / 2014-08-30
 ==================
 
