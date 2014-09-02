@@ -1,4 +1,4 @@
-'use strict';
+"use strict";
 /**
  * @file gruntfile
  * @subpackage main
@@ -31,8 +31,7 @@ module.exports = function(grunt) {
 
         uglify: {
             options: {
-                banner: '<%= banner %>',
-                footer: '\n'
+                banner: '<%= banner %>'
             },
             target: {
                 files: [ {
@@ -50,8 +49,7 @@ module.exports = function(grunt) {
             script: {
                 options: {
                     mangle: false,
-                    banner: '<%= banner %>',
-                    footer: '\n'
+                    banner: '<%= banner %>'
                 },
                 files: {
                     'public/js/script.min.js': 'public/js/concat.min.js'
@@ -62,8 +60,7 @@ module.exports = function(grunt) {
         cssmin: {
             css: {
                 options: {
-                    banner: '<%= banner %>',
-                    footer: '\n'
+                    banner: '<%= banner %>'
                 },
                 files: {
                     'public/css/style.min.css': 'public/css/console.css'
@@ -77,8 +74,7 @@ module.exports = function(grunt) {
                     removeComments: true,
                     collapseWhitespace: true,
                     minifyJS: true,
-                    minifyCSS: true,
-                    footer: '\n'
+                    minifyCSS: true
                 },
                 files: {
                     'public/index.min.html': 'public/index.html'
@@ -93,6 +89,21 @@ module.exports = function(grunt) {
             docs: {
                 command: 'jsdoc ./lib/*.js ./module/*.js -c .jsdoc.json'
             }
+        },
+
+        endline: {
+            target: {
+                options: {
+                    except: [ 'node_modules', 'bower_components' ]
+                },
+                files: [ {
+                    src: './**/*.js'
+                }, {
+                    src: './**/*.css'
+                }, {
+                    src: './**/*.html'
+                } ]
+            }
         }
     });
 
@@ -101,10 +112,11 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks('grunt-contrib-cssmin');
     grunt.loadNpmTasks('grunt-contrib-htmlmin');
     grunt.loadNpmTasks('grunt-contrib-uglify');
+    grunt.loadNpmTasks('grunt-endline');
     grunt.loadNpmTasks('grunt-shell');
 
     grunt.registerTask('html', [ 'concat', 'cssmin', 'htmlmin' ]);
-    grunt.registerTask('min', [ 'clean', 'html', 'uglify' ]);
+    grunt.registerTask('min', [ 'clean', 'html', 'uglify', 'endline' ]);
     grunt.registerTask('doc', [ 'shell' ]);
     grunt.registerTask('default', [ 'min', 'doc' ]);
 
