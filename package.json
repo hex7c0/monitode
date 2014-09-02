@@ -1,5 +1,5 @@
 {
-  "version": "2.5.1",
+  "version": "2.5.2",
   "name": "monitode",
   "description": "resource monitor for nodejs",
   "keywords": [
@@ -32,16 +32,16 @@
   },
   "main": "index.min.js",
   "dependencies": {
-    "basic-authentication": "1.5.5",
+    "basic-authentication": "1.5.6",
     "express": "4.8.7",
-    "express-sitemap": "1.3.4",
-    "logger-request": "3.0.4",
+    "express-sitemap": "1.3.5",
+    "logger-request": "3.0.6",
     "mongodb": "1.4.9",
     "nano": "5.11.0",
     "nodemailer": "1.2.1",
-    "startline": "1.3.5",
-    "tickle": "1.1.4",
-    "timeout-request": "1.1.3"
+    "startline": "1.3.6",
+    "tickle": "1.1.5",
+    "timeout-request": "1.1.4"
   },
   "devDependencies": {
     "mocha": "~1.21.4",
@@ -50,6 +50,7 @@
     "grunt-contrib-cssmin": "~0.10.0",
     "grunt-contrib-htmlmin": "~0.3.0",
     "grunt-contrib-uglify": "~0.5.1",
+    "grunt-endline": "~0.2.1",
     "grunt-shell": "~1.0.1",
     "superagent": "~0.18.2"
   },
