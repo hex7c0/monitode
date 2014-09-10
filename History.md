@@ -3,7 +3,7 @@ v2.5.6 / 2014-09-10
 
   * Update `express`@4.9.0
   * Update `startline`@1.3.9
-  * Update `angular`@1.3.0-rc.0
+  * Update `angular`@1.3.0-rc.1
 
 v2.5.5 / 2014-09-08
 ==================
