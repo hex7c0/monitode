@@ -30,9 +30,6 @@ module.exports = function(grunt) {
         },
 
         uglify: {
-            options: {
-                banner: '<%= banner %>'
-            },
             target: {
                 files: [ {
                     expand: true,
