@@ -1,3 +1,11 @@
+v2.5.8 / 2014-09-17
+==================
+
+  * Update `mongodb`@1.4.11
+  * Web modules error handling
+  * Update `express`@4.9.1
+  * Update `angular`@1.3.0-rc.2
+
 v2.5.7 / 2014-09-12
 ==================
 
