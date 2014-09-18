@@ -1,8 +1,16 @@
+v2.5.9 / 2014-09-18
+==================
+
+  * Update `logger-request`@3.0.7
+  * Update `express`@4.9.2
+  * Update `mongodb`@1.4.12
+  * Update `nano`@5.11.2
+
 v2.5.8 / 2014-09-17
 ==================
 
-  * Update `mongodb`@1.4.11
   * Web modules error handling
+  * Update `mongodb`@1.4.11
   * Update `express`@4.9.1
   * Update `angular`@1.3.0-rc.2
 
