@@ -33,7 +33,7 @@ module.exports = function web() {
     /**
      * @global
      */
-    var options = GLOBAL.monitode;
+    var options = global.monitode;
     var h = options.http;
     var app = EXPRESS(), log, net, io, end = without_log;
 
@@ -119,7 +119,7 @@ module.exports = function web() {
         console.log('starting monitor on port ' + h.port);
     }
     HTTP.createServer(app).listen(h.port);
-    GLOBAL.monitode.http = true;
+    global.monitode.http = true;
 
     /*
      * express routing

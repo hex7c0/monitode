@@ -32,7 +32,7 @@ module.exports = function mail() {
     /**
      * @global
      */
-    var options = GLOBAL.monitode;
+    var options = global.monitode;
     var m = options.mail;
     var timeout, net, io;
 
@@ -95,7 +95,7 @@ module.exports = function mail() {
         to: m.to.toString(),
         subject: m.subject
     };
-    GLOBAL.monitode.mail.user = GLOBAL.monitode.mail.password = true;
+    global.monitode.mail.user = global.monitode.mail.password = true;
     if (options.output) {
         console.log('starting monitor with email');
     }

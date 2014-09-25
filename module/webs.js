@@ -33,7 +33,7 @@ module.exports = function web() {
     /**
      * @global
      */
-    var options = GLOBAL.monitode;
+    var options = global.monitode;
     var h = options.https;
     var app = EXPRESS(), log, net, io, end = without_log;
 
@@ -124,7 +124,7 @@ module.exports = function web() {
             cert: FS.readFileSync(h.cert),
         }, app).listen(h.port);
     }
-    GLOBAL.monitode.https = true;
+    global.monitode.https = true;
 
     /*
      * express routing

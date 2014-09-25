@@ -32,7 +32,7 @@ module.exports = function couch() {
     /**
      * @global
      */
-    var options = GLOBAL.monitode;
+    var options = global.monitode;
     var d = options.db;
     var timeout, log, net, io, end = without_log;
 

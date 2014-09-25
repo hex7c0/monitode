@@ -45,7 +45,7 @@ describe('options',function() {
 
     it('should correct options',function(done) {
 
-        var o = GLOBAL.monitode;
+        var o = global.monitode;
         assert.deepEqual(o.output,false);
         assert.deepEqual(o.tickle,false);
         assert.deepEqual(o.app,false);

@@ -35,7 +35,7 @@ module.exports = function() {
     /**
      * @global
      */
-    var options = GLOBAL.monitode;
+    var options = global.monitode;
     var s = options.status;
     var timeout;
 

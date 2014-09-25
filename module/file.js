@@ -32,7 +32,7 @@ module.exports = function file() {
     /**
      * @global
      */
-    var options = GLOBAL.monitode;
+    var options = global.monitode;
     var f = options.logger;
     var timeout;
 

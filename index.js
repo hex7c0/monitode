@@ -41,7 +41,7 @@ module.exports = function monitode(options) {
     /**
      * @global
      */
-    var my = GLOBAL.monitode = {
+    var my = global.monitode = {
         min: min,
         output: Boolean(options.output),
         tickle: Boolean(options.tickle),
@@ -63,7 +63,7 @@ module.exports = function monitode(options) {
         /**
          * @global
          */
-        GLOBAL.monitode.net = {
+        global.monitode.net = {
             inn: {
                 pacs: 0,
                 errs: 0,
@@ -76,7 +76,7 @@ module.exports = function monitode(options) {
         /**
          * @global
          */
-        GLOBAL.monitode.io = {
+        global.monitode.io = {
             tps: 0,
             mbs: 0,
         };
@@ -131,14 +131,14 @@ module.exports = function monitode(options) {
         /**
          * @global
          */
-        GLOBAL.monitode.log = {
+        global.monitode.log = {
             counter: 0,
             size: 0,
         };
         /**
          * @global
          */
-        GLOBAL.monitode.event = Object.create(null);
+        global.monitode.event = Object.create(null);
     }
 
     // database
