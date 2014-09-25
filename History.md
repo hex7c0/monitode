@@ -1,3 +1,11 @@
+v2.5.12 / 2014-09-25
+==================
+
+  * `GLOBAL` to `global`
+  * Update `angular`@1.3.0-rc.3
+  * Update `express`@4.9.5
+  * Update `mongodb`@1.4.15
+
 v2.5.11 / 2014-09-20
 ==================
 
