@@ -1,4 +1,4 @@
-"use strict";
+'use strict';
 /**
  * @file gruntfile
  * @subpackage main
@@ -110,12 +110,9 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks('grunt-contrib-htmlmin');
     grunt.loadNpmTasks('grunt-contrib-uglify');
     grunt.loadNpmTasks('grunt-endline');
-    grunt.loadNpmTasks('grunt-shell');
 
     grunt.registerTask('html', [ 'concat', 'cssmin', 'htmlmin' ]);
     grunt.registerTask('min', [ 'clean', 'html', 'uglify', 'endline' ]);
-    grunt.registerTask('doc', [ 'shell' ]);
-    grunt.registerTask('default', [ 'min', 'doc' ]);
 
     return;
 };
