@@ -1,4 +1,4 @@
-"use strict";
+'use strict';
 /**
  * @file options test
  * @module monitode

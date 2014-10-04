@@ -1,4 +1,4 @@
-"use strict";
+'use strict';
 /**
  * @file example with mail
  * @module monitode

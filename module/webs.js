@@ -1,4 +1,4 @@
-"use strict";
+'use strict';
 /**
  * @file monitode web over TLS/SSL
  * @module monitode

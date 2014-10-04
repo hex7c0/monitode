@@ -1,4 +1,4 @@
-"use strict";
+'use strict';
 /**
  * @file example with os stat. NOT FOR WIN
  * @module monitode

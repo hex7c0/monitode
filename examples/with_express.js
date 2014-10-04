@@ -1,4 +1,4 @@
-"use strict";
+'use strict';
 /**
  * @file example with express
  * @module monitode
