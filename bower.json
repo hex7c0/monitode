@@ -1,5 +1,5 @@
 {
-  "version": "2.5.14",
+  "version": "2.5.16",
   "name": "monitode",
   "description": "resource monitor for nodejs",
   "keywords": [
@@ -27,9 +27,9 @@
     "email": "hex7c0@gmail.com"
   },
   "dependencies": {
-    "angular": "1.3.0-rc.4",
+    "angular": "1.3.0-rc.5",
     "c3": "0.3.0",
-    "d3": "3.4.11"
+    "d3": "3.4.12"
   },
   "devDependencies": {
   },
