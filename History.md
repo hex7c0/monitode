@@ -1,3 +1,12 @@
+v2.5.16 / 2014-10-11
+==================
+
+  * Update `logger-request`@3.0.10
+  * Update `express`@4.9.7
+  * Update `mongodb`@1.4.19
+  * Update `angular`@1.3.0-rc.5
+  * Update `d3`@3.4.12
+
 v2.5.15 / 2014-10-04
 ==================
 
