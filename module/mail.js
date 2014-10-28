@@ -61,12 +61,12 @@ module.exports = function mail() {
             }
         }
         m.to.text = JSON.stringify(json);
-        m.provider.sendMail(m.to,function(error,response) {
+        m.provider.sendMail(m.to, function(error) {
 
             if (error) {
                 console.error(error);
             } else {
-                timeout = setTimeout(email,m.timeout);
+                timeout = setTimeout(email, m.timeout);
             }
             m.provider.close();
             return;

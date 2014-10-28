@@ -29,14 +29,14 @@ try {
  * 
  * @exports monitode
  * @function monitode
- * @param {Object} options - various options. Check README.md
+ * @param {Object} opt - various options. Check README.md
  * @return {Function}
  */
-module.exports = function monitode(options) {
+function monitode(opt) {
 
     var min = __dirname + '/min/';
     var spinterogeno = [];
-    options = options || Object.create(null);
+    var options = opt || Object.create(null);
     // global
     /**
      * @global
@@ -84,7 +84,7 @@ module.exports = function monitode(options) {
 
     // http
     options.http = options.http || Object.create(null);
-    if (options.http.enabled == false ? false : true) {
+    if (options.http.enabled === false ? false : true) {
         my.http = {
             port: Number(options.http.port) || 30000,
             user: String(options.http.user || 'admin'),
@@ -145,15 +145,13 @@ module.exports = function monitode(options) {
     options.db = options.db || Object.create(null);
     if (options.db.mongo || options.db.couch) {
         my.db = {
-            mongo: options.db.mongo,
-            couch: options.db.couch,
             database: String(options.db.database || 'monitode'),
             timeout: (parseFloat(options.db.timeout) || 20) * 1000,
         };
-        if (my.db.mongo) {
+        if ((my.db.mongo = options.db.mongo)) {
             spinterogeno.push(require(min + 'module/mongodb.js'));
         }
-        if (my.db.couch) {
+        if ((my.db.couch = options.db.couch)) {
             spinterogeno.push(require(min + 'module/couchdb.js'));
         }
     }
@@ -165,7 +163,7 @@ module.exports = function monitode(options) {
             provider: String(options.mail.provider),
             user: String(options.mail.user || 'admin'),
             password: String(options.mail.password || 'password'),
-            to: Array.isArray(options.mail.to) == true ? options.mail.to : [],
+            to: Array.isArray(options.mail.to) === true ? options.mail.to : [],
             subject: String(options.mail.subject || 'monitode report'),
             timeout: (parseFloat(options.mail.timeout) || 60) * 1000,
         };
@@ -176,8 +174,10 @@ module.exports = function monitode(options) {
     options.status = options.status || Object.create(null);
     if (Boolean(options.status.enabled)) {
         my.status = {
-            site: Array.isArray(options.status.site) == true ? options.status.site : [],
-            port: Array.isArray(options.status.port) == true ? options.status.port : [],
+            site: Array.isArray(options.status.site) === true ? options.status.site
+                    : [],
+            port: Array.isArray(options.status.port) === true ? options.status.port
+                    : [],
             method: String(options.status.method || 'GET'),
             agent: String(options.status.agent || 'monitode crawl'),
             file: resolve(String(options.status.file || 'status')),
@@ -193,9 +193,7 @@ module.exports = function monitode(options) {
 
     return function(req, res, next) {
 
-        if (next) {
-            return next();
-        }
-        return;
+        return next ? next() : null;
     };
-};
+}
+module.exports = monitode;

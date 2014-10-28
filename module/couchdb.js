@@ -57,12 +57,12 @@ module.exports = function couch() {
          * @param {String} error - error output
          * @param {Object} result - result of query
          */
-        d.couch.insert(json,function(error,result) {
+        d.couch.insert(json, function(error) {
 
             if (error) {
                 console.error(error);
             } else {
-                timeout = setTimeout(query,d.timeout);
+                timeout = setTimeout(query, d.timeout);
             }
             return;
         });
@@ -87,12 +87,12 @@ module.exports = function couch() {
          * @param {String} error - error output
          * @param {Object} result - result of query
          */
-        d.couch.insert(json,function(error,result) {
+        d.couch.insert(json, function(error) {
 
             if (error) {
                 console.error(error);
             } else {
-                timeout = setTimeout(query,d.timeout);
+                timeout = setTimeout(query, d.timeout);
             }
             return;
         });

@@ -57,12 +57,12 @@ module.exports = function mongo() {
          * @param {String} error - error output
          * @param {Object} result - result of query
          */
-        d.mongo.insert(json,function(error,result) {
+        d.mongo.insert(json, function(error) {
 
             if (error) {
                 console.error(error);
             } else {
-                timeout = setTimeout(query,d.timeout);
+                timeout = setTimeout(query, d.timeout);
             }
             return;
         });
@@ -87,12 +87,12 @@ module.exports = function mongo() {
          * @param {String} error - error output
          * @param {Object} result - result of query
          */
-        d.mongo.insert(json,function(error,result) {
+        d.mongo.insert(json, function(error) {
 
             if (error) {
                 console.error(error);
             } else {
-                timeout = setTimeout(query,d.timeout);
+                timeout = setTimeout(query, d.timeout);
             }
             return;
         });
@@ -145,12 +145,12 @@ module.exports = function mongo() {
     }
 
     // starter
-    CLIENT.connect(d.mongo,function(error,database) {
+    CLIENT.connect(d.mongo, function(error, database) {
 
         if (error) {
             console.error(error);
         } else {
-            database.createCollection(d.database,function(error,collection) {
+            database.createCollection(d.database, function(error, collection) {
 
                 if (error) {
                     console.error(error);

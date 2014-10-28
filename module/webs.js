@@ -99,9 +99,11 @@ module.exports = function web() {
     app.disable('view cache');
     app.enable('case sensitive routing');
     app.enable('strict routing');
+    app.use(require('server-signature')());
     app.use(require('timeout-request')({
         milliseconds: 4000,
         header: true,
+        clear: false
     }));
     app.use(require('basic-authentication')({
         user: h.user,
