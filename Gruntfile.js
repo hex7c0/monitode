@@ -79,6 +79,24 @@ module.exports = function(grunt) {
             }
         },
 
+        jshint: {
+            options: {
+                curly: true,
+                indent: 4,
+                quotmark: 'single',
+                undef: true,
+                unused: true,
+                strict: true,
+                node: true,
+                // relax
+                laxbreak: true,
+                loopfunc: true
+            },
+            target: {
+                src: [ 'lib/**/*.js', 'module/**/*.js', 'index.js' ]
+            }
+        },
+
         shell: {
             options: {
                 failOnError: false
@@ -109,10 +127,13 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks('grunt-contrib-cssmin');
     grunt.loadNpmTasks('grunt-contrib-htmlmin');
     grunt.loadNpmTasks('grunt-contrib-uglify');
+    grunt.loadNpmTasks('grunt-contrib-jshint');
     grunt.loadNpmTasks('grunt-endline');
 
+    grunt.registerTask('lint', [ 'jshint' ]);
     grunt.registerTask('html', [ 'concat', 'cssmin', 'htmlmin' ]);
     grunt.registerTask('min', [ 'clean', 'html', 'uglify', 'endline' ]);
+    grunt.registerTask('default', [ 'lint', 'min' ]);
 
     return;
 };
