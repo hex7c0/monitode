@@ -1,3 +1,15 @@
+v2.5.21 / 2014-10-29
+==================
+
+  * `jshint`
+  * Update `logger-request`@3.0.13
+  * Update `basic-authentication`@1.5.8
+  * Update `tickle`@1.1.7
+  * Update `express-sitemap`@1.3.7
+  * Update `startline`@1.3.11
+  * Update `timeout-request`@1.1.7
+  * Using `server-signature`@1.0.4
+
 v2.5.20 / 2014-10-26
 ==================
 
