@@ -1,3 +1,15 @@
+v2.6.0 / 2014-11-05
+==================
+
+  * Web Fix
+  * _Deps_:
+    * Update `logger-request`@3.1.1
+    * Update `server-signature`@1.0.5
+    * Update `timeout-request`@1.2.0
+    * Update `express`@4.10.1
+  * _Web_:
+    * Update `angular`@1.3.1
+    
 v2.5.21 / 2014-10-29
 ==================
 
