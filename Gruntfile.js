@@ -99,6 +99,8 @@ module.exports = function(grunt) {
             },
             web: {
                 options: {
+                    // override
+                    unused: false,
                     strict: false,
                     node: false,
                     // web
