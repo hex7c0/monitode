@@ -1,6 +1,5 @@
-'use strict';
 /*
- * monitode 2.4.15 (c) 2014 hex7c0, https://hex7c0.github.io/monitode/
+ * monitode 2.6.0 (c) 2014 hex7c0, https://hex7c0.github.io/monitode/
  * 
  * License: GPLv3
  */
@@ -8,8 +7,9 @@
 /*
  * variables
  */
+var app = angular.module('monitode', []);
 var avg, meml, memp, os;
-var cpus = [], app = angular.module('monitode', []);
+var cpus = [];
 var store = {
     x: [ 'x' ],
     one: [ 'one' ],
@@ -246,50 +246,54 @@ function loadOs() {
  * @param {Object} timeout - angular timeout object
  * @return
  */
-function controller($scope, $http, $timeout) {
+app
+        .controller('main', [
+                '$scope',
+                '$http',
+                '$timeout',
+                function($scope, $http, $timeout) {
 
-    $scope.clock = 0;
-    dyna($http, $scope, $timeout);
-    stat($http, $scope);
-    // click
-    $scope.button = function(item, event) {
+                    $scope.clock = 0;
+                    dyna($http, $scope, $timeout);
+                    stat($http, $scope);
+                    // click
+                    $scope.button = function(item) {
 
-        switch (item) {
-            case 'dynamic':
-                dyna($http, $scope, $timeout);
-                break;
-            case 'static':
-                stat($http, $scope);
-                break;
-            case 'stop':
-                $timeout.cancel(promise);
-                break;
-            case 'csv':
-                var content = ('data:text/csv;charset=utf-8,');
-                content += 'date,average 1 min,average 5 min,average 15 min,memory used\n';
-                for (var i = 1; i < store.x.length; i++) {
-                    content += store.x[i] + ',';
-                    content += store.one[i] + ',';
-                    content += store.five[i] + ',';
-                    content += store.fifteen[i] + ',';
-                    content += store.used[i] + '\n';
-                }
-                window.open(encodeURI(content));
-                break;
-            case 'clear':
-                var len = store.x.length;
-                for ( var property in store) {
-                    store[property].splice(1, len);
-                }
-                store.logger = [];
-                break;
-        }
-    };
-    return;
-}
+                        switch (item) {
+                            case 'dynamic':
+                                dyna($http, $scope, $timeout);
+                                break;
+                            case 'static':
+                                stat($http, $scope);
+                                break;
+                            case 'stop':
+                                $timeout.cancel(promise);
+                                break;
+                            case 'csv':
+                                var content = ('data:text/csv;charset=utf-8,');
+                                content += 'date,average 1 min,average 5 min,average 15 min,memory used\n';
+                                for (var i = 1; i < store.x.length; i++) {
+                                    content += store.x[i] + ',';
+                                    content += store.one[i] + ',';
+                                    content += store.five[i] + ',';
+                                    content += store.fifteen[i] + ',';
+                                    content += store.used[i] + '\n';
+                                }
+                                window.open(encodeURI(content));
+                                break;
+                            case 'clear':
+                                var len = store.x.length;
+                                for ( var property in store) {
+                                    store[property].splice(1, len);
+                                }
+                                store.logger = [];
+                                break;
+                        }
+                    };
+                    return;
+                } ]);
 
 /*
  * start
  */
 load();
-app.controller('main', controller);
