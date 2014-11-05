@@ -16,17 +16,19 @@ module.exports = function(grunt) {
                 + ' * (c) <%= pkg.author.name %> <%= pkg.homepage %>\n'
                 + ' * Licensed under <%= pkg.license %>\n' + ' */\n',
 
-        clean: [ 'index.min.js', 'min/**/*.js', 'public/**/*.min.*' ],
+        clean: [ 'index.min.js', 'min/**/*', 'public/**/*.min.*' ],
 
         concat: {
             library: {
-                src: [ 'bower_components/**/*.min.js' ],
+                src: [ 'bower_components/angular/angular.min.js',
+                        'bower_components/d3/d3.min.js',
+                        'bower_components/c3/c3.min.js' ],
                 dest: 'public/js/lib.min.js'
             },
             own: {
-                src: [ 'public/js/ajax.js', 'public/js/console.js' ],
+                src: [ 'public/js/console.js', 'public/js/ajax.js' ],
                 dest: 'public/js/concat.min.js'
-            },
+            }
         },
 
         uglify: {
@@ -60,7 +62,7 @@ module.exports = function(grunt) {
                     banner: '<%= banner %>'
                 },
                 files: {
-                    'public/css/style.min.css': 'public/css/console.css'
+                    'public/css/style.min.css': 'public/css/style.css'
                 }
             }
         },
@@ -94,6 +96,19 @@ module.exports = function(grunt) {
             },
             target: {
                 src: [ 'lib/**/*.js', 'module/**/*.js', 'index.js' ]
+            },
+            web: {
+                options: {
+                    strict: false,
+                    node: false,
+                    // web
+                    predef: [ 'angular', 'c3', 'd3', 'alert' ],
+                    browser: true,
+                    jquery: true
+                },
+                files: {
+                    src: 'public/js/concat.min.js'
+                }
             }
         },
 
