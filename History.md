@@ -1,3 +1,12 @@
+v2.6.1 / 2014-11-12
+==================
+
+  * Update `logger-request`@3.2.0
+  * Update `timeout-request`@1.2.1
+  * Update `express`@4.10.2
+  * Update `nano`@5.12.2
+  * Update `angular`@1.3.2
+
 v2.6.0 / 2014-11-05
 ==================
 
