@@ -51,6 +51,27 @@ describe('http', function() {
             if (err)
               throw err;
             assert.equal(res.statusCode, 200);
+            var j = JSON.parse(res.text);
+
+            assert.equal(typeof j.date, 'number', 'date');
+            assert.equal(typeof j.ns, 'number', 'ns');
+
+            assert.equal(typeof j.uptime.os, 'number', 'os uptime');
+            assert.equal(typeof j.uptime.node, 'number', 'node uptime');
+
+            assert.equal(typeof j.cpu.one, 'number', '1');
+            assert.equal(typeof j.cpu.five, 'number', '5');
+            assert.equal(typeof j.cpu.fifteen, 'number', '15');
+
+            assert.equal(typeof j.cpu.cpus[0].model, 'string', 'model of cpu');
+            assert.equal(typeof j.cpu.cpus[0].speed, 'number', 'speed of cpu');
+            assert.equal(typeof j.cpu.cpus[0].times, 'object', 'stats of cpu');
+
+            assert.equal(typeof j.mem.total, 'number', 'total memory');
+            assert.equal(typeof j.mem.used, 'number', 'used memory');
+            assert.equal(typeof j.mem.total, 'number', 'total memory');
+            assert.equal(typeof j.mem.v8, 'object', 'v8 memory');
+
             done();
           });
     });
