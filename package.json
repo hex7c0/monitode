@@ -31,16 +31,16 @@
   },
   "main": "index.min.js",
   "dependencies": {
-    "basic-authentication": "1.5.8",
+    "basic-authentication": "1.5.9",
     "express": "4.10.2",
-    "express-sitemap": "1.3.7",
-    "logger-request": "3.2.0",
+    "express-sitemap": "1.3.8",
+    "logger-request": "3.2.2",
     "mongodb": "1.4.19",
     "nano": "5.12.2",
     "nodemailer": "1.3.0",
-    "server-signature": "1.0.5",
+    "server-signature": "1.0.7",
     "startline": "1.3.11",
-    "tickle": "1.1.7",
+    "tickle": "1.1.8",
     "timeout-request": "1.2.1"
   },
   "devDependencies": {
