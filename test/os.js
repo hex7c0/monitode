@@ -27,7 +27,8 @@ try {
  */
 describe('os', function() {
 
-  var r = '127.0.0.1:30002/dyn/';
+  delete global.monitode;
+  var r = '127.0.0.1:30003/dyn/';
   var p = 'Basic ' + new Buffer('admin:password').toString('base64');
   before(function(done) {
 
@@ -35,60 +36,57 @@ describe('os', function() {
       output: false,
       os: true,
       http: {
-        port: 30002
+        port: 30003
       }
     });
     done();
   });
 
-  describe('OS stats', function() {
+  it('should return 0 stats', function(done) {
 
-    it('should return 0 stats', function(done) {
+    var p = 'Basic ' + new Buffer('admin:password').toString('base64');
+    request.post(r).set('Authorization', p).set('Accept', 'application/json')
+        .end(function(err, res) {
 
-      var p = 'Basic ' + new Buffer('admin:password').toString('base64');
-      request.post(r).set('Authorization', p).set('Accept', 'application/json')
-          .end(function(err, res) {
+          if (err)
+            throw err;
+          assert.equal(res.statusCode, 200);
+          var j = JSON.parse(res.text);
 
-            if (err)
-              throw err;
-            assert.equal(res.statusCode, 200);
-            var j = JSON.parse(res.text);
+          assert.equal(typeof j.net, 'object', 'net');
+          assert.equal(typeof j.net.inn, 'object', 'net');
+          assert.equal(j.net.inn.pacs, 0, 'in pacs');
+          assert.equal(j.net.inn.errs, 0, 'in error');
 
-            assert.equal(typeof j.net, 'object', 'net');
-            assert.equal(typeof j.net.inn, 'object', 'net');
-            assert.equal(j.net.inn.pacs, 0, 'in pacs');
-            assert.equal(j.net.inn.errs, 0, 'in error');
+          assert.equal(typeof j.net.out, 'object', 'net');
+          assert.equal(j.net.out.pacs, 0, 'out pacs');
+          assert.equal(j.net.out.errs, 0, 'out error');
 
-            assert.equal(typeof j.net.out, 'object', 'net');
-            assert.equal(j.net.out.pacs, 0, 'out pacs');
-            assert.equal(j.net.out.errs, 0, 'out error');
+          assert.equal(typeof j.io, 'object', 'io');
+          assert.equal(j.io.tps, 0, 'tps');
+          assert.equal(j.io.mbs, 0, 'mbs');
 
-            assert.equal(typeof j.io, 'object', 'io');
-            assert.equal(j.io.tps, 0, 'tps');
-            assert.equal(j.io.mbs, 0, 'mbs');
+          done();
+        });
+  });
+  it('should return >= 0 stats', function(done) {
 
-            done();
-          });
-    });
-    it('should return >= 0 stats', function(done) {
+    request.post(r).set('Authorization', p).set('Accept', 'application/json')
+        .end(function(err, res) {
 
-      request.post(r).set('Authorization', p).set('Accept', 'application/json')
-          .end(function(err, res) {
+          if (err)
+            throw err;
+          assert.equal(res.statusCode, 200);
+          var j = JSON.parse(res.text);
 
-            if (err)
-              throw err;
-            assert.equal(res.statusCode, 200);
-            var j = JSON.parse(res.text);
+          assert.equal(j.net.inn.pacs >= 0, true, 'in pacs');
+          assert.equal(j.net.inn.errs >= 0, true, 'in error');
+          assert.equal(j.net.out.pacs >= 0, true, 'out pacs');
+          assert.equal(j.net.out.errs >= 0, true, 'out error');
+          assert.equal(j.io.tps >= 0, true, 'tps');
+          assert.equal(j.io.mbs >= 0, true, 'mbs');
 
-            assert.equal(j.net.inn.pacs >= 0, true, 'in pacs');
-            assert.equal(j.net.inn.errs >= 0, true, 'in error');
-            assert.equal(j.net.out.pacs >= 0, true, 'out pacs');
-            assert.equal(j.net.out.errs >= 0, true, 'out error');
-            assert.equal(j.io.tps >= 0, true, 'tps');
-            assert.equal(j.io.mbs >= 0, true, 'mbs');
-
-            done();
-          });
-    });
+          done();
+        });
   });
 });
