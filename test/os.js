@@ -27,13 +27,16 @@ try {
  */
 describe('os', function() {
 
-  var r = '127.0.0.1:30000/dyn/';
+  var r = '127.0.0.1:30002/dyn/';
   var p = 'Basic ' + new Buffer('admin:password').toString('base64');
   before(function(done) {
 
     monitode({
       output: false,
-      os: true
+      os: true,
+      http: {
+        port: 30002
+      }
     });
     done();
   });
