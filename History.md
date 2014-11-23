@@ -1,3 +1,15 @@
+v2.6.2 / 2014-11-23
+==================
+
+  * _Deps_:
+    * Update `basic-authentication`@1.5.9
+    * Update `express-sitemap`@1.3.8
+    * Update `server-signature`@1.0.7
+    * Update `logger-request`@3.2.2
+    * Update `tickle`@1.1.8
+  * _Web_:
+    * Update `angular`@1.3.3
+
 v2.6.1 / 2014-11-12
 ==================
 
