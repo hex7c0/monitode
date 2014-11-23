@@ -27,7 +27,6 @@ try {
  */
 describe('os', function() {
 
-  delete global.monitode;
   var r = '127.0.0.1:30003/dyn/';
   var p = 'Basic ' + new Buffer('admin:password').toString('base64');
   before(function(done) {
