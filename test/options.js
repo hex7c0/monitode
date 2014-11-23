@@ -50,11 +50,16 @@ describe('options', function() {
     assert.equal(o.tickle, false);
     assert.equal(o.app, false);
     assert.equal(o.os, true);
+    assert.equal(o.logger.timeout, 100000 * 1000);
     assert.deepEqual(o.monitor, {
       os: true,
       log: true
     });
-    assert.deepEqual(o.logger.timeout, 100000 * 1000);
+    done();
+  });
+
+  after(function(done) {
+
     fs.unlink('boh', function() {
 
       done();
