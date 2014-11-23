@@ -14,50 +14,50 @@
  */
 // import
 try {
-    var monitode = require('../index.min.js'); // use require('monitode')
-    var assert = require('assert');
-    var fs = require('fs');
+  var monitode = require('..');
+  var assert = require('assert');
+  var fs = require('fs');
 } catch (MODULE_NOT_FOUND) {
-    console.error(MODULE_NOT_FOUND);
-    process.exit(1);
+  console.error(MODULE_NOT_FOUND);
+  process.exit(1);
 }
 
 /*
  * test module
  */
-describe('options',function() {
+describe('options', function() {
 
-    before(function(done) {
+  before(function(done) {
 
-        monitode({
-            output: false,
-            os: true,
-            http: {
-                enabled: false
-            },
-            logger: {
-                file: 'boh',
-                timeout: 100000
-            }
-        });
-        done();
+    monitode({
+      output: false,
+      os: true,
+      http: {
+        enabled: false
+      },
+      logger: {
+        file: 'boh',
+        timeout: 100000
+      }
     });
+    done();
+  });
 
-    it('should correct options',function(done) {
+  it('should correct options', function(done) {
 
-        var o = global.monitode;
-        assert.deepEqual(o.output,false);
-        assert.deepEqual(o.tickle,false);
-        assert.deepEqual(o.app,false);
-        assert.deepEqual(o.os,true);
-        assert.deepEqual(o.monitor,{
-            os: true,
-            log: true
-        });
-        assert.deepEqual(o.logger.timeout,100000 * 1000);
-        fs.unlink('boh',function() {
-
-            done();
-        });
+    var o = global.monitode;
+    assert.equal(o.output, false);
+    assert.equal(o.tickle, false);
+    assert.equal(o.app, false);
+    assert.equal(o.os, true);
+    assert.deepEqual(o.monitor, {
+      os: true,
+      log: true
     });
+    assert.deepEqual(o.logger.timeout, 100000 * 1000);
+    fs.unlink('boh', function() {
+
+      done();
+    });
+  });
 });
