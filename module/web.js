@@ -135,11 +135,7 @@ module.exports = function web() {
   app.get('/', function(req, res) {
 
     // https://github.com/strongloop/express/issues/2290
-    // res.sendFile(html);
-    res.sendFile(html, {
-      etag: false
-    });
-    return;
+    return res.sendFile(html);
   });
   /**
    * POST routing. Build dynamic info
