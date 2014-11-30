@@ -15,10 +15,10 @@
  */
 // import
 try {
-    var LOGGER = require('logger-request');
+  var LOGGER = require('logger-request');
 } catch (MODULE_NOT_FOUND) {
-    console.error(MODULE_NOT_FOUND);
-    process.exit(1);
+  console.error(MODULE_NOT_FOUND);
+  process.exit(1);
 }
 
 /**
@@ -29,44 +29,44 @@ try {
  */
 module.exports = function file() {
 
+  /**
+   * @global
+   */
+  var options = global.monitode;
+  var f = options.logger;
+  var timeout;
+
+  /*
+   * functions
+   */
+  /**
+   * file loop
+   * 
+   * @function write
+   */
+  function write() {
+
+    clearTimeout(timeout);
     /**
      * @global
      */
-    var options = global.monitode;
-    var f = options.logger;
-    var timeout;
+    f.file('moniFile', require(options.min + 'lib/obj.js').dynamics(true));
+    timeout = setTimeout(write, f.timeout);
+    return;
+  }
 
-    /*
-     * functions
-     */
-    /**
-     * file loop
-     * 
-     * @function write
-     */
-    function write() {
-
-        clearTimeout(timeout);
-        /**
-         * @global
-         */
-        f.file('moniFile',require(options.min + 'lib/obj.js').dynamics(true));
-        timeout = setTimeout(write,f.timeout);
-        return;
-    }
-
-    if (options.output) {
-        console.log('starting monitor on file ' + f.file);
-    }
-    f.file = LOGGER({
-        standalone: true,
-        filename: f.file,
-        winston: {
-            logger: 'moniFile',
-            level: 'debug',
-            maxsize: null,
-            json: false,
-        },
-    });
-    return write();
+  if (options.output) {
+    console.log('starting monitor on file ' + f.file);
+  }
+  f.file = LOGGER({
+    standalone: true,
+    filename: f.file,
+    winston: {
+      logger: 'moniFile',
+      level: 'debug',
+      maxsize: null,
+      json: false,
+    },
+  });
+  return write();
 };
