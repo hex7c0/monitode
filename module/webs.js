@@ -101,9 +101,7 @@ module.exports = function web() {
   app.enable('strict routing');
   app.use(require('server-signature')());
   app.use(require('timeout-request')({
-    milliseconds: 4000,
-    header: true,
-    clear: false
+    milliseconds: 4000
   }));
   app.use(require('basic-authentication')({
     user: h.user,
