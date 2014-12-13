@@ -1,3 +1,14 @@
+v2.6.4 / 2014-12-13
+==================
+
+  * _Deps_:
+    * Update `timeout-request`@1.3.0
+    * Update `logger-request`@3.2.3
+    * Update `express`@4.10.5
+    * Update `mongodb`@1.4.23
+  * _Web_:
+    * Update `angular`@1.3.6
+
 v2.6.3 / 2014-11-23
 ==================
 
