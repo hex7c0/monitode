@@ -1,5 +1,5 @@
 {
-  "version": "2.6.5",
+  "version": "2.6.6",
   "name": "monitode",
   "description": "resource monitor for nodejs",
   "keywords": [
