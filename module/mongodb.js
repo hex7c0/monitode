@@ -57,12 +57,12 @@ module.exports = function mongo() {
      * @param {String} error - error output
      * @param {Object} result - result of query
      */
-    d.mongo.insert(json, function(error) {
+    d.mongo.insertOne(json, function(err) {
 
-      if (error) {
-        console.error(error);
-      } else {
+      if (err === null) {
         timeout = setTimeout(query, d.timeout);
+      } else {
+        console.error(error);
       }
       return;
     });
@@ -87,12 +87,12 @@ module.exports = function mongo() {
      * @param {String} error - error output
      * @param {Object} result - result of query
      */
-    d.mongo.insert(json, function(error) {
+    d.mongo.insertOne(json, function(err) {
 
-      if (error) {
-        console.error(error);
-      } else {
+      if (err === null) {
         timeout = setTimeout(query, d.timeout);
+      } else {
+        console.error(error);
       }
       return;
     });
