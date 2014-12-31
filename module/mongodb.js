@@ -62,7 +62,7 @@ module.exports = function mongo() {
       if (err === null) {
         timeout = setTimeout(query, d.timeout);
       } else {
-        console.error(error);
+        console.error(err);
       }
       return;
     });
@@ -92,7 +92,7 @@ module.exports = function mongo() {
       if (err === null) {
         timeout = setTimeout(query, d.timeout);
       } else {
-        console.error(error);
+        console.error(err);
       }
       return;
     });
