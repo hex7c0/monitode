@@ -82,7 +82,9 @@ describe('db', function() {
             }).toArray(function(err, docs) {
 
               assert.equal(docs.length > DOCS.length, true);
-              assert.notEqual(String(docs[0]._id), String(DOCS[0]._id));
+              if (DOCS.length > 0) {
+                assert.notEqual(String(docs[0]._id), String(DOCS[0]._id));
+              }
               assert.notEqual(docs[0].date, undefined);
               assert.notEqual(docs[0].ns, undefined);
               assert.notEqual(docs[0].uptime, undefined);
