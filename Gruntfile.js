@@ -13,15 +13,17 @@ module.exports = function(grunt) {
   grunt.initConfig({
     pkg: grunt.file.readJSON('package.json'),
     banner: '/*\n' + ' * <%= pkg.name %> v<%= pkg.version %>\n'
-        + ' * (c) <%= pkg.author.name %> <%= pkg.homepage %>\n'
-        + ' * Licensed under <%= pkg.license %>\n' + ' */\n',
+      + ' * (c) <%= pkg.author.name %> <%= pkg.homepage %>\n'
+      + ' * Licensed under <%= pkg.license %>\n' + ' */\n',
 
     clean: [ 'index.min.js', 'min/**/*', 'public/**/*.min.*' ],
 
     concat: {
       library: {
-        src: [ 'bower_components/angular/angular.min.js',
-            'bower_components/d3/d3.min.js', 'bower_components/c3/c3.min.js' ],
+        src: [
+          'bower_components/angular/angular.min.js',
+          'bower_components/d3/d3.min.js',
+          'bower_components/c3/c3.min.js' ],
         dest: 'public/js/lib.min.js'
       },
       own: {
@@ -32,6 +34,10 @@ module.exports = function(grunt) {
 
     uglify: {
       target: {
+        options: {
+          mangle: false,
+          beautify: true
+        },
         files: [ {
           expand: true,
           src: 'lib/*.js',
