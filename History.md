@@ -1,3 +1,16 @@
+v2.6.8 / 2015-01-22
+==================
+
+  * Package fix
+  * _Deps_:
+    * Update `express`@4.11.1
+    * Update `express-sitemap`@1.4.0
+    * Update `basic-authentication`@1.5.10
+    * Update `server-signature`@1.0.9
+    * Updata `mongodb`@2.0.14
+  * _Web_:
+    * Update `angular`@1.3.9
+
 v2.6.7 / 2015-01-08
 ==================
 
