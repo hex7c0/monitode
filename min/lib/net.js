@@ -1,1 +1,69 @@
-"use strict";try{var OS=require("os").platform(),spawn=require("child_process").spawn}catch(MODULE_NOT_FOUND){console.error(MODULE_NOT_FOUND),process.exit(1)}module.exports=function(){function a(){f=spawn("netstat",["-w 2"],{stdio:["ignore","pipe"]}),f.stdout.on("data",function(a){for(var b=String(a).split(/\r?\n/),c=0,d=b.length;d>c;c++){var e=b[c].match(/^\s+(\d+)\s+(\d+)\s+(\d+)\s+(\d+)\s+(\d+)\s+(\d+)\s*/);e&&(h=[parseInt(e[1])+h[0],parseInt(e[2])+h[1],parseInt(e[4])+h[2],parseInt(e[5])+h[3]])}g++}),f.stderr.on("data",function(a){console.error(String(a)),f.kill("SIGKILL")})}function b(){f=spawn("netstat",["-i","-c","2"],{stdio:["ignore","pipe"]}),f.stdout.on("data",function(a){for(var b=String(a).split(/\r?\n/),c=0,d=b.length;d>c;c++){var e=b[c].match(/^([a-zA-z]+[0-9]+)\s+(\d+)\s+(\d+)\s+(\d+)\s+(\d+)\s+(\d+)\s+(\d+)\s+(\d+)\s+(\d+)*/);e&&(0===i&&(i=[parseInt(e[4]),parseInt(e[5]),parseInt(e[8]),parseInt(e[9])]),h=[parseInt(e[4])+h[0]-i[0],parseInt(e[5])+h[1]-i[1],parseInt(e[8])+h[2]-i[2],parseInt(e[9])+h[3]-i[3]])}g++}),f.stderr.on("data",function(a){console.error(String(a)),f.kill("SIGKILL")})}function c(){global.monitode.net={inn:{pacs:h[0],errs:h[1]},out:{pacs:h[2],errs:h[3]}},h=[0,0,0,0],g>=600&&(g=0,f.kill("SIGTERM"),f=null,e())}function d(){global.monitode.net={inn:{pacs:h[0],errs:h[1]},out:{pacs:h[2],errs:h[3]}},h=[0,0,0,0],g>=600&&(g=0,f.kill("SIGTERM"),f=null,e())}function e(){return"darwin"===OS.toLowerCase()?(a(),c):"linux"===OS.toLowerCase()?(b(),d):(global.monitode.net=null,function(){})}var f,g=0,h=[0,0,0,0],i=0;return e()};
+"use strict";
+
+try {
+    var OS = require("os").platform(), spawn = require("child_process").spawn;
+} catch (MODULE_NOT_FOUND) {
+    console.error(MODULE_NOT_FOUND), process.exit(1);
+}
+
+module.exports = function() {
+    function spawnMac() {
+        op = spawn("netstat", [ "-w 2" ], {
+            stdio: [ "ignore", "pipe" ]
+        }), op.stdout.on("data", function(data) {
+            for (var lines = String(data).split(/\r?\n/), i = 0, il = lines.length; il > i; i++) {
+                var cap = lines[i].match(/^\s+(\d+)\s+(\d+)\s+(\d+)\s+(\d+)\s+(\d+)\s+(\d+)\s*/);
+                cap && (stat = [ parseInt(cap[1]) + stat[0], parseInt(cap[2]) + stat[1], parseInt(cap[4]) + stat[2], parseInt(cap[5]) + stat[3] ]);
+            }
+            timer++;
+        }), op.stderr.on("data", function(data) {
+            console.error(String(data)), op.kill("SIGKILL");
+        });
+    }
+    function spawnLinux() {
+        op = spawn("netstat", [ "-i", "-c", "2" ], {
+            stdio: [ "ignore", "pipe" ]
+        }), op.stdout.on("data", function(data) {
+            for (var lines = String(data).split(/\r?\n/), i = 0, il = lines.length; il > i; i++) {
+                var cap = lines[i].match(/^([a-zA-z]+[0-9]+)\s+(\d+)\s+(\d+)\s+(\d+)\s+(\d+)\s+(\d+)\s+(\d+)\s+(\d+)\s+(\d+)*/);
+                cap && (0 === story && (story = [ parseInt(cap[4]), parseInt(cap[5]), parseInt(cap[8]), parseInt(cap[9]) ]), 
+                stat = [ parseInt(cap[4]) + stat[0] - story[0], parseInt(cap[5]) + stat[1] - story[1], parseInt(cap[8]) + stat[2] - story[2], parseInt(cap[9]) + stat[3] - story[3] ]);
+            }
+            timer++;
+        }), op.stderr.on("data", function(data) {
+            console.error(String(data)), op.kill("SIGKILL");
+        });
+    }
+    function refreshMac() {
+        global.monitode.net = {
+            inn: {
+                pacs: stat[0],
+                errs: stat[1]
+            },
+            out: {
+                pacs: stat[2],
+                errs: stat[3]
+            }
+        }, stat = [ 0, 0, 0, 0 ], timer >= 600 && (timer = 0, op.kill("SIGTERM"), op = null, 
+        main());
+    }
+    function refreshLinux() {
+        global.monitode.net = {
+            inn: {
+                pacs: stat[0],
+                errs: stat[1]
+            },
+            out: {
+                pacs: stat[2],
+                errs: stat[3]
+            }
+        }, stat = [ 0, 0, 0, 0 ], timer >= 600 && (timer = 0, op.kill("SIGTERM"), op = null, 
+        main());
+    }
+    function main() {
+        return "darwin" === OS.toLowerCase() ? (spawnMac(), refreshMac) : "linux" === OS.toLowerCase() ? (spawnLinux(), 
+        refreshLinux) : (global.monitode.net = null, function() {});
+    }
+    var op, timer = 0, stat = [ 0, 0, 0, 0 ], story = 0;
+    return main();
+};
