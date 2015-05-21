@@ -1,22 +1,22 @@
-.git*
-.npmignore
-.project
-.jshintrc
-.jsdoc.json
-.settings
-.travis.yml
-.DS_Store
-
-*.log
-
+# Env configuration
+.*
+*.yml
 Gruntfile.js
 bower.json
 
+# Logs
+*.log
+
+# Coverage directory used by tools like istanbul
+coverage/
+tmp/
+
+# Repository directory
 examples/
-module/
-lib/
 test/
 
+# Dependency directory
+# Deployed apps should consider commenting this line out:
+# see https://npmjs.org/doc/faq.html#Should-I-check-my-node_modules-folder-into-git
 node_modules/
 bower_components/
-tmp/
