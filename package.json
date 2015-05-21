@@ -61,5 +61,5 @@
     "prepublish": "npm prune",
     "test": "mocha --bail --globals monitode --check-leaks test/"
   },
-  "license": "GPLv3"
+  "license": "GPL-3.0"
 }
