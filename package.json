@@ -32,7 +32,7 @@
   "main": "index.min.js",
   "dependencies": {
     "basic-authentication": "1.5.10",
-    "express": "4.11.1",
+    "express": "4.12.4",
     "express-sitemap": "1.4.0",
     "logger-request": "3.2.7",
     "mongodb": "2.0.14",
